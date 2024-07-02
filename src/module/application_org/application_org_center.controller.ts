@@ -24,16 +24,16 @@ import {
   ApiOperation,
   ApiTags,
 } from '@nestjs/swagger';
-import { ApplicationCallCenterServise } from './application_call_center.service';
+import { ApplicationOrgServise } from './application_org_center.service';
 import { AnyFilesInterceptor } from '@nestjs/platform-express';
-import { CreateApplicationCallCenterDto } from './dto/create_organization.dto';
-import { UpdateApplicationCallCenterDto } from './dto/update_organization.dto';
-@Controller('organization')
-@ApiTags('Application Call Center')
+import { CreateApplicationOrgDto } from './dto/create_organization.dto';
+import { UpdateApplicationOrgDto } from './dto/update_organization.dto';
+@Controller('ApplicationOrgController')
+@ApiTags('Application Org')
 @ApiBearerAuth('JWT-auth')
-export class ApplicationCallCenterController {
-  readonly #_service: ApplicationCallCenterServise;
-  constructor(service: ApplicationCallCenterServise) {
+export class ApplicationOrgController {
+  readonly #_service: ApplicationOrgServise;
+  constructor(service: ApplicationOrgServise) {
     this.#_service = service;
   }
 
@@ -42,7 +42,6 @@ export class ApplicationCallCenterController {
   @ApiNotFoundResponse()
   @ApiOkResponse()
   @ApiOperation({ summary: 'sana formati 01.04.2024 to\'ldirilmagan joyga null qiymati jonatiladi sana va page paramlari null qiymat qabul qilmaydi ' })
-
   async findall(
     @Query('categoryId') categoryId: string,
     @Query('subCategoryId') subCategoryId: string,
@@ -80,13 +79,21 @@ export class ApplicationCallCenterController {
           type: 'string',
           default: 'sadf456asdf65asdf564asf',
         },
+        above_incomes: {
+          type: 'string',
+          default: 'Юқори турувчи ва бошқа давлат ташкилотларидан келган мурожаатлар',
+        },
         applicant: {
           type: 'string',
           default: 'Мурожаатчи',
         },
+        application_sort: {
+          type: 'string',
+          default: 'Yozma',
+        },
         application_type: {
           type: 'string',
-          default: 'Мурожаат тури (ариза, таклиф, шикоят)',
+          default: 'Ariza',
         },
         comment: {
           type: 'string',
@@ -96,7 +103,18 @@ export class ApplicationCallCenterController {
           type: 'string',
           default: '2',
         },
-
+        deadline_date: {
+          type: 'string',
+          default: "2024-07-11",
+        },
+        director_fullName: {
+          type: 'string',
+          default: 'Раҳбар (Ф.И.Ш)',
+        },
+        dublicate: {
+          type: 'string',
+          default: 'Дубликат',
+        },
         income_date: {
           type: 'string',
           default: '2024-07-02',
@@ -107,15 +125,23 @@ export class ApplicationCallCenterController {
         },
         organization_name: {
           type: 'string',
-          default: "Бошқарма номи",
+          default: 'Бошқарма номи',
         },
         organization_type: {
           type: 'string',
-          default: 'Юридический / Физический лицо',
+          default: 'Физический',
+        },
+        outcome_date: {
+          type: 'string',
+          default: '2024-07-01',
+        },
+        outcoming_number: {
+          type: 'string',
+          default: 'Исходящий Номер',
         },
         perform_date: {
           type: 'string',
-          default: '2024-07-01',
+          default: '2024-07-07',
         },
         performer: {
           type: 'string',
@@ -125,28 +151,41 @@ export class ApplicationCallCenterController {
           type: 'string',
           default: 'Toshkent shahar',
         },
+        request_type: {
+          type: 'string',
+          default: 'Мурожаат шакли',
+        },
         resend_application: {
           type: 'string',
-          default: 'Янги мурожаат ёки Такрорий мурожаатлар',
+          default: 'Yangi',
         },
         response: {
           type: 'string',
-          default: '2024-07-03',
+          default: 'Tushuntirilgan',
         },
-        sended_to_organizations: {
+        response_to_request: {
           type: 'string',
-          default: '2024-07-02',
+          default: 'Мурожаат жавоби',
+        },
+        seen_date_breaked: {
+          type: 'string',
+          default: 'Кўриб чиқиш муддати бузилган',
+        },
+        where_seen: {
+          type: 'string',
+          default: 'Markaziy apparatda ko\'rilgan',
         },
       },
     },
   })
   // @ApiConsumes('multipart/form-data')
+    @ApiOperation({ summary: 'sana formati 01.04.2024 to\'ldirilmagan joyga null qiymati jonatiladi sana va page paramlari null qiymat qabul qilmaydi ' })
   @ApiCreatedResponse()
   @ApiBadRequestResponse()
   @ApiNotFoundResponse()
   // @UseInterceptors(AnyFilesInterceptor())
   async create(
-    @Body() createOrganizationDto: CreateApplicationCallCenterDto,
+    @Body() createOrganizationDto: CreateApplicationOrgDto,
   ): Promise<void> {
     return await this.#_service.create(createOrganizationDto);
   }
@@ -166,13 +205,21 @@ export class ApplicationCallCenterController {
           type: 'string',
           default: 'sadf456asdf65asdf564asf',
         },
+        above_incomes: {
+          type: 'string',
+          default: 'Юқори турувчи ва бошқа давлат ташкилотларидан келган мурожаатлар',
+        },
         applicant: {
           type: 'string',
           default: 'Мурожаатчи',
         },
+        application_sort: {
+          type: 'string',
+          default: 'Yozma',
+        },
         application_type: {
           type: 'string',
-          default: 'Мурожаат тури (ариза, таклиф, шикоят)',
+          default: 'Ariza',
         },
         comment: {
           type: 'string',
@@ -181,6 +228,18 @@ export class ApplicationCallCenterController {
         crossfields: {
           type: 'string',
           default: '2',
+        },
+        deadline_date: {
+          type: 'string',
+          default: "2024-07-11",
+        },
+        director_fullName: {
+          type: 'string',
+          default: 'Раҳбар (Ф.И.Ш)',
+        },
+        dublicate: {
+          type: 'string',
+          default: 'Дубликат',
         },
         income_date: {
           type: 'string',
@@ -192,15 +251,23 @@ export class ApplicationCallCenterController {
         },
         organization_name: {
           type: 'string',
-          default: "Бошқарма номи",
+          default: 'Бошқарма номи',
         },
         organization_type: {
           type: 'string',
-          default: 'Юридический / Физический лицо',
+          default: 'Физический',
+        },
+        outcome_date: {
+          type: 'string',
+          default: '2024-07-01',
+        },
+        outcoming_number: {
+          type: 'string',
+          default: 'Исходящий Номер',
         },
         perform_date: {
           type: 'string',
-          default: '2024-07-01',
+          default: '2024-07-07',
         },
         performer: {
           type: 'string',
@@ -210,30 +277,40 @@ export class ApplicationCallCenterController {
           type: 'string',
           default: 'Toshkent shahar',
         },
+        request_type: {
+          type: 'string',
+          default: 'Мурожаат шакли',
+        },
         resend_application: {
           type: 'string',
-          default: 'Янги мурожаат ёки Такрорий мурожаатлар',
+          default: 'Yangi',
         },
         response: {
           type: 'string',
-          default: '2024-07-03',
+          default: 'Tushuntirilgan',
         },
-        sended_to_organizations: {
+        response_to_request: {
           type: 'string',
-          default: '2024-07-02',
+          default: 'Мурожаат жавоби',
         },
-       
+        seen_date_breaked: {
+          type: 'string',
+          default: 'Кўриб чиқиш муддати бузилган',
+        },
+        where_seen: {
+          type: 'string',
+          default: 'Markaziy apparatda ko\'rilgan',
+        },
       },
     },
   })
-  // @ApiOperation({ summary: 'Update Org' })
-  // @ApiConsumes('multipart/form-data')
-  // @UseInterceptors(AnyFilesInterceptor())
+
   @ApiBadRequestResponse()
   @ApiNotFoundResponse()
+  @ApiOperation({ summary: 'sana formati 01.04.2024 to\'ldirilmagan joyga null qiymati jonatiladi sana va page paramlari null qiymat qabul qilmaydi ' })
   async update(
     @Param('id') id: string,
-    @Body() updateOrganizationDto: UpdateApplicationCallCenterDto,
+    @Body() updateOrganizationDto: UpdateApplicationOrgDto,
   ): Promise<void> {
     await this.#_service.update(id, updateOrganizationDto);
   }

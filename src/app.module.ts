@@ -16,6 +16,7 @@ import { CacheModule } from '@nestjs/cache-manager';
 import { SectionCategoriesModule } from './module/category_org/section_categories.module';
 import { SubCategorySectionModule } from './module/sub_category_organization/sub_categor_section.module';
 import { ApplicationCallCenterModule } from './module/organization/application_call_center.module';
+import { ApplicationOrgModule } from './module/application_org/application_org_center.module';
 // import { SectionModule } from './module/section/section.module';
 // import { SavedOrganizationModule } from './module/saved_org/savedorganization.module';
 // import { RolesGuard } from './module/auth/guards/roles.guard';
@@ -36,7 +37,7 @@ import { ApplicationCallCenterModule } from './module/organization/application_c
     SubCategorySectionModule,
     // SectionModule,
     ApplicationCallCenterModule,
-    // SavedOrganizationModule,
+    ApplicationOrgModule,    // SavedOrganizationModule,
     // CommentAndRateModule,
     // EntertainmentCategoriesModule,
     // EntertainmentsModule,

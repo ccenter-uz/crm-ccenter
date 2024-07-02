@@ -20,118 +20,138 @@ export class ApplicationOrgEntity extends BaseEntity {
     type: 'character varying',
     nullable: true,
   })
-  title: string;
+  above_incomes: string;
 
   @Column({
     type: 'character varying',
     nullable: true,
   })
-  section: string;
+  applicant: string;
 
   @Column({
     type: 'character varying',
     nullable: true,
   })
-  head_organization: string;
+  application_sort: string;
 
   @Column({
     type: 'character varying',
     nullable: true,
   })
-  manager: string;
+  application_type: string;
 
   @Column({
     type: 'character varying',
     nullable: true,
   })
-  e_mail: string;
+  comment: string;
 
   @Column({
     type: 'character varying',
     nullable: true,
   })
-  index: string;
+  crossfields: string;
 
   @Column({
     type: 'character varying',
     nullable: true,
   })
-  address: string;
-
-  @Column({
-    type: 'jsonb',
-    nullable: true,
-  })
-  work_time: JSON;
-
-  @Column({
-    type: 'jsonb',
-    nullable: true,
-  })
-  payment_type: JSON;
-
-  @Column({
-    type: 'jsonb',
-    nullable: true,
-  })
-  transport: JSON;
+  deadline_date: string;
 
   @Column({
     type: 'character varying',
     nullable: true,
   })
-  more_info: string;
-
-  @Column({
-    type: 'jsonb',
-    nullable: true,
-  })
-  location: JSON;
+  director_fullName: string;
 
   @Column({
     type: 'character varying',
     nullable: true,
   })
-  segment: string;
+  dublicate: string;
 
   @Column({
     type: 'character varying',
     nullable: true,
   })
-  account: string;
-
-  @Column({
-    type: 'character varying',
-    default: 'cc',
-    nullable: true,
-  })
-  added_by: string;
+  income_date: string;
 
   @Column({
     type: 'character varying',
     nullable: true,
   })
-  inn: string;
+  incoming_number: string;
 
   @Column({
     type: 'character varying',
     nullable: true,
   })
-  bank_account: string;
+  organization_name: string;
 
   @Column({
-    type: 'float',
-    default: 0,
-    nullable : true
+    type: 'character varying',
+    nullable: true,
   })
-  common_rate: number;
+  organization_type: string;
 
   @Column({
-    type: 'integer',
-    default: 0,
-    nullable : true
+    type: 'character varying',
+    nullable: true,
   })
-  number_of_raters: number;
+  outcome_date: string;
+  @Column({
+    type: 'character varying',
+    nullable: true,
+  })
+  outcoming_number: string;
+  @Column({
+    type: 'character varying',
+    nullable: true,
+  })
+  perform_date: string;
+  @Column({
+    type: 'character varying',
+    nullable: true,
+  })
+  performer: string;
+  @Column({
+    type: 'character varying',
+    nullable: true,
+  })
+  region: string;
+    @Column({
+    type: 'character varying',
+    nullable: true,
+  })
+  request_type: string;
+  @Column({
+    type: 'character varying',
+    nullable: true,
+  })
+  resend_application: string;
+  @Column({
+    type: 'character varying',
+    nullable: true,
+  })
+  response: string;
+
+  @Column({
+    type: 'character varying',
+    nullable: true,
+  })
+  response_to_request: string;
+
+  @Column({
+    type: 'character varying',
+    nullable: true,
+  })
+  seen_date_breaked: string;
+
+  @Column({
+    type: 'character varying',
+    nullable: true,
+  })
+  where_seen: string;
 
   @ManyToOne(
     () => Sub_Category_Section_Entity,
