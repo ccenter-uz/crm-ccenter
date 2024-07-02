@@ -33,11 +33,11 @@ export class ApplicationCallCenterEntity extends BaseEntity {
   })
   comment: string;
 
-  @Column({
-    type: 'character varying',
-    nullable: true,
-  })
-  crossfields: string;
+  // @Column({
+  //   type: 'character varying',
+  //   nullable: true,
+  // })
+  // crossfields: string;
 
   @Column({
     type: 'character varying',

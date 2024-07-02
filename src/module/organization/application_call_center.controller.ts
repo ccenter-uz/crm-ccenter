@@ -101,10 +101,10 @@ export class ApplicationCallCenterController {
           type: 'string',
           default: 'Мурожаатнинг қисқача мазмуни',
         },
-        crossfields: {
-          type: 'string',
-          default: '2',
-        },
+        // crossfields: {
+        //   type: 'string',
+        //   default: '2',
+        // },
 
         income_date: {
           type: 'string',
@@ -186,10 +186,10 @@ export class ApplicationCallCenterController {
           type: 'string',
           default: 'Мурожаатнинг қисқача мазмуни',
         },
-        crossfields: {
-          type: 'string',
-          default: '2',
-        },
+        // crossfields: {
+        //   type: 'string',
+        //   default: '2',
+        // },
         income_date: {
           type: 'string',
           default: '2024-07-02',

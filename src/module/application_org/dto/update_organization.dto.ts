@@ -20,8 +20,8 @@ export class UpdateApplicationOrgDto {
   @IsString()
   comment: string;
 
-  @IsString()
-  crossfields: string;
+  // @IsString()
+  // crossfields: string;
 
   @IsString()
   deadline_date: string;

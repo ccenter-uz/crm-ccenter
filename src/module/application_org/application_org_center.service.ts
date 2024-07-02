@@ -150,7 +150,7 @@ export class ApplicationOrgServise {
         applicant: body.applicant,
         application_type: body.application_type,
         comment: body.comment,
-        crossfields: body.crossfields,
+        // crossfields: body.crossfields,
         income_date: body.income_date,
         incoming_number: body.incoming_number,
         organization_name: body.organization_name,
@@ -210,7 +210,7 @@ export class ApplicationOrgServise {
       application_type:
         body.application_type || findaplicationCallCenter.application_type,
       comment: body.comment || findaplicationCallCenter.comment,
-      crossfields: body.crossfields || findaplicationCallCenter.crossfields,
+      // crossfields: body.crossfields || findaplicationCallCenter.crossfields,
       income_date: body.income_date || findaplicationCallCenter.income_date,
       incoming_number:
         body.incoming_number || findaplicationCallCenter.incoming_number,

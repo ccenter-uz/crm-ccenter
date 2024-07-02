@@ -27,9 +27,9 @@ export class CreateApplicationOrgDto {
   @IsString()
   comment: string;
 
-  @IsString()
-  @IsNotEmpty()
-  crossfields: string;
+  // @IsString()
+  // @IsNotEmpty()
+  // crossfields: string;
 
   @IsString()
   deadline_date: string;

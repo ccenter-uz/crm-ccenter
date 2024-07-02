@@ -110,10 +110,10 @@ export class ApplicationOrgController {
           type: 'string',
           default: 'Мурожаатнинг қисқача мазмуни',
         },
-        crossfields: {
-          type: 'string',
-          default: '2',
-        },
+        // crossfields: {
+        //   type: 'string',
+        //   default: '2',
+        // },
         deadline_date: {
           type: 'string',
           default: '2024-07-11',
@@ -239,10 +239,10 @@ export class ApplicationOrgController {
           type: 'string',
           default: 'Мурожаатнинг қисқача мазмуни',
         },
-        crossfields: {
-          type: 'string',
-          default: '2',
-        },
+        // crossfields: {
+        //   type: 'string',
+        //   default: '2',
+        // },
         deadline_date: {
           type: 'string',
           default: '2024-07-11',
