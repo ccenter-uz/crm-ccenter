@@ -17,8 +17,6 @@ export class UpdateApplicationOrgDto {
   @IsString()
   application_type: string;
 
-
-
   @IsString()
   comment: string;
 

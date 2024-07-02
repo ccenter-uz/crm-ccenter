@@ -24,8 +24,6 @@ export class CreateApplicationCallCenterDto {
   @IsString()
   crossfields: string;
 
-
-
   @IsString()
   income_date: string;
 
@@ -51,11 +49,9 @@ export class CreateApplicationCallCenterDto {
   @IsString()
   resend_application: string;
 
-
   @IsString()
   response: string;
 
   @IsString()
   sended_to_organizations: string;
-
 }

@@ -41,8 +41,10 @@ export class ApplicationCallCenterController {
   @ApiBadRequestResponse()
   @ApiNotFoundResponse()
   @ApiOkResponse()
-  @ApiOperation({ summary: 'sana formati 01.04.2024 to\'ldirilmagan joyga null qiymati jonatiladi sana va page paramlari null qiymat qabul qilmaydi ' })
-
+  @ApiOperation({
+    summary:
+      "sana formati 01.04.2024 to'ldirilmagan joyga null qiymati jonatiladi sana va page paramlari null qiymat qabul qilmaydi ",
+  })
   async findall(
     @Query('categoryId') categoryId: string,
     @Query('subCategoryId') subCategoryId: string,
@@ -51,9 +53,16 @@ export class ApplicationCallCenterController {
     @Query('date_to') untilDate: string,
     @Query('page') page: string,
     @Query('pageSize') pageSize: string,
-
   ) {
-    return await this.#_service.findAll(categoryId,subCategoryId, region,fromDate,untilDate,+page,+pageSize );
+    return await this.#_service.findAll(
+      categoryId,
+      subCategoryId,
+      region,
+      fromDate,
+      untilDate,
+      +page,
+      +pageSize,
+    );
   }
 
   @Get('/one/:id')
@@ -107,7 +116,7 @@ export class ApplicationCallCenterController {
         },
         organization_name: {
           type: 'string',
-          default: "Бошқарма номи",
+          default: 'Бошқарма номи',
         },
         organization_type: {
           type: 'string',
@@ -158,8 +167,7 @@ export class ApplicationCallCenterController {
     schema: {
       type: 'object',
       properties: {
-
-                //   type: 'string',
+        //   type: 'string',
         //   default: '4141561fds4g964g498e',
         // },
         sub_category_id: {
@@ -192,7 +200,7 @@ export class ApplicationCallCenterController {
         },
         organization_name: {
           type: 'string',
-          default: "Бошқарма номи",
+          default: 'Бошқарма номи',
         },
         organization_type: {
           type: 'string',
@@ -222,7 +230,6 @@ export class ApplicationCallCenterController {
           type: 'string',
           default: '2024-07-02',
         },
-       
       },
     },
   })

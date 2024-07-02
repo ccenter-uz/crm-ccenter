@@ -24,8 +24,6 @@ export class CreateApplicationOrgDto {
   @IsString()
   application_type: string;
 
-
-
   @IsString()
   comment: string;
 
@@ -76,5 +74,4 @@ export class CreateApplicationOrgDto {
   seen_date_breaked: string;
   @IsString()
   where_seen: string;
-
 }

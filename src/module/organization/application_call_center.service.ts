@@ -14,26 +14,32 @@ import { Between } from 'typeorm';
 
 @Injectable()
 export class ApplicationCallCenterServise {
-  async findAll(categoryId : string , subCategoryId : string , region : string , fromDate :string , untilDate : string , pageNumber = 1, pageSize = 10) {
-    const offset = (pageNumber - 1) * pageSize
-    
+  async findAll(
+    categoryId: string,
+    subCategoryId: string,
+    region: string,
+    fromDate: string,
+    untilDate: string,
+    pageNumber = 1,
+    pageSize = 10,
+  ) {
+    const offset = (pageNumber - 1) * pageSize;
 
-    if(fromDate == 'null' || untilDate == 'null') { 
-
-      const  [results, total] = await ApplicationCallCenterEntity.findAndCount({
-        where : {
-          region : region == 'null' ? null: region,
-          sub_category_call_center : {
-            id : subCategoryId == 'null' ? null : subCategoryId,
+    if (fromDate == 'null' || untilDate == 'null') {
+      const [results, total] = await ApplicationCallCenterEntity.findAndCount({
+        where: {
+          region: region == 'null' ? null : region,
+          sub_category_call_center: {
+            id: subCategoryId == 'null' ? null : subCategoryId,
             category_org: {
-              id: categoryId  == 'null' ? null : categoryId
-            }
+              id: categoryId == 'null' ? null : categoryId,
+            },
           },
         },
         relations: {
           sub_category_call_center: {
-            category_org:true
-          }
+            category_org: true,
+          },
         },
         skip: offset,
         take: pageSize,
@@ -43,9 +49,9 @@ export class ApplicationCallCenterServise {
       }).catch((e) => {
         throw new HttpException('Bad request', HttpStatus.BAD_REQUEST);
       });
-  
+
       const totalPages = Math.ceil(total / pageSize);
-  
+
       return {
         results,
         pagination: {
@@ -56,55 +62,53 @@ export class ApplicationCallCenterServise {
         },
       };
     } else {
-
-    const fromDateFormatted = new Date(
-      parseInt(fromDate.split('.')[2]),
-      parseInt(fromDate.split('.')[1]) - 1,
-      parseInt(fromDate.split('.')[0]),
-    );
-    const untilDateFormatted = new Date(
-      parseInt(untilDate.split('.')[2]),
-      parseInt(untilDate.split('.')[1]) - 1,
-      parseInt(untilDate.split('.')[0]),
-    );
-    const  [results, total] = await ApplicationCallCenterEntity.findAndCount({
-      where : {
-        region : region == 'null' ? null: region,
-        sub_category_call_center : {
-          id : subCategoryId == 'null' ? null : subCategoryId,
-          category_org: {
-            id: categoryId  == 'null' ? null : categoryId
-          }
+      const fromDateFormatted = new Date(
+        parseInt(fromDate.split('.')[2]),
+        parseInt(fromDate.split('.')[1]) - 1,
+        parseInt(fromDate.split('.')[0]),
+      );
+      const untilDateFormatted = new Date(
+        parseInt(untilDate.split('.')[2]),
+        parseInt(untilDate.split('.')[1]) - 1,
+        parseInt(untilDate.split('.')[0]),
+      );
+      const [results, total] = await ApplicationCallCenterEntity.findAndCount({
+        where: {
+          region: region == 'null' ? null : region,
+          sub_category_call_center: {
+            id: subCategoryId == 'null' ? null : subCategoryId,
+            category_org: {
+              id: categoryId == 'null' ? null : categoryId,
+            },
+          },
+          create_data: Between(fromDateFormatted, untilDateFormatted),
         },
-        create_data: Between(fromDateFormatted, untilDateFormatted),
-      },
-      relations: {
-        sub_category_call_center: {
-          category_org:true
-        }
-      },
-      skip: offset,
-      take: pageSize,
-      order: {
-        create_data: 'desc',
-      },
-    }).catch((e) => {
-      throw new HttpException('Bad request', HttpStatus.BAD_REQUEST);
-    });
+        relations: {
+          sub_category_call_center: {
+            category_org: true,
+          },
+        },
+        skip: offset,
+        take: pageSize,
+        order: {
+          create_data: 'desc',
+        },
+      }).catch((e) => {
+        throw new HttpException('Bad request', HttpStatus.BAD_REQUEST);
+      });
 
-    const totalPages = Math.ceil(total / pageSize);
+      const totalPages = Math.ceil(total / pageSize);
 
-    return {
-      results,
-      pagination: {
-        currentPage: pageNumber,
-        totalPages,
-        pageSize,
-        totalItems: total,
-      },
-    };
-  }
-  
+      return {
+        results,
+        pagination: {
+          currentPage: pageNumber,
+          totalPages,
+          pageSize,
+          totalItems: total,
+        },
+      };
+    }
   }
 
   async findOne(id: string) {
@@ -114,8 +118,8 @@ export class ApplicationCallCenterServise {
       },
       relations: {
         sub_category_call_center: {
-          category_org:true
-        }
+          category_org: true,
+        },
       },
       order: {
         create_data: 'asc',
@@ -131,11 +135,8 @@ export class ApplicationCallCenterServise {
     return findOne;
   }
 
-  async create(
-    body: CreateApplicationCallCenterDto,
-  ) {
+  async create(body: CreateApplicationCallCenterDto) {
     console.log(body);
-
 
     let findSubCategory = null;
 
@@ -154,19 +155,19 @@ export class ApplicationCallCenterServise {
       .insert()
       .into(ApplicationCallCenterEntity)
       .values({
-        applicant : body.applicant,
-        application_type : body.application_type,
+        applicant: body.applicant,
+        application_type: body.application_type,
         comment: body.comment,
-        crossfields :body.crossfields,
-        income_date : body.income_date,
-        incoming_number: body.incoming_number ,
+        crossfields: body.crossfields,
+        income_date: body.income_date,
+        incoming_number: body.incoming_number,
         organization_name: body.organization_name,
-        organization_type:body.organization_type,
-        perform_date :body.perform_date,
+        organization_type: body.organization_type,
+        perform_date: body.perform_date,
         performer: body.perform_date,
-        region :body.region,
+        region: body.region,
         resend_application: body.resend_application,
-        response :body.response,
+        response: body.response,
         sended_to_organizations: body.sended_to_organizations,
         sub_category_call_center: findSubCategory,
       })
@@ -174,9 +175,8 @@ export class ApplicationCallCenterServise {
       .catch(() => {
         throw new HttpException('Bad Request ', HttpStatus.BAD_REQUEST);
       });
-  
 
-      return;
+    return;
     // }
   }
 
@@ -204,34 +204,40 @@ export class ApplicationCallCenterServise {
     }
 
     const updatedOrganization = await ApplicationCallCenterEntity.update(id, {
-      applicant : body.applicant || findaplicationCallCenter.applicant,
-      application_type : body.application_type || findaplicationCallCenter.application_type,
+      applicant: body.applicant || findaplicationCallCenter.applicant,
+      application_type:
+        body.application_type || findaplicationCallCenter.application_type,
       comment: body.comment || findaplicationCallCenter.comment,
-      crossfields :body.crossfields || findaplicationCallCenter.crossfields,
-      income_date : body.income_date || findaplicationCallCenter.income_date,
-      incoming_number: body.incoming_number  || findaplicationCallCenter.incoming_number,
-      organization_name: body.organization_name || findaplicationCallCenter.organization_name,
-      organization_type:body.organization_type || findaplicationCallCenter.organization_type,
-      perform_date :body.perform_date || findaplicationCallCenter.perform_date,
+      crossfields: body.crossfields || findaplicationCallCenter.crossfields,
+      income_date: body.income_date || findaplicationCallCenter.income_date,
+      incoming_number:
+        body.incoming_number || findaplicationCallCenter.incoming_number,
+      organization_name:
+        body.organization_name || findaplicationCallCenter.organization_name,
+      organization_type:
+        body.organization_type || findaplicationCallCenter.organization_type,
+      perform_date: body.perform_date || findaplicationCallCenter.perform_date,
       performer: body.perform_date || findaplicationCallCenter.performer,
-      region :body.region || findaplicationCallCenter.region,
-      resend_application: body.resend_application || findaplicationCallCenter.resend_application,
-      response :body.response || findaplicationCallCenter.response,
-      sended_to_organizations: body.sended_to_organizations || findaplicationCallCenter.sended_to_organizations,
+      region: body.region || findaplicationCallCenter.region,
+      resend_application:
+        body.resend_application || findaplicationCallCenter.resend_application,
+      response: body.response || findaplicationCallCenter.response,
+      sended_to_organizations:
+        body.sended_to_organizations ||
+        findaplicationCallCenter.sended_to_organizations,
       sub_category_call_center: findSubCategory,
     }).catch((e) => {
       throw new HttpException('Bad request', HttpStatus.BAD_REQUEST);
     });
 
-   return 
+    return;
   }
 
   async remove(id: string) {
-    const findaplicationCallCenter = await ApplicationCallCenterEntity.findOneBy({ id }).catch(
-      () => {
+    const findaplicationCallCenter =
+      await ApplicationCallCenterEntity.findOneBy({ id }).catch(() => {
         throw new HttpException('Bad request', HttpStatus.BAD_REQUEST);
-      },
-    );
+      });
 
     if (!findaplicationCallCenter) {
       throw new HttpException('application not found', HttpStatus.NOT_FOUND);

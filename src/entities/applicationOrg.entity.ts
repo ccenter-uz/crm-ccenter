@@ -10,7 +10,6 @@ import {
 } from 'typeorm';
 import { Sub_Category_Section_Entity } from './sub_category_org.entity';
 
-
 @Entity()
 export class ApplicationOrgEntity extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
@@ -119,7 +118,7 @@ export class ApplicationOrgEntity extends BaseEntity {
     nullable: true,
   })
   region: string;
-    @Column({
+  @Column({
     type: 'character varying',
     nullable: true,
   })

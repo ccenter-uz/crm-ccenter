@@ -43,10 +43,9 @@ export class UpdateApplicationCallCenterDto {
   @IsString()
   resend_application: string;
 
-
   @IsString()
   response: string;
-  
+
   @IsString()
   sended_to_organizations: string;
 }

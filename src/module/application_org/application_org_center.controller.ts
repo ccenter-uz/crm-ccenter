@@ -41,7 +41,10 @@ export class ApplicationOrgController {
   @ApiBadRequestResponse()
   @ApiNotFoundResponse()
   @ApiOkResponse()
-  @ApiOperation({ summary: 'sana formati 01.04.2024 to\'ldirilmagan joyga null qiymati jonatiladi sana va page paramlari null qiymat qabul qilmaydi ' })
+  @ApiOperation({
+    summary:
+      "sana formati 01.04.2024 to'ldirilmagan joyga null qiymati jonatiladi sana va page paramlari null qiymat qabul qilmaydi ",
+  })
   async findall(
     @Query('categoryId') categoryId: string,
     @Query('subCategoryId') subCategoryId: string,
@@ -50,9 +53,16 @@ export class ApplicationOrgController {
     @Query('date_to') untilDate: string,
     @Query('page') page: string,
     @Query('pageSize') pageSize: string,
-
   ) {
-    return await this.#_service.findAll(categoryId,subCategoryId, region,fromDate,untilDate,+page,+pageSize );
+    return await this.#_service.findAll(
+      categoryId,
+      subCategoryId,
+      region,
+      fromDate,
+      untilDate,
+      +page,
+      +pageSize,
+    );
   }
 
   @Get('/one/:id')
@@ -81,7 +91,8 @@ export class ApplicationOrgController {
         },
         above_incomes: {
           type: 'string',
-          default: 'Юқори турувчи ва бошқа давлат ташкилотларидан келган мурожаатлар',
+          default:
+            'Юқори турувчи ва бошқа давлат ташкилотларидан келган мурожаатлар',
         },
         applicant: {
           type: 'string',
@@ -105,7 +116,7 @@ export class ApplicationOrgController {
         },
         deadline_date: {
           type: 'string',
-          default: "2024-07-11",
+          default: '2024-07-11',
         },
         director_fullName: {
           type: 'string',
@@ -173,13 +184,16 @@ export class ApplicationOrgController {
         },
         where_seen: {
           type: 'string',
-          default: 'Markaziy apparatda ko\'rilgan',
+          default: "Markaziy apparatda ko'rilgan",
         },
       },
     },
   })
   // @ApiConsumes('multipart/form-data')
-    @ApiOperation({ summary: 'sana formati 01.04.2024 to\'ldirilmagan joyga null qiymati jonatiladi sana va page paramlari null qiymat qabul qilmaydi ' })
+  @ApiOperation({
+    summary:
+      "sana formati 01.04.2024 to'ldirilmagan joyga null qiymati jonatiladi sana va page paramlari null qiymat qabul qilmaydi ",
+  })
   @ApiCreatedResponse()
   @ApiBadRequestResponse()
   @ApiNotFoundResponse()
@@ -197,8 +211,7 @@ export class ApplicationOrgController {
     schema: {
       type: 'object',
       properties: {
-
-                //   type: 'string',
+        //   type: 'string',
         //   default: '4141561fds4g964g498e',
         // },
         sub_category_id: {
@@ -207,7 +220,8 @@ export class ApplicationOrgController {
         },
         above_incomes: {
           type: 'string',
-          default: 'Юқори турувчи ва бошқа давлат ташкилотларидан келган мурожаатлар',
+          default:
+            'Юқори турувчи ва бошқа давлат ташкилотларидан келган мурожаатлар',
         },
         applicant: {
           type: 'string',
@@ -231,7 +245,7 @@ export class ApplicationOrgController {
         },
         deadline_date: {
           type: 'string',
-          default: "2024-07-11",
+          default: '2024-07-11',
         },
         director_fullName: {
           type: 'string',
@@ -299,15 +313,17 @@ export class ApplicationOrgController {
         },
         where_seen: {
           type: 'string',
-          default: 'Markaziy apparatda ko\'rilgan',
+          default: "Markaziy apparatda ko'rilgan",
         },
       },
     },
   })
-
   @ApiBadRequestResponse()
   @ApiNotFoundResponse()
-  @ApiOperation({ summary: 'sana formati 01.04.2024 to\'ldirilmagan joyga null qiymati jonatiladi sana va page paramlari null qiymat qabul qilmaydi ' })
+  @ApiOperation({
+    summary:
+      "sana formati 01.04.2024 to'ldirilmagan joyga null qiymati jonatiladi sana va page paramlari null qiymat qabul qilmaydi ",
+  })
   async update(
     @Param('id') id: string,
     @Body() updateOrganizationDto: UpdateApplicationOrgDto,

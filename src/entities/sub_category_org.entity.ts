@@ -42,7 +42,10 @@ export class Sub_Category_Section_Entity extends BaseEntity {
   )
   category_org: Category_Section_Entity;
 
-  @OneToMany(() => ApplicationCallCenterEntity, (org) => org.sub_category_call_center)
+  @OneToMany(
+    () => ApplicationCallCenterEntity,
+    (org) => org.sub_category_call_center,
+  )
   applicationCallcenter: ApplicationOrgEntity[];
 
   @OneToMany(() => ApplicationOrgEntity, (org) => org.sub_category_org)

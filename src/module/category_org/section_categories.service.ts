@@ -5,10 +5,11 @@ import { Category_Section_Entity } from 'src/entities/category_org.entity';
 @Injectable()
 export class SectionCategoriesService {
   async findAll() {
-    const allOrganizationCategory =
-      await Category_Section_Entity.find().catch((e) => {
+    const allOrganizationCategory = await Category_Section_Entity.find().catch(
+      (e) => {
         throw new HttpException('Bad request', HttpStatus.BAD_REQUEST);
-      });
+      },
+    );
     return allOrganizationCategory;
   }
 
@@ -19,7 +20,7 @@ export class SectionCategoriesService {
           id: id,
         },
         relations: {
-          sub_category_orgs: true
+          sub_category_orgs: true,
         },
       });
 
