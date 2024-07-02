@@ -10,24 +10,60 @@ import { Sub_Category_Section_Entity } from 'src/entities/sub_category_org.entit
 import { allowedImageFormats } from 'src/utils/videoAndImageFormat';
 import { googleCloudAsync } from 'src/utils/google_cloud';
 import { ApplicationCallCenterEntity } from 'src/entities/applicationCallCenter.entity';
+import { Between } from 'typeorm';
 
 @Injectable()
 export class ApplicationCallCenterServise {
-  async findAll() {
-    const findAll = await ApplicationCallCenterEntity.find({
+  async findAll(categoryId : string , subCategoryId : string , region : string , fromDate :string , untilDate : string , pageNumber = 1, pageSize = 10) {
+    const offset = (pageNumber - 1) * pageSize
+    
+    const fromDateFormatted = new Date(
+      parseInt(fromDate.split('.')[2]),
+      parseInt(fromDate.split('.')[1]) - 1,
+      parseInt(fromDate.split('.')[0]),
+    );
+    const untilDateFormatted = new Date(
+      parseInt(untilDate.split('.')[2]),
+      parseInt(untilDate.split('.')[1]) - 1,
+      parseInt(untilDate.split('.')[0]),
+    );
+    const  [results, total] = await ApplicationCallCenterEntity.findAndCount({
+      where : {
+        region : region == 'null' ? null: region,
+        sub_category_call_center : {
+          id : subCategoryId == 'null' ? null : subCategoryId,
+          category_org: {
+            id: categoryId  == 'null' ? null : categoryId
+          }
+        },
+        create_data: Between(fromDateFormatted, untilDateFormatted),
+      },
       relations: {
         sub_category_call_center: {
           category_org:true
         }
       },
+      skip: offset,
+      take: pageSize,
       order: {
-        create_data: 'asc',
+        create_data: 'desc',
       },
     }).catch((e) => {
       throw new HttpException('Bad request', HttpStatus.BAD_REQUEST);
     });
 
-    return findAll;
+    const totalPages = Math.ceil(total / pageSize);
+
+    return {
+      results,
+      pagination: {
+        currentPage: pageNumber,
+        totalPages,
+        pageSize,
+        totalItems: total,
+      },
+    };
+  
   }
 
   async findOne(id: string) {
@@ -81,7 +117,6 @@ export class ApplicationCallCenterServise {
         application_type : body.application_type,
         comment: body.comment,
         crossfields :body.crossfields,
-        field: body.field ,
         income_date : body.income_date,
         incoming_number: body.incoming_number ,
         organization_name: body.organization_name,
@@ -132,7 +167,6 @@ export class ApplicationCallCenterServise {
       application_type : body.application_type || findaplicationCallCenter.application_type,
       comment: body.comment || findaplicationCallCenter.comment,
       crossfields :body.crossfields || findaplicationCallCenter.crossfields,
-      field: body.field || findaplicationCallCenter.field,
       income_date : body.income_date || findaplicationCallCenter.income_date,
       incoming_number: body.incoming_number  || findaplicationCallCenter.incoming_number,
       organization_name: body.organization_name || findaplicationCallCenter.organization_name,

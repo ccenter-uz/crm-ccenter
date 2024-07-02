@@ -8,6 +8,7 @@ import {
   Param,
   Patch,
   Post,
+  Query,
   UploadedFiles,
   UseInterceptors,
 } from '@nestjs/common';
@@ -28,7 +29,7 @@ import { AnyFilesInterceptor } from '@nestjs/platform-express';
 import { CreateApplicationCallCenterDto } from './dto/create_organization.dto';
 import { UpdateApplicationCallCenterDto } from './dto/update_organization.dto';
 @Controller('organization')
-@ApiTags('Organization')
+@ApiTags('Application Call Center')
 @ApiBearerAuth('JWT-auth')
 export class ApplicationCallCenterController {
   readonly #_service: ApplicationCallCenterServise;
@@ -40,8 +41,17 @@ export class ApplicationCallCenterController {
   @ApiBadRequestResponse()
   @ApiNotFoundResponse()
   @ApiOkResponse()
-  async findall() {
-    return await this.#_service.findAll();
+  async findall(
+    @Query('categoryId') categoryId: string,
+    @Query('subCategoryId') subCategoryId: string,
+    @Query('region') region: string,
+    @Query('date_from') fromDate: string,
+    @Query('date_to') untilDate: string,
+    @Query('page') page: string,
+    @Query('pageSize') pageSize: string,
+
+  ) {
+    return await this.#_service.findAll(categoryId,subCategoryId, region,fromDate,untilDate,+page,+pageSize );
   }
 
   @Get('/one/:id')
@@ -84,10 +94,7 @@ export class ApplicationCallCenterController {
           type: 'string',
           default: '2',
         },
-        field: {
-          type: 'string',
-          default: '1',
-        },
+
         income_date: {
           type: 'string',
           default: '2024-07-02',
@@ -128,15 +135,15 @@ export class ApplicationCallCenterController {
           type: 'string',
           default: '2024-07-02',
         },
-       
       },
     },
   })
-  @ApiConsumes('multipart/form-data')
+  // @ApiConsumes('multipart/form-data')
+    @ApiOperation({ summary: 'sana formati 01.04.2024 to\'ldirilmagan joyga null qiymati jonatiladi sana va page paramlari null qiymat qabul qilmaydi ' })
   @ApiCreatedResponse()
   @ApiBadRequestResponse()
   @ApiNotFoundResponse()
-  @UseInterceptors(AnyFilesInterceptor())
+  // @UseInterceptors(AnyFilesInterceptor())
   async create(
     @Body() createOrganizationDto: CreateApplicationCallCenterDto,
   ): Promise<void> {
@@ -173,10 +180,6 @@ export class ApplicationCallCenterController {
         crossfields: {
           type: 'string',
           default: '2',
-        },
-        field: {
-          type: 'string',
-          default: '1',
         },
         income_date: {
           type: 'string',
@@ -227,6 +230,7 @@ export class ApplicationCallCenterController {
   // @UseInterceptors(AnyFilesInterceptor())
   @ApiBadRequestResponse()
   @ApiNotFoundResponse()
+  @ApiOperation({ summary: 'sana formati 01.04.2024 to\'ldirilmagan joyga null qiymati jonatiladi sana va page paramlari null qiymat qabul qilmaydi ' })
   async update(
     @Param('id') id: string,
     @Body() updateOrganizationDto: UpdateApplicationCallCenterDto,

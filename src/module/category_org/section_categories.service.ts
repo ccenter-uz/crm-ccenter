@@ -19,9 +19,7 @@ export class SectionCategoriesService {
           id: id,
         },
         relations: {
-          sub_category_orgs: {
-            applicationCallcenter: true,
-          },
+          sub_category_orgs: true
         },
       });
 

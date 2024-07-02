@@ -24,8 +24,7 @@ export class CreateApplicationCallCenterDto {
   @IsString()
   crossfields: string;
 
-  @IsString()
-  field: string;
+
 
   @IsString()
   income_date: string;

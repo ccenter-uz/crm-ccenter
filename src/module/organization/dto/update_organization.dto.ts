@@ -19,9 +19,6 @@ export class UpdateApplicationCallCenterDto {
   crossfields: string;
 
   @IsString()
-  field: string;
-
-  @IsString()
   income_date: string;
 
   @IsString()

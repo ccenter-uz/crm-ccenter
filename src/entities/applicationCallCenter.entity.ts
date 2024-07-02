@@ -40,11 +40,6 @@ import {
     })
     crossfields: string;
   
-    @Column({
-      type: 'character varying',
-      nullable: true,
-    })
-    field: string;
   
     @Column({
       type: 'character varying',
