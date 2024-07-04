@@ -1,14 +1,9 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { CreateApplicationCallCenterDto } from './dto/create_organization.dto';
 import { UpdateApplicationCallCenterDto } from './dto/update_organization.dto';
-// import { ApplicationCallCenterEntity } from 'src/entities/applicationOrg.entity';
-// import { Phone_Organization_Entity } from 'src/entities/phone_organization.entity';
-import { extname } from 'path';
-import { Category_Section_Entity } from 'src/entities/category_org.entity';
+
 import { Sub_Category_Section_Entity } from 'src/entities/sub_category_org.entity';
-// import { Picture_Organization_Entity } from 'src/entities/picture_organization.entity';/
-import { allowedImageFormats } from 'src/utils/videoAndImageFormat';
-import { googleCloudAsync } from 'src/utils/google_cloud';
+
 import { ApplicationCallCenterEntity } from 'src/entities/applicationCallCenter.entity';
 import { Between } from 'typeorm';
 

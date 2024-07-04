@@ -5,6 +5,8 @@ import { Category_Section_Entity } from 'src/entities/category_org.entity';
 import { Sub_Category_Section_Entity } from 'src/entities/sub_category_org.entity';
 import { ApplicationOrgEntity } from 'src/entities/applicationOrg.entity';
 import { ApplicationCallCenterEntity } from 'src/entities/applicationCallCenter.entity';
+import { Region_Entity } from 'src/entities/region.entity';
+import { District_Entity } from 'src/entities/district.entity';
 // import { Phone_Organization_Entity } from 'src/entities/phone_organization.entity';
 // import { CommentAndRateEntity } from 'src/entities/commentAndRate.entity';
 // import { Picture_Organization_Entity } from 'src/entities/picture_organization.entity';
@@ -41,6 +43,8 @@ export const connectDb: TypeOrmModuleOptions = {
     Sub_Category_Section_Entity,
     ApplicationOrgEntity,
     ApplicationCallCenterEntity,
+    Region_Entity,
+    District_Entity
     // Section_Entity,
     // ApplicationCallCenterEntity,
     // Saved_Organization_Entity,

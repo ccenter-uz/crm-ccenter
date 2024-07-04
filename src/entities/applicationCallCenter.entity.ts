@@ -9,6 +9,7 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { Sub_Category_Section_Entity } from './sub_category_org.entity';
+import { District_Entity } from './district.entity';
 
 @Entity()
 export class ApplicationCallCenterEntity extends BaseEntity {
@@ -105,6 +106,13 @@ export class ApplicationCallCenterEntity extends BaseEntity {
     { nullable: true },
   )
   sub_category_call_center: Sub_Category_Section_Entity;
+
+  @ManyToOne(
+    () => District_Entity,
+    (districts) => districts.applicationCallcenterIndistrict,
+    { nullable: true },
+  )
+  districts: District_Entity;
 
   // @OneToMany(() => Phone_Organization_Entity, (phone) => phone.organization)
   // phones: Phone_Organization_Entity[];

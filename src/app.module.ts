@@ -17,6 +17,8 @@ import { SectionCategoriesModule } from './module/category_org/section_categorie
 import { SubCategorySectionModule } from './module/sub_category_organization/sub_categor_section.module';
 import { ApplicationCallCenterModule } from './module/organization/application_call_center.module';
 import { ApplicationOrgModule } from './module/application_org/application_org_center.module';
+import { RegionCategoriesModule } from './module/region/region_categories.module';
+import { DistrictModule } from './module/dictrict/district.module';
 // import { SectionModule } from './module/section/section.module';
 // import { SavedOrganizationModule } from './module/saved_org/savedorganization.module';
 // import { RolesGuard } from './module/auth/guards/roles.guard';
@@ -37,7 +39,10 @@ import { ApplicationOrgModule } from './module/application_org/application_org_c
     SubCategorySectionModule,
     // SectionModule,
     ApplicationCallCenterModule,
-    ApplicationOrgModule, // SavedOrganizationModule,
+    ApplicationOrgModule,
+    RegionCategoriesModule,
+    DistrictModule,
+     // SavedOrganizationModule,
     // CommentAndRateModule,
     // EntertainmentCategoriesModule,
     // EntertainmentsModule,
