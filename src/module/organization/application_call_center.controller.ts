@@ -49,8 +49,11 @@ export class ApplicationCallCenterController {
     @Query('categoryId') categoryId: string,
     @Query('subCategoryId') subCategoryId: string,
     @Query('region') region: string,
+    @Query('income_number') income_number: string,
+    @Query('phone') phone: string,
     @Query('date_from') fromDate: string,
     @Query('date_to') untilDate: string,
+
     @Query('page') page: string,
     @Query('pageSize') pageSize: string,
   ) {
@@ -58,6 +61,8 @@ export class ApplicationCallCenterController {
       categoryId,
       subCategoryId,
       region,
+      income_number,
+      phone,
       fromDate,
       untilDate,
       +page,
@@ -101,10 +106,15 @@ export class ApplicationCallCenterController {
           type: 'string',
           default: 'Мурожаатнинг қисқача мазмуни',
         },
-        // crossfields: {
+
+        // income_number: {
         //   type: 'string',
-        //   default: '2',
+        //   default: 'N302',
         // },
+        phone :{
+          type: 'string',
+          default: '998933843484',
+        },
 
         income_date: {
           type: 'string',
@@ -185,6 +195,14 @@ export class ApplicationCallCenterController {
         comment: {
           type: 'string',
           default: 'Мурожаатнинг қисқача мазмуни',
+        },
+        // income_number: {
+        //   type: 'string',
+        //   default: 'N302',
+        // },
+        phone :{
+          type: 'string',
+          default: '998933843484',
         },
         // crossfields: {
         //   type: 'string',

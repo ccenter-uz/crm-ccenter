@@ -27,6 +27,8 @@ export class CreateApplicationOrgDto {
   @IsString()
   comment: string;
 
+  @IsString()
+  phone: string;
   // @IsString()
   // @IsNotEmpty()
   // crossfields: string;

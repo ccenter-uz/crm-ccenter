@@ -20,6 +20,8 @@ export class UpdateApplicationOrgDto {
   @IsString()
   comment: string;
 
+  @IsString()
+  phone: string;
   // @IsString()
   // crossfields: string;
 

@@ -49,6 +49,8 @@ export class ApplicationOrgController {
     @Query('categoryId') categoryId: string,
     @Query('subCategoryId') subCategoryId: string,
     @Query('region') region: string,
+    @Query('income_number') income_number: string,
+    @Query('phone') phone: string,
     @Query('date_from') fromDate: string,
     @Query('date_to') untilDate: string,
     @Query('page') page: string,
@@ -58,6 +60,8 @@ export class ApplicationOrgController {
       categoryId,
       subCategoryId,
       region,
+      income_number,
+      phone,
       fromDate,
       untilDate,
       +page,
@@ -109,6 +113,10 @@ export class ApplicationOrgController {
         comment: {
           type: 'string',
           default: 'Мурожаатнинг қисқача мазмуни',
+        },
+        phone :{
+          type: 'string',
+          default: '998933843484',
         },
         // crossfields: {
         //   type: 'string',
@@ -243,6 +251,10 @@ export class ApplicationOrgController {
         //   type: 'string',
         //   default: '2',
         // },
+        phone :{
+          type: 'string',
+          default: '998933843484',
+        },
         deadline_date: {
           type: 'string',
           default: '2024-07-11',

@@ -4,7 +4,7 @@ import { UpdateApplicationOrgDto } from './dto/update_organization.dto';
 
 import { Sub_Category_Section_Entity } from 'src/entities/sub_category_org.entity';
 import { ApplicationCallCenterEntity } from 'src/entities/applicationCallCenter.entity';
-import { Between } from 'typeorm';
+import { Between, ILike } from 'typeorm';
 import { ApplicationOrgEntity } from 'src/entities/applicationOrg.entity';
 
 @Injectable()
@@ -13,6 +13,8 @@ export class ApplicationOrgServise {
     categoryId: string,
     subCategoryId: string,
     region: string,
+    income_number :string,
+    phone : string,
     fromDate: string,
     untilDate: string,
     pageNumber = 1,
@@ -21,7 +23,10 @@ export class ApplicationOrgServise {
     const offset = (pageNumber - 1) * pageSize;
     if (fromDate == 'null' || untilDate == 'null') {
       const [results, total] = await ApplicationOrgEntity.findAndCount({
+        
         where: {
+          incoming_number : income_number == 'null' ? null :   ILike(income_number),
+          phone: phone == 'null' ? null :  ILike(phone),
           region: region == 'null' ? null : region,
           sub_category_org: {
             id: subCategoryId == 'null' ? null : subCategoryId,
@@ -150,6 +155,7 @@ export class ApplicationOrgServise {
         applicant: body.applicant,
         application_type: body.application_type,
         comment: body.comment,
+        phone: body.phone,   
         // crossfields: body.crossfields,
         income_date: body.income_date,
         incoming_number: body.incoming_number,
@@ -210,6 +216,7 @@ export class ApplicationOrgServise {
       application_type:
         body.application_type || findaplicationCallCenter.application_type,
       comment: body.comment || findaplicationCallCenter.comment,
+      phone: body.phone || findaplicationCallCenter.phone,   
       // crossfields: body.crossfields || findaplicationCallCenter.crossfields,
       income_date: body.income_date || findaplicationCallCenter.income_date,
       incoming_number:

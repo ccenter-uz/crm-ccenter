@@ -5,7 +5,7 @@ import { UpdateApplicationCallCenterDto } from './dto/update_organization.dto';
 import { Sub_Category_Section_Entity } from 'src/entities/sub_category_org.entity';
 
 import { ApplicationCallCenterEntity } from 'src/entities/applicationCallCenter.entity';
-import { Between } from 'typeorm';
+import { Between, ILike, Like } from 'typeorm';
 
 @Injectable()
 export class ApplicationCallCenterServise {
@@ -13,6 +13,8 @@ export class ApplicationCallCenterServise {
     categoryId: string,
     subCategoryId: string,
     region: string,
+    income_number :string,
+    phone : string,
     fromDate: string,
     untilDate: string,
     pageNumber = 1,
@@ -24,6 +26,8 @@ export class ApplicationCallCenterServise {
       const [results, total] = await ApplicationCallCenterEntity.findAndCount({
         where: {
           region: region == 'null' ? null : region,
+          incoming_number : income_number == 'null' ? null :   ILike(income_number),
+          phone: phone == 'null' ? null :  ILike(phone),
           sub_category_call_center: {
             id: subCategoryId == 'null' ? null : subCategoryId,
             category_org: {
@@ -153,6 +157,8 @@ export class ApplicationCallCenterServise {
         applicant: body.applicant,
         application_type: body.application_type,
         comment: body.comment,
+        // income_number: body.income_number,
+        phone: body.phone,                                       
         // crossfields: body.crossfields,
         income_date: body.income_date,
         incoming_number: body.incoming_number,
@@ -199,12 +205,15 @@ export class ApplicationCallCenterServise {
     }
 
     const updatedOrganization = await ApplicationCallCenterEntity.update(id, {
+      
       applicant: body.applicant || findaplicationCallCenter.applicant,
       application_type:
         body.application_type || findaplicationCallCenter.application_type,
       comment: body.comment || findaplicationCallCenter.comment,
       // crossfields: body.crossfields || findaplicationCallCenter.crossfields,
       income_date: body.income_date || findaplicationCallCenter.income_date,
+      // income_number: body.income_number || findaplicationCallCenter.income_number ,
+      phone: body.phone || findaplicationCallCenter.phone,  
       incoming_number:
         body.incoming_number || findaplicationCallCenter.incoming_number,
       organization_name:

@@ -23,10 +23,7 @@ import {
 } from '@nestjs/swagger';
 import { SingInUserDto } from './dto/sign_in-user.dto';
 import { UpdateControlUserDto } from './dto/update-conrolUser.dto';
-import {
-  ControlUserDto,
-  CreateControlUserDto,
-} from './dto/create_controlUser.dto';
+
 
 @Controller('Auth')
 @ApiTags('Auth')
@@ -38,15 +35,15 @@ export class AuthController {
   @ApiBody({
     schema: {
       type: 'object',
-      required: ['full_name', 'number', 'password'],
+      required: [ 'username','role' ,'password'],
       properties: {
-        full_name: {
+        username: {
           type: 'string',
           default: `Eshmat Eshmatov Eshmat o'g'li`,
         },
-        number: {
+        role: {
           type: 'string',
-          default: '+998933843484',
+          default: 'operator',
         },
         password: {
           type: 'string',
@@ -64,11 +61,11 @@ export class AuthController {
   @ApiBody({
     schema: {
       type: 'object',
-      required: ['number', 'password'],
+      required: ['username', 'password'],
       properties: {
-        number: {
+        username: {
           type: 'string',
-          default: '+998933843484',
+          default: 'opt',
         },
         password: {
           type: 'string',
@@ -81,7 +78,7 @@ export class AuthController {
     return this.service.signIn(body);
   }
 
-  @Get('addControlUser/all')
+  @Get('getUser/all')
   @ApiBadRequestResponse()
   @ApiNotFoundResponse()
   @ApiOkResponse()
@@ -122,53 +119,49 @@ export class AuthController {
   //   return this.service.signInControlUser(body);
   // }
 
-  @Post('/addControlUser')
-  @HttpCode(HttpStatus.CREATED)
-  @ApiBody({
-    schema: {
-      type: 'object',
-      required: ['full_name', 'number', 'password'],
-      properties: {
-        full_name: {
-          type: 'string',
-          default: `Eshmat Eshmatov Eshmat o'g'li`,
-        },
-        role: {
-          type: 'string',
-          default: 'moderator',
-        },
-        username: {
-          type: 'string',
-          default: 'Moderator',
-        },
-        password: {
-          type: 'string',
-          default: '123',
-        },
-      },
-    },
-  })
-  createControlUser(@Body() createControlUserDto: CreateControlUserDto) {
-    return this.service.createControlUser(createControlUserDto);
-  }
+  // @Post('/addControlUser')
+  // @HttpCode(HttpStatus.CREATED)
+  // @ApiBody({
+  //   schema: {
+  //     type: 'object',
+  //     required: ['full_name', 'number', 'password'],
+  //     properties: {
+  //       full_name: {
+  //         type: 'string',
+  //         default: `Eshmat Eshmatov Eshmat o'g'li`,
+  //       },
+  //       role: {
+  //         type: 'string',
+  //         default: 'moderator',
+  //       },
+  //       username: {
+  //         type: 'string',
+  //         default: 'Moderator',
+  //       },
+  //       password: {
+  //         type: 'string',
+  //         default: '123',
+  //       },
+  //     },
+  //   },
+  // })
+  // createControlUser(@Body() createControlUserDto: CreateControlUserDto) {
+  //   return this.service.createControlUser(createControlUserDto);
+  // }
 
-  @Patch('/updateControlUser/:id')
+  @Patch('/updateUser/:id')
   @HttpCode(HttpStatus.NO_CONTENT)
   @ApiBody({
     schema: {
       type: 'object',
       properties: {
-        full_name: {
+        username: {
           type: 'string',
-          default: `Eshmat Eshmatov Eshmat o'g'li`,
+          default: `operator`,
         },
         role: {
           type: 'string',
           default: 'moderator',
-        },
-        username: {
-          type: 'string',
-          default: 'Moderator',
         },
         password: {
           type: 'string',
@@ -187,7 +180,7 @@ export class AuthController {
     await this.service.updateControlUser(id, updateControlUserDto);
   }
 
-  @Delete('/deleteControlUser/:id')
+  @Delete('/deleteUser/:id')
   @HttpCode(HttpStatus.NO_CONTENT)
   @ApiBadRequestResponse()
   @ApiNotFoundResponse()

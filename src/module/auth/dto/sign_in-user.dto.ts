@@ -3,7 +3,7 @@ import { IsString, MaxLength } from 'class-validator';
 export class SingInUserDto {
   @IsString()
   @MaxLength(200)
-  number: string;
+  username: string;
 
   @IsString()
   @MaxLength(200)

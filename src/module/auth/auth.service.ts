@@ -16,7 +16,7 @@ export class AuthServise {
   async createUser(createUser: CreateUserDto) {
     const findUser = await UsersEntity.findOne({
       where: {
-        phone: createUser.number,
+        username: createUser.username,
       },
     }).catch((e) => {
       throw new HttpException('Bad Request ', HttpStatus.BAD_REQUEST);
@@ -31,8 +31,7 @@ export class AuthServise {
       .insert()
       .into(UsersEntity)
       .values({
-        full_name: createUser.full_name,
-        phone: createUser.number,
+        username: createUser.username,
         password: createUser.password,
       })
       .returning(['id', 'role', 'password'])
@@ -55,7 +54,7 @@ export class AuthServise {
   async signIn(signInDto: SingInUserDto) {
     const finduser = await UsersEntity.findOne({
       where: {
-        phone: signInDto.number,
+        username: signInDto.username,
         password: signInDto.password,
       },
     }).catch((e) => {
@@ -138,7 +137,6 @@ export class AuthServise {
       .insert()
       .into(UsersEntity)
       .values({
-        full_name: body.full_name,
         username: body.username.trim().toLowerCase(),
         password: body.password.trim(),
         role: body.role.toLowerCase(),
@@ -146,7 +144,6 @@ export class AuthServise {
       .execute()
       .catch((e) => {
         console.log(e);
-
         throw new HttpException('Bad Request ', HttpStatus.BAD_REQUEST);
       });
   }
@@ -161,7 +158,6 @@ export class AuthServise {
     }
 
     const updatedVideo = await UsersEntity.update(id, {
-      full_name: body.full_name || findControlUser.full_name,
       username: body.username.trim().toLowerCase() || findControlUser.username,
       password: body.password.trim() || findControlUser.password,
       role: body.role || findControlUser.role,
@@ -185,7 +181,6 @@ export class AuthServise {
   }
 
   async validateUser(id: string, pass: string): Promise<any> {
-    console.log('qqqq', id);
 
     const user = await UsersEntity.findOne({
       where: { id },

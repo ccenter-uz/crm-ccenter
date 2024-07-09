@@ -71,7 +71,11 @@ export class DistrictServise {
     }
     let findRegion: District_Entity | null = null;
     if (body.region_id) {
-      findRegion = await District_Entity.findOneBy({ id }).catch(
+      findRegion = await District_Entity.findOne({ 
+        where :{
+          id: body.region_id
+        }
+       }).catch(
         (e) => {
           throw new HttpException('Not found Region', HttpStatus.NOT_FOUND);
         },

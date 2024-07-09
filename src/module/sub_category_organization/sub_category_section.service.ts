@@ -70,8 +70,16 @@ export class SubCategorySectionServise {
     }
     let findCategory: Category_Section_Entity | null = null;
     if (body.category_id) {
-      findCategory = await Category_Section_Entity.findOneBy({ id }).catch(
+      console.log('okkkk,' , body.category_id);
+      
+      findCategory = await Category_Section_Entity.findOne({ 
+        where :{
+          id : body.category_id
+        }
+      }).catch(
         (e) => {
+          console.log(e);
+          
           throw new HttpException('Not found Category', HttpStatus.NOT_FOUND);
         },
       );
@@ -82,7 +90,6 @@ export class SubCategorySectionServise {
 
     const updatedVideo = await Sub_Category_Section_Entity.update(id, {
       title: body.title.toLowerCase() || findSubCategoryOrg.title,
-
       category_org: findCategory,
     });
 

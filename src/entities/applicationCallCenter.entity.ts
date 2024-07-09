@@ -46,6 +46,18 @@ export class ApplicationCallCenterEntity extends BaseEntity {
   })
   income_date: string;
 
+  // @Column({
+  //   type: 'character varying',
+  //   nullable: true,
+  // })
+  // income_number: string;
+
+  @Column({
+    type: 'character varying',
+    nullable: true,
+  })
+  phone: string;
+
   @Column({
     type: 'character varying',
     nullable: true,
