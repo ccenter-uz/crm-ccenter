@@ -19,6 +19,7 @@ import { ApplicationCallCenterModule } from './module/organization/application_c
 import { ApplicationOrgModule } from './module/application_org/application_org_center.module';
 import { RegionCategoriesModule } from './module/region/region_categories.module';
 import { DistrictModule } from './module/dictrict/district.module';
+import { AuthModule } from './module/auth/auth.module';
 // import { SectionModule } from './module/section/section.module';
 // import { SavedOrganizationModule } from './module/saved_org/savedorganization.module';
 // import { RolesGuard } from './module/auth/guards/roles.guard';
@@ -34,7 +35,7 @@ import { DistrictModule } from './module/dictrict/district.module';
         ttl: 3600000,
       }),
     }),
-    // AuthModule,
+    AuthModule,
     SectionCategoriesModule,
     SubCategorySectionModule,
     // SectionModule,

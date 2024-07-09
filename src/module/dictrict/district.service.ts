@@ -6,6 +6,7 @@ import { UpdateDistrictDto } from './dto/update_district.dto';
 import { Sub_Category_Section_Entity } from 'src/entities/sub_category_org.entity';
 import { Category_Section_Entity } from 'src/entities/category_org.entity';
 import { District_Entity } from 'src/entities/district.entity';
+import { Region_Entity } from 'src/entities/region.entity';
 
 @Injectable()
 export class DistrictServise {
@@ -37,7 +38,7 @@ export class DistrictServise {
   }
 
   async create(body: CreateDistrictDto) {
-    const findRegion = await District_Entity.findOne({
+    const findRegion = await Region_Entity.findOne({
       where: {
         id: body.region_id,
       },
