@@ -6,7 +6,6 @@ import { SingInUserDto } from './dto/sign_in-user.dto';
 // import { ControlUsersEntity } from 'src/entities/control_users.entity';
 import { UpdateControlUserDto } from './dto/update-conrolUser.dto';
 import {
-  ControlUserDto,
   CreateControlUserDto,
 } from './dto/create_controlUser.dto';
 
@@ -70,24 +69,24 @@ export class AuthServise {
     };
   }
 
-  async signInControlUser(body: ControlUserDto) {
-    const finduser = await UsersEntity.findOne({
-      where: {
-        username: body.username.trim().toLowerCase(),
-        password: body.password.trim(),
-      },
-    }).catch((e) => {
-      throw new HttpException('Bad Request ', HttpStatus.BAD_REQUEST);
-    });
+  // async signInControlUser(body: ControlUserDto) {
+  //   const finduser = await UsersEntity.findOne({
+  //     where: {
+  //       username: body.username.trim().toLowerCase(),
+  //       password: body.password.trim(),
+  //     },
+  //   }).catch((e) => {
+  //     throw new HttpException('Bad Request ', HttpStatus.BAD_REQUEST);
+  //   });
 
-    if (!finduser) {
-      throw new HttpException('Not found user', HttpStatus.NOT_FOUND);
-    }
-    return {
-      message: 'successfully sing In',
-      token: this.sign(finduser.id, finduser.role, finduser.password),
-    };
-  }
+  //   if (!finduser) {
+  //     throw new HttpException('Not found user', HttpStatus.NOT_FOUND);
+  //   }
+  //   return {
+  //     message: 'successfully sing In',
+  //     token: this.sign(finduser.id, finduser.role, finduser.password),
+  //   };
+  // }
 
   async getSearchControlUsername(username: string) {
     const finduser = await UsersEntity.findOne({

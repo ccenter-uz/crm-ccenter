@@ -16,10 +16,12 @@ import { CacheModule } from '@nestjs/cache-manager';
 import { SectionCategoriesModule } from './module/category_org/section_categories.module';
 import { SubCategorySectionModule } from './module/sub_category_organization/sub_categor_section.module';
 import { ApplicationCallCenterModule } from './module/organization/application_call_center.module';
-import { ApplicationOrgModule } from './module/application_org/application_org_center.module';
+// import { ApplicationCallCenterDraftModule } from './module/application_org/application_org_center.module';
 import { RegionCategoriesModule } from './module/region/region_categories.module';
 import { DistrictModule } from './module/dictrict/district.module';
 import { AuthModule } from './module/auth/auth.module';
+import { SendedOrganizationModule } from './module/sende_organization/sended_organization.module';
+import { ApplicationCallCenterDraftModule } from './module/application_org/application_call_center.module';
 // import { SectionModule } from './module/section/section.module';
 // import { SavedOrganizationModule } from './module/saved_org/savedorganization.module';
 // import { RolesGuard } from './module/auth/guards/roles.guard';
@@ -40,9 +42,10 @@ import { AuthModule } from './module/auth/auth.module';
     SubCategorySectionModule,
     // SectionModule,
     ApplicationCallCenterModule,
-    ApplicationOrgModule,
+    ApplicationCallCenterDraftModule,
     RegionCategoriesModule,
     DistrictModule,
+    SendedOrganizationModule,
      // SavedOrganizationModule,
     // CommentAndRateModule,
     // EntertainmentCategoriesModule,

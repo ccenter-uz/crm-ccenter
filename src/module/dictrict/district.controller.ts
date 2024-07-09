@@ -9,6 +9,7 @@ import {
   Param,
   Patch,
   Post,
+  Query,
 } from '@nestjs/common';
 import {
   ApiBadRequestResponse,
@@ -33,12 +34,14 @@ export class DistrictController {
     this.#_service = service;
   }
 
-  @Get('/all')
+  @Get('/all?')
   @ApiBadRequestResponse()
   @ApiNotFoundResponse()
   @ApiOkResponse()
-  async findall() {
-    return await this.#_service.findAll();
+  async findall(  @Query('page') page: string,
+  @Query('pageSize') pageSize: string,) {
+    return await this.#_service.findAll(      +page,
+      +pageSize,);
   }
 
   @Get('/one/:id')

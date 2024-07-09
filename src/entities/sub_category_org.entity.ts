@@ -9,7 +9,7 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { Category_Section_Entity } from './category_org.entity';
-import { ApplicationOrgEntity } from './applicationOrg.entity';
+import { ApplicationCallCenterDraftEntity } from './applicationCallCenterDrafts.entity';
 import { ApplicationCallCenterEntity } from './applicationCallCenter.entity';
 
 @Entity()
@@ -23,17 +23,6 @@ export class Sub_Category_Section_Entity extends BaseEntity {
   })
   title: string;
 
-  // @Column({
-  //   type: 'character varying',
-  //   nullable: true,
-  // })
-  // title_ru: string;
-
-  // @Column({
-  //   type: 'character varying',
-  //   nullable: true,
-  // })
-  // title_en: string;
 
   @ManyToOne(
     () => Category_Section_Entity,
@@ -46,10 +35,10 @@ export class Sub_Category_Section_Entity extends BaseEntity {
     () => ApplicationCallCenterEntity,
     (org) => org.sub_category_call_center,
   )
-  applicationCallcenter: ApplicationOrgEntity[];
+  applicationCallcenter: ApplicationCallCenterEntity[];
 
-  @OneToMany(() => ApplicationOrgEntity, (org) => org.sub_category_org)
-  applicationOrg: ApplicationOrgEntity[];
+  @OneToMany(() => ApplicationCallCenterDraftEntity, (draf) => draf.sub_category_call_center_drafts)
+  applicationCallcenterDrafts: ApplicationCallCenterDraftEntity[];
 
   @UpdateDateColumn({ name: 'updated_at' })
   update_date: Date;

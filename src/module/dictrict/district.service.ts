@@ -1,25 +1,33 @@
-import { HttpException, HttpStatus, Injectable, Body } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable, } from '@nestjs/common';
 import { CreateDistrictDto } from './dto/create_district.dto';
-
 import { UpdateDistrictDto } from './dto/update_district.dto';
-
-import { Sub_Category_Section_Entity } from 'src/entities/sub_category_org.entity';
-import { Category_Section_Entity } from 'src/entities/category_org.entity';
 import { District_Entity } from 'src/entities/district.entity';
 import { Region_Entity } from 'src/entities/region.entity';
 
 @Injectable()
 export class DistrictServise {
-  async findAll() {
-    const findDistrict = await District_Entity.find({
+  async findAll(    pageNumber = 1,
+    pageSize = 10,) {
+      const offset = (pageNumber - 1) * pageSize;
+    const [results, total] = await District_Entity.findAndCount({
       order: {
         create_data: 'asc',
       },
+      skip: offset,
+      take: pageSize,
     }).catch((e) => {
       throw new HttpException('Bad request', HttpStatus.BAD_REQUEST);
     });
-
-    return findDistrict;
+    const totalPages = Math.ceil(total / pageSize);
+    return {
+      results,
+      pagination: {
+        currentPage: pageNumber,
+        totalPages,
+        pageSize,
+        totalItems: total,
+      },
+    };
   }
 
   async findOne(id: string) {
@@ -68,11 +76,11 @@ export class DistrictServise {
     });
 
     if (!findDistrict) {
-      throw new HttpException('Sub Category not found', HttpStatus.NOT_FOUND);
+      throw new HttpException('Distric not found', HttpStatus.NOT_FOUND);
     }
-    let findRegion: District_Entity | null = null;
+    let findRegion: Region_Entity | null = null;
     if (body.region_id) {
-      findRegion = await District_Entity.findOne({ 
+      findRegion = await Region_Entity.findOne({ 
         where :{
           id: body.region_id
         }
@@ -86,13 +94,13 @@ export class DistrictServise {
       }
     }
 
-    const updatedVideo = await District_Entity.update(id, {
+    const updatedDistrict = await District_Entity.update(id, {
       title: body.title.toLowerCase() || findDistrict.title,
 
       region: findRegion,
     });
 
-    return updatedVideo;
+    return updatedDistrict;
   }
 
   async remove(id: string) {
@@ -106,6 +114,6 @@ export class DistrictServise {
       throw new HttpException('District not found', HttpStatus.NOT_FOUND);
     }
 
-    await Sub_Category_Section_Entity.delete({ id });
+    await District_Entity.delete({ id });
   }
 }

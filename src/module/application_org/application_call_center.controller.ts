@@ -9,6 +9,7 @@ import {
   Patch,
   Post,
   Query,
+  Request,
   UploadedFiles,
   UseInterceptors,
 } from '@nestjs/common';
@@ -24,16 +25,17 @@ import {
   ApiOperation,
   ApiTags,
 } from '@nestjs/swagger';
-import { ApplicationOrgServise } from './application_org_center.service';
+import { ApplicationCallCenterDraftServise } from './application_call_center.service';
 import { AnyFilesInterceptor } from '@nestjs/platform-express';
-import { CreateApplicationOrgDto } from './dto/create_organization.dto';
-import { UpdateApplicationOrgDto } from './dto/update_organization.dto';
-@Controller('ApplicationOrgController')
-@ApiTags('Application Org')
+import { CreateApplicationCallCenterDraftDto } from './dto/create_organization.dto';
+import { UpdateApplicationCallCenterDraftDto } from './dto/update_organization.dto';
+import { CustomRequest } from 'src/types';
+@Controller('ApplicationCallCenterDrafts')
+@ApiTags('Application Call Center Draft ')
 @ApiBearerAuth('JWT-auth')
-export class ApplicationOrgController {
-  readonly #_service: ApplicationOrgServise;
-  constructor(service: ApplicationOrgServise) {
+export class ApplicationCallCenterDraftController {
+  readonly #_service: ApplicationCallCenterDraftServise;
+  constructor(service: ApplicationCallCenterDraftServise) {
     this.#_service = service;
   }
 
@@ -49,8 +51,10 @@ export class ApplicationOrgController {
     @Query('categoryId') categoryId: string,
     @Query('subCategoryId') subCategoryId: string,
     @Query('region') region: string,
+    @Query('district') district: string,
     @Query('income_number') income_number: string,
-    @Query('phone') phone: string,
+    @Query('operator') operator: string,
+    @Query('response') response: string,
     @Query('date_from') fromDate: string,
     @Query('date_to') untilDate: string,
     @Query('page') page: string,
@@ -60,8 +64,10 @@ export class ApplicationOrgController {
       categoryId,
       subCategoryId,
       region,
+      district,
       income_number,
-      phone,
+      operator,
+      response,
       fromDate,
       untilDate,
       +page,
@@ -85,30 +91,21 @@ export class ApplicationOrgController {
       type: 'object',
       required: [],
       properties: {
-        // category_id: {
-        //   type: 'string',
-        //   default: '4141561fds4g964g498e',
-        // },
         sub_category_id: {
           type: 'string',
           default: 'sadf456asdf65asdf564asf',
         },
-        above_incomes: {
+        district_id: {
           type: 'string',
-          default:
-            'Юқори турувчи ва бошқа давлат ташкилотларидан келган мурожаатлар',
+          default: '4141561fds4g964g498e',
         },
         applicant: {
           type: 'string',
           default: 'Мурожаатчи',
         },
-        application_sort: {
-          type: 'string',
-          default: 'Yozma',
-        },
         application_type: {
           type: 'string',
-          default: 'Ariza',
+          default: 'Мурожаат тури (ариза, таклиф, шикоят)',
         },
         comment: {
           type: 'string',
@@ -118,22 +115,7 @@ export class ApplicationOrgController {
           type: 'string',
           default: '998933843484',
         },
-        // crossfields: {
-        //   type: 'string',
-        //   default: '2',
-        // },
-        deadline_date: {
-          type: 'string',
-          default: '2024-07-11',
-        },
-        director_fullName: {
-          type: 'string',
-          default: 'Раҳбар (Ф.И.Ш)',
-        },
-        dublicate: {
-          type: 'string',
-          default: 'Дубликат',
-        },
+
         income_date: {
           type: 'string',
           default: '2024-07-02',
@@ -148,68 +130,41 @@ export class ApplicationOrgController {
         },
         organization_type: {
           type: 'string',
-          default: 'Физический',
-        },
-        outcome_date: {
-          type: 'string',
-          default: '2024-07-01',
-        },
-        outcoming_number: {
-          type: 'string',
-          default: 'Исходящий Номер',
+          default: 'Юридический / Физический лицо',
         },
         perform_date: {
           type: 'string',
-          default: '2024-07-07',
+          default: '2024-07-01',
         },
         performer: {
           type: 'string',
           default: 'Ижрочи',
         },
-        region: {
-          type: 'string',
-          default: 'Toshkent shahar',
-        },
-        request_type: {
-          type: 'string',
-          default: 'Мурожаат шакли',
-        },
         resend_application: {
           type: 'string',
-          default: 'Yangi',
+          default: 'Янги мурожаат ёки Такрорий мурожаатлар',
         },
         response: {
           type: 'string',
-          default: 'Tushuntirilgan',
+          default: '2024-07-03',
         },
-        response_to_request: {
+        sended_to_organizations: {
           type: 'string',
-          default: 'Мурожаат жавоби',
-        },
-        seen_date_breaked: {
-          type: 'string',
-          default: 'Кўриб чиқиш муддати бузилган',
-        },
-        where_seen: {
-          type: 'string',
-          default: "Markaziy apparatda ko'rilgan",
+          default: '2024-07-02',
         },
       },
     },
   })
   // @ApiConsumes('multipart/form-data')
-  @ApiOperation({
-    summary:
-      "sana formati 01.04.2024 to'ldirilmagan joyga null qiymati jonatiladi sana va page paramlari null qiymat qabul qilmaydi ",
-  })
   @ApiCreatedResponse()
   @ApiBadRequestResponse()
   @ApiNotFoundResponse()
   // @UseInterceptors(AnyFilesInterceptor())
   async create(
-    @Body() createOrganizationDto: CreateApplicationOrgDto,
+    @Request() request: CustomRequest,
+    @Body() createOrganizationDto: CreateApplicationCallCenterDraftDto,
   ): Promise<void> {
-    return await this.#_service.create(createOrganizationDto);
+    return await this.#_service.create(request ,createOrganizationDto);
   }
 
   // @UseGuards(jwtGuard)
@@ -219,54 +174,32 @@ export class ApplicationOrgController {
     schema: {
       type: 'object',
       properties: {
-        //   type: 'string',
-        //   default: '4141561fds4g964g498e',
-        // },
         sub_category_id: {
           type: 'string',
           default: 'sadf456asdf65asdf564asf',
         },
-        above_incomes: {
+        district_id: {
           type: 'string',
-          default:
-            'Юқори турувчи ва бошқа давлат ташкилотларидан келган мурожаатлар',
+          default: '4141561fds4g964g498e',
         },
         applicant: {
           type: 'string',
           default: 'Мурожаатчи',
         },
-        application_sort: {
-          type: 'string',
-          default: 'Yozma',
-        },
         application_type: {
           type: 'string',
-          default: 'Ariza',
+          default: 'Мурожаат тури (ариза, таклиф, шикоят)',
         },
         comment: {
           type: 'string',
           default: 'Мурожаатнинг қисқача мазмуни',
         },
-        // crossfields: {
-        //   type: 'string',
-        //   default: '2',
-        // },
+
         phone :{
           type: 'string',
           default: '998933843484',
         },
-        deadline_date: {
-          type: 'string',
-          default: '2024-07-11',
-        },
-        director_fullName: {
-          type: 'string',
-          default: 'Раҳбар (Ф.И.Ш)',
-        },
-        dublicate: {
-          type: 'string',
-          default: 'Дубликат',
-        },
+
         income_date: {
           type: 'string',
           default: '2024-07-02',
@@ -281,66 +214,40 @@ export class ApplicationOrgController {
         },
         organization_type: {
           type: 'string',
-          default: 'Физический',
-        },
-        outcome_date: {
-          type: 'string',
-          default: '2024-07-01',
-        },
-        outcoming_number: {
-          type: 'string',
-          default: 'Исходящий Номер',
+          default: 'Юридический / Физический лицо',
         },
         perform_date: {
           type: 'string',
-          default: '2024-07-07',
+          default: '2024-07-01',
         },
         performer: {
           type: 'string',
           default: 'Ижрочи',
         },
-        region: {
-          type: 'string',
-          default: 'Toshkent shahar',
-        },
-        request_type: {
-          type: 'string',
-          default: 'Мурожаат шакли',
-        },
         resend_application: {
           type: 'string',
-          default: 'Yangi',
+          default: 'Янги мурожаат ёки Такрорий мурожаатлар',
         },
         response: {
           type: 'string',
-          default: 'Tushuntirilgan',
+          default: '2024-07-03',
         },
-        response_to_request: {
+        sended_to_organizations: {
           type: 'string',
-          default: 'Мурожаат жавоби',
-        },
-        seen_date_breaked: {
-          type: 'string',
-          default: 'Кўриб чиқиш муддати бузилган',
-        },
-        where_seen: {
-          type: 'string',
-          default: "Markaziy apparatda ko'rilgan",
+          default: '2024-07-02',
         },
       },
     },
   })
+
   @ApiBadRequestResponse()
   @ApiNotFoundResponse()
-  @ApiOperation({
-    summary:
-      "sana formati 01.04.2024 to'ldirilmagan joyga null qiymati jonatiladi sana va page paramlari null qiymat qabul qilmaydi ",
-  })
   async update(
     @Param('id') id: string,
-    @Body() updateOrganizationDto: UpdateApplicationOrgDto,
+    @Request() request: CustomRequest,
+    @Body() updateOrganizationDto: UpdateApplicationCallCenterDraftDto,
   ): Promise<void> {
-    await this.#_service.update(id, updateOrganizationDto);
+    await this.#_service.update(request , id , updateOrganizationDto);
   }
 
   // @UseGuards(jwtGuard)

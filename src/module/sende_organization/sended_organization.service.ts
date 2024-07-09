@@ -1,19 +1,20 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { CreateSectionCategoryDto } from './dto/create_section_categories.dto';
-import { UpdateSectionCategoryDto } from './dto/update_section_categories.dto';
+import { CreateSendedOrganizationDto } from './dto/create_sended_organization.dto';
+import { UpdateSendedOrganizationDto } from './dto/update_sended_organization.dto';
 import { Category_Section_Entity } from 'src/entities/category_org.entity';
+import { SendedOrganizationEntity } from 'src/entities/sende_organization.entity';
 @Injectable()
-export class SectionCategoriesService {
+export class SendedOrganizationService {
   async findAll(    pageNumber = 1,
     pageSize = 10,) {
       const offset = (pageNumber - 1) * pageSize;
-    const [results, total] = await Category_Section_Entity.findAndCount({
+    const [results, total] = await SendedOrganizationEntity.findAndCount({
       skip: offset,
       take: pageSize,
       order: {
-        create_data: 'desc',
-      }
-    }).catch(
+        create_data: 'asc',
+    }
+  }).catch(
       (e) => {
         throw new HttpException('Bad request', HttpStatus.BAD_REQUEST);
       },
@@ -31,36 +32,33 @@ export class SectionCategoriesService {
   }
 
   async findOne(id: string) {
-    const findCategory: Category_Section_Entity =
-      await Category_Section_Entity.findOne({
+    const findSendeOrganization: SendedOrganizationEntity =
+      await SendedOrganizationEntity.findOne({
         where: {
           id: id,
         },
-        relations: {
-          sub_category_orgs: true,
-        },
       });
 
-    if (!findCategory) {
+    if (!findSendeOrganization) {
       throw new HttpException('Not found', HttpStatus.NOT_FOUND);
     }
-    return findCategory;
+    return findSendeOrganization;
   }
 
-  async create(body: CreateSectionCategoryDto) {
-    const findCategory = await Category_Section_Entity.findOneBy({
+  async create(body: CreateSendedOrganizationDto) {
+    const findSendeOrganization = await SendedOrganizationEntity.findOneBy({
       title: body.title,
     });
 
-    if (findCategory) {
+    if (findSendeOrganization) {
       throw new HttpException(
         'Already created this category',
         HttpStatus.FOUND,
       );
     }
-    await Category_Section_Entity.createQueryBuilder()
+    await SendedOrganizationEntity.createQueryBuilder()
       .insert()
-      .into(Category_Section_Entity)
+      .into(SendedOrganizationEntity)
       .values({
         title: body.title.toLowerCase(),
       })
@@ -70,21 +68,21 @@ export class SectionCategoriesService {
       });
   }
 
-  async update(id: string, body: UpdateSectionCategoryDto) {
-    const findCategory = await Category_Section_Entity.findOneBy({
+  async update(id: string, body: UpdateSendedOrganizationDto) {
+    const findSendeOrganization = await SendedOrganizationEntity.findOneBy({
       id: id,
     }).catch(() => {
       throw new HttpException('Bad request', HttpStatus.BAD_REQUEST);
     });
 
-    if (!findCategory) {
-      throw new HttpException('Not found Category', HttpStatus.NOT_FOUND);
+    if (!findSendeOrganization) {
+      throw new HttpException('Not found', HttpStatus.NOT_FOUND);
     }
 
-    await Category_Section_Entity.createQueryBuilder()
-      .update(Category_Section_Entity)
+    await SendedOrganizationEntity.createQueryBuilder()
+      .update(SendedOrganizationEntity)
       .set({
-        title: body.title.toLowerCase() || findCategory.title,
+        title: body.title.toLowerCase() || findSendeOrganization.title,
       })
       .where({ id })
       .execute()
@@ -94,19 +92,19 @@ export class SectionCategoriesService {
   }
 
   async remove(id: string) {
-    const findCategory = await Category_Section_Entity.findOneBy({
+    const findCategory = await SendedOrganizationEntity.findOneBy({
       id: id,
     }).catch(() => {
-      throw new HttpException('Not found Category', HttpStatus.BAD_REQUEST);
+      throw new HttpException('Not found ', HttpStatus.BAD_REQUEST);
     });
 
     if (!findCategory) {
-      throw new HttpException('Category not found', HttpStatus.NOT_FOUND);
+      throw new HttpException('Not found', HttpStatus.NOT_FOUND);
     }
 
-    await Category_Section_Entity.createQueryBuilder()
+    await SendedOrganizationEntity.createQueryBuilder()
       .delete()
-      .from(Category_Section_Entity)
+      .from(SendedOrganizationEntity)
       .where({ id })
       .execute();
   }

@@ -8,7 +8,6 @@ export interface CustomHeaders extends Headers {
 }
 
 export enum RolesEnum {
-  USER = 'user',
+  OPERATOR = 'operator',
   ADMIN = 'admin',
-  SUPERADMIN = 'moderator',
 }

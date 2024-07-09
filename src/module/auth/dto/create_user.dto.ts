@@ -7,8 +7,7 @@ export class CreateUserDto {
 
   @IsString()
   @IsNotEmpty()
-  @MaxLength(100)
-  number: string;
+  role: string;
 
   @IsString()
   @IsNotEmpty()

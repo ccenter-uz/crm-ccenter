@@ -9,7 +9,7 @@ import {
     UpdateDateColumn,
   } from 'typeorm';
   import { Category_Section_Entity } from './category_org.entity';
-  import { ApplicationOrgEntity } from './applicationOrg.entity';
+  import { ApplicationCallCenterDraftEntity } from './applicationCallCenterDrafts.entity';
   import { ApplicationCallCenterEntity } from './applicationCallCenter.entity';
 import { Region_Entity } from './region.entity';
   
@@ -47,10 +47,10 @@ import { Region_Entity } from './region.entity';
       () => ApplicationCallCenterEntity,
       (applicationCallCenter) => applicationCallCenter.districts,
     )
-    applicationCallcenterIndistrict: ApplicationOrgEntity[];
+    applicationCallcenterIndistrict: ApplicationCallCenterEntity[];
   
-    @OneToMany(() => ApplicationOrgEntity, (org) => org.sub_category_org)
-    applicationOrg: ApplicationOrgEntity[];
+    @OneToMany(() => ApplicationCallCenterDraftEntity, (org) => org.districtsDrafts)
+    applicationCallcenterDraftsIndistrict: ApplicationCallCenterDraftEntity[];
   
     @UpdateDateColumn({ name: 'updated_at' })
     update_date: Date;

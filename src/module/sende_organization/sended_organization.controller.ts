@@ -3,7 +3,6 @@ import {
   Controller,
   Delete,
   Get,
-  Headers,
   HttpCode,
   HttpStatus,
   Param,
@@ -16,25 +15,32 @@ import {
   ApiBearerAuth,
   ApiBody,
   ApiCreatedResponse,
+  ApiHeader,
   ApiNoContentResponse,
   ApiNotFoundResponse,
   ApiOkResponse,
   ApiTags,
 } from '@nestjs/swagger';
-import { SubCategorySectionServise } from './sub_category_section.service';
-import { CreateSubCategorySectionDto } from './dto/create_subcategoryorganization.dto';
-import { UpdateSubCategorySectionDto } from './dto/update_subcategoryorganization.dto';
+import { SendedOrganizationService } from './sended_organization.service';
+import { CreateSendedOrganizationDto } from './dto/create_sended_organization.dto';
+import { UpdateSendedOrganizationDto } from './dto/update_sended_organization.dto';
 
-@Controller('SubCategorySection')
-@ApiTags('Sub Category Section')
+
+// @ApiTags('role')
+// @ApiBearerAuth('JWT-auth')
+// @UseGuards(RolesGuard)
+// @Controller('api/role')
+@Controller('SendeOrganization')
+@ApiTags('Sende Organization')
 @ApiBearerAuth('JWT-auth')
-export class SubCategorySectionController {
-  readonly #_service: SubCategorySectionServise;
-  constructor(service: SubCategorySectionServise) {
+export class SendedOrganizationController {
+  readonly #_service: SendedOrganizationService;
+  constructor(service: SendedOrganizationService) {
     this.#_service = service;
   }
 
   @Get('/all?')
+  // @RequiredRoles(RolesEnum.SUPERADMIN)
   @ApiBadRequestResponse()
   @ApiNotFoundResponse()
   @ApiOkResponse()
@@ -48,39 +54,32 @@ export class SubCategorySectionController {
   @ApiBadRequestResponse()
   @ApiNotFoundResponse()
   @ApiOkResponse()
-  async findallWithpage(@Param('id') id: string) {
+  async findOne(@Param('id') id: string) {
     return await this.#_service.findOne(id);
   }
 
-  //
   // @UseGuards(jwtGuard)
   @Post('create')
   @HttpCode(HttpStatus.CREATED)
   @ApiBody({
     schema: {
       type: 'object',
-      required: ['category_id', 'title'],
+      required: ['title'],
       properties: {
-        category_id: {
-          type: 'string',
-          default: '55cc8c2d-34c1-4ca3-88e0-7b1295875642',
-        },
         title: {
           type: 'string',
-          default: 'title',
+          default: 'Apteka',
         },
       },
     },
   })
-
-  // @ApiOperation({ summary: 'Attendance Punch In' })
   @ApiCreatedResponse()
   @ApiBadRequestResponse()
   @ApiNotFoundResponse()
   async create(
-    @Body() createSubCategoryOrganizationDto: CreateSubCategorySectionDto,
+    @Body() createOrganizationCategoryDto: CreateSendedOrganizationDto,
   ) {
-    return await this.#_service.create(createSubCategoryOrganizationDto);
+    return await this.#_service.create(createOrganizationCategoryDto);
   }
 
   // @UseGuards(jwtGuard)
@@ -90,25 +89,20 @@ export class SubCategorySectionController {
     schema: {
       type: 'object',
       properties: {
-        category_id: {
-          type: 'string',
-          default: '55cc8c2d-34c1-4ca3-88e0-7b1295875642',
-        },
         title: {
           type: 'string',
-          default: 'title',
+          default: 'Teatr',
         },
       },
     },
   })
-  // @ApiOperation({ summary: 'Attendance Punch In' })
   @ApiBadRequestResponse()
   @ApiNotFoundResponse()
   async update(
     @Param('id') id: string,
-    @Body() updateSubCategoryOrganizationDto: UpdateSubCategorySectionDto,
+    @Body() updateOrganizationCategoryDto: UpdateSendedOrganizationDto,
   ) {
-    await this.#_service.update(id, updateSubCategoryOrganizationDto);
+    return await this.#_service.update(id, updateOrganizationCategoryDto);
   }
 
   // @UseGuards(jwtGuard)
@@ -118,6 +112,6 @@ export class SubCategorySectionController {
   @ApiNotFoundResponse()
   @ApiNoContentResponse()
   async remove(@Param('id') id: string): Promise<void> {
-    await this.#_service.remove(id);
+    return await this.#_service.remove(id);
   }
 }

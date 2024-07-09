@@ -41,13 +41,15 @@ export class RegionCategoriesController {
     this.#_service = service;
   }
 
-  @Get('/all')
+  @Get('/all?')
   // @RequiredRoles(RolesEnum.SUPERADMIN)
   @ApiBadRequestResponse()
   @ApiNotFoundResponse()
   @ApiOkResponse()
-  async findall() {
-    return await this.#_service.findAll();
+  async findall(  @Query('page') page: string,
+  @Query('pageSize') pageSize: string,) {
+    return await this.#_service.findAll(      +page,
+      +pageSize,);
   }
 
   @Get('/one/:id')

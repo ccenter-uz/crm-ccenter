@@ -5,13 +5,32 @@ import { Category_Section_Entity } from 'src/entities/category_org.entity';
 import { Region_Entity } from 'src/entities/region.entity';
 @Injectable()
 export class RegionCategoriesService {
-  async findAll() {
-    const findRegion = await Region_Entity.find().catch(
+  async findAll(    pageNumber = 1,
+    pageSize = 10,) {
+      const offset = (pageNumber - 1) * pageSize;
+    const [results, total] = await Region_Entity.findAndCount({
+      skip: offset,
+      take: pageSize,
+      order: {
+        create_data: 'asc',
+      },
+    }).catch(
       (e) => {
         throw new HttpException('Bad request', HttpStatus.BAD_REQUEST);
       },
     );
-    return findRegion;
+    const totalPages = Math.ceil(total / pageSize);
+   
+    return {
+      results,
+      pagination: {
+        currentPage: pageNumber,
+        totalPages,
+        pageSize,
+        totalItems: total,
+      },
+    };
+    
   }
 
   async findOne(id: string) {

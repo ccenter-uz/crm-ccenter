@@ -6,20 +6,17 @@ import {
   IsIn,
 } from 'class-validator';
 
-export class CreateApplicationOrgDto {
+export class CreateApplicationCallCenterDraftDto {
   @IsString()
   // @IsNotEmpty()
   sub_category_id: string;
 
   @IsString()
+  district_id: string;
+
+  @IsString()
   @IsNotEmpty()
-  above_incomes: string;
-
-  @IsString()
   applicant: string;
-
-  @IsString()
-  application_sort: string;
 
   @IsString()
   application_type: string;
@@ -27,25 +24,20 @@ export class CreateApplicationOrgDto {
   @IsString()
   comment: string;
 
+
+  @IsString()
+  income_number: string;
+
   @IsString()
   phone: string;
   // @IsString()
-  // @IsNotEmpty()
   // crossfields: string;
-
-  @IsString()
-  deadline_date: string;
-
-  @IsString()
-  director_fullName: string;
-
-  @IsString()
-  dublicate: string;
 
   @IsString()
   income_date: string;
 
   @IsString()
+  @IsNotEmpty()
   incoming_number: string;
 
   @IsString()
@@ -55,25 +47,19 @@ export class CreateApplicationOrgDto {
   organization_type: string;
 
   @IsString()
-  outcome_date: string;
-  @IsString()
-  outcoming_number: string;
-  @IsString()
   perform_date: string;
+
   @IsString()
   performer: string;
-  @IsString()
-  region: string;
-  @IsString()
-  request_type: string;
+
+
+
   @IsString()
   resend_application: string;
+
   @IsString()
   response: string;
+
   @IsString()
-  response_to_request: string;
-  @IsString()
-  seen_date_breaked: string;
-  @IsString()
-  where_seen: string;
+  sended_to_organizations: string;
 }

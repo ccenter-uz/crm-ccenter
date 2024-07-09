@@ -9,6 +9,7 @@ import {
   Patch,
   Post,
   Query,
+  Request,
   UploadedFiles,
   UseInterceptors,
 } from '@nestjs/common';
@@ -28,6 +29,7 @@ import { ApplicationCallCenterServise } from './application_call_center.service'
 import { AnyFilesInterceptor } from '@nestjs/platform-express';
 import { CreateApplicationCallCenterDto } from './dto/create_organization.dto';
 import { UpdateApplicationCallCenterDto } from './dto/update_organization.dto';
+import { CustomRequest } from 'src/types';
 @Controller('organization')
 @ApiTags('Application Call Center')
 @ApiBearerAuth('JWT-auth')
@@ -49,11 +51,12 @@ export class ApplicationCallCenterController {
     @Query('categoryId') categoryId: string,
     @Query('subCategoryId') subCategoryId: string,
     @Query('region') region: string,
+    @Query('district') district: string,
     @Query('income_number') income_number: string,
-    @Query('phone') phone: string,
+    @Query('operator') operator: string,
+    @Query('response') response: string,
     @Query('date_from') fromDate: string,
     @Query('date_to') untilDate: string,
-
     @Query('page') page: string,
     @Query('pageSize') pageSize: string,
   ) {
@@ -61,8 +64,10 @@ export class ApplicationCallCenterController {
       categoryId,
       subCategoryId,
       region,
+      district,
       income_number,
-      phone,
+      operator,
+      response,
       fromDate,
       untilDate,
       +page,
@@ -86,13 +91,13 @@ export class ApplicationCallCenterController {
       type: 'object',
       required: [],
       properties: {
-        // category_id: {
-        //   type: 'string',
-        //   default: '4141561fds4g964g498e',
-        // },
         sub_category_id: {
           type: 'string',
           default: 'sadf456asdf65asdf564asf',
+        },
+        district_id: {
+          type: 'string',
+          default: '4141561fds4g964g498e',
         },
         applicant: {
           type: 'string',
@@ -106,11 +111,6 @@ export class ApplicationCallCenterController {
           type: 'string',
           default: 'Мурожаатнинг қисқача мазмуни',
         },
-
-        // income_number: {
-        //   type: 'string',
-        //   default: 'N302',
-        // },
         phone :{
           type: 'string',
           default: '998933843484',
@@ -139,10 +139,6 @@ export class ApplicationCallCenterController {
         performer: {
           type: 'string',
           default: 'Ижрочи',
-        },
-        region: {
-          type: 'string',
-          default: 'Toshkent shahar',
         },
         resend_application: {
           type: 'string',
@@ -165,9 +161,10 @@ export class ApplicationCallCenterController {
   @ApiNotFoundResponse()
   // @UseInterceptors(AnyFilesInterceptor())
   async create(
+    @Request() request: CustomRequest,
     @Body() createOrganizationDto: CreateApplicationCallCenterDto,
   ): Promise<void> {
-    return await this.#_service.create(createOrganizationDto);
+    return await this.#_service.create(request ,createOrganizationDto);
   }
 
   // @UseGuards(jwtGuard)
@@ -177,12 +174,13 @@ export class ApplicationCallCenterController {
     schema: {
       type: 'object',
       properties: {
-        //   type: 'string',
-        //   default: '4141561fds4g964g498e',
-        // },
         sub_category_id: {
           type: 'string',
           default: 'sadf456asdf65asdf564asf',
+        },
+        district_id: {
+          type: 'string',
+          default: '4141561fds4g964g498e',
         },
         applicant: {
           type: 'string',
@@ -196,18 +194,12 @@ export class ApplicationCallCenterController {
           type: 'string',
           default: 'Мурожаатнинг қисқача мазмуни',
         },
-        // income_number: {
-        //   type: 'string',
-        //   default: 'N302',
-        // },
+
         phone :{
           type: 'string',
           default: '998933843484',
         },
-        // crossfields: {
-        //   type: 'string',
-        //   default: '2',
-        // },
+
         income_date: {
           type: 'string',
           default: '2024-07-02',
@@ -232,10 +224,6 @@ export class ApplicationCallCenterController {
           type: 'string',
           default: 'Ижрочи',
         },
-        region: {
-          type: 'string',
-          default: 'Toshkent shahar',
-        },
         resend_application: {
           type: 'string',
           default: 'Янги мурожаат ёки Такрорий мурожаатлар',
@@ -251,16 +239,15 @@ export class ApplicationCallCenterController {
       },
     },
   })
-  // @ApiOperation({ summary: 'Update Org' })
-  // @ApiConsumes('multipart/form-data')
-  // @UseInterceptors(AnyFilesInterceptor())
+
   @ApiBadRequestResponse()
   @ApiNotFoundResponse()
   async update(
     @Param('id') id: string,
+    @Request() request: CustomRequest,
     @Body() updateOrganizationDto: UpdateApplicationCallCenterDto,
   ): Promise<void> {
-    await this.#_service.update(id, updateOrganizationDto);
+    await this.#_service.update(request , id , updateOrganizationDto);
   }
 
   // @UseGuards(jwtGuard)

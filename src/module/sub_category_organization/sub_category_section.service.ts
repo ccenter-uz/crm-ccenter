@@ -8,8 +8,12 @@ import { Category_Section_Entity } from 'src/entities/category_org.entity';
 
 @Injectable()
 export class SubCategorySectionServise {
-  async findAll() {
-    const findAllSubCategories = await Sub_Category_Section_Entity.find({
+  async findAll(    pageNumber = 1,
+    pageSize = 10,) {
+      const offset = (pageNumber - 1) * pageSize;
+    const [results, total] = await Sub_Category_Section_Entity.findAndCount({
+      skip: offset,
+      take: pageSize,
       order: {
         create_data: 'asc',
       },
@@ -17,7 +21,17 @@ export class SubCategorySectionServise {
       throw new HttpException('Bad request', HttpStatus.BAD_REQUEST);
     });
 
-    return findAllSubCategories;
+    const totalPages = Math.ceil(total / pageSize);
+
+    return {
+      results,
+      pagination: {
+        currentPage: pageNumber,
+        totalPages,
+        pageSize,
+        totalItems: total,
+      },
+    }
   }
 
   async findOne(id: string) {

@@ -1,6 +1,6 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { CreateApplicationCallCenterDto } from './dto/create_organization.dto';
-import { UpdateApplicationCallCenterDto } from './dto/update_organization.dto';
+import { CreateApplicationCallCenterDraftDto } from './dto/create_organization.dto';
+import { UpdateApplicationCallCenterDraftDto } from './dto/update_organization.dto';
 
 import { Sub_Category_Section_Entity } from 'src/entities/sub_category_org.entity';
 
@@ -8,9 +8,10 @@ import { ApplicationCallCenterEntity } from 'src/entities/applicationCallCenter.
 import { Between, ILike, Like } from 'typeorm';
 import { District_Entity } from 'src/entities/district.entity';
 import { CustomRequest } from 'src/types';
+import { ApplicationCallCenterDraftEntity } from 'src/entities/applicationCallCenterDrafts.entity';
 
 @Injectable()
-export class ApplicationCallCenterServise {
+export class ApplicationCallCenterDraftServise {
   async findAll(
     categoryId: string,
     subCategoryId: string,
@@ -27,17 +28,17 @@ export class ApplicationCallCenterServise {
     const offset = (pageNumber - 1) * pageSize;
 
     if (fromDate == 'null' || untilDate == 'null') {
-      const [results, total] = await ApplicationCallCenterEntity.findAndCount({
+      const [results, total] = await ApplicationCallCenterDraftEntity.findAndCount({
         where: {
           incoming_number : income_number == 'null' ? null :  ILike(income_number),
           response: response =='null'? null : response,
-          sub_category_call_center: {
+          sub_category_call_center_drafts: {
             id: subCategoryId == 'null' ? null : subCategoryId,
             category_org: {
               id: categoryId == 'null' ? null : categoryId,
             },
           },
-          districts : {
+          districtsDrafts : {
             id: district =='null' ? null : district,
             region : {
               id: region == 'null' ? null : region,
@@ -48,10 +49,10 @@ export class ApplicationCallCenterServise {
           }
         },
         relations: {
-          sub_category_call_center: {
+          sub_category_call_center_drafts: {
             category_org: true,
           },
-          districts: {
+          districtsDrafts: {
             region: true
           },
           user : true
@@ -88,18 +89,18 @@ export class ApplicationCallCenterServise {
         parseInt(untilDate.split('.')[0]),
       );
 
-      const [results, total] = await ApplicationCallCenterEntity.findAndCount({
+      const [results, total] = await ApplicationCallCenterDraftEntity.findAndCount({
         where: {
           // region: region == 'null' ? null : region,
           incoming_number : income_number == 'null' ? null :   ILike(income_number),
           // phone: phone == 'null' ? null :  ILike(phone),
-          sub_category_call_center: {
+          sub_category_call_center_drafts: {
             id: subCategoryId == 'null' ? null : subCategoryId,
             category_org: {
               id: categoryId == 'null' ? null : categoryId,
             },
           },
-          districts : {
+          districtsDrafts : {
             id: district =='null' ? null : district,
             region : {
               id: region == 'null' ? null : region,
@@ -108,10 +109,10 @@ export class ApplicationCallCenterServise {
           create_data: Between(fromDateFormatted, untilDateFormatted),
         },
         relations: {
-          sub_category_call_center: {
+          sub_category_call_center_drafts: {
             category_org: true,
           },
-          districts: {
+          districtsDrafts: {
             region: true
           }
         },
@@ -139,18 +140,19 @@ export class ApplicationCallCenterServise {
   }
 
   async findOne(id: string) {
-    const findOne = await ApplicationCallCenterEntity.find({
+    const findOne = await ApplicationCallCenterDraftEntity.find({
       where: {
         id,
       },
       relations: {
-        sub_category_call_center: {
+        sub_category_call_center_drafts: {
           category_org: true,
           
         },
-        districts : {
+        districtsDrafts : {
           region : true
-        }
+        },
+        user: true
       },
       order: {
         create_data: 'asc',
@@ -166,7 +168,7 @@ export class ApplicationCallCenterServise {
     return findOne;
   }
 
-  async create(request: CustomRequest, body: CreateApplicationCallCenterDto) {
+  async create(request: CustomRequest, body: CreateApplicationCallCenterDraftDto) {
 
     let findSubCategory = null;
 
@@ -192,9 +194,9 @@ export class ApplicationCallCenterServise {
       });
     }
 
-    const createdOrg = await ApplicationCallCenterEntity.createQueryBuilder()
+    const createdOrg = await ApplicationCallCenterDraftEntity.createQueryBuilder()
       .insert()
-      .into(ApplicationCallCenterEntity)
+      .into(ApplicationCallCenterDraftEntity)
       .values({
         applicant: body.applicant,
         application_type: body.application_type,
@@ -211,8 +213,8 @@ export class ApplicationCallCenterServise {
         resend_application: body.resend_application,
         response: body.response,
         sended_to_organizations: body.sended_to_organizations,
-        sub_category_call_center: findSubCategory,
-        districts : findDistrict,
+        sub_category_call_center_drafts : findSubCategory,
+        districtsDrafts : findDistrict,
         // user: request.userId 
       })
       .execute()
@@ -224,8 +226,8 @@ export class ApplicationCallCenterServise {
     // }
   }
 
-  async update(request: CustomRequest, id: string, body: UpdateApplicationCallCenterDto) {
-    const findaplicationCallCenter = await ApplicationCallCenterEntity.findOne({
+  async update(request: CustomRequest, id: string, body: UpdateApplicationCallCenterDraftDto) {
+    const findaplicationCallCenterDraft = await ApplicationCallCenterDraftEntity.findOne({
       where: {
         id: id,
       },
@@ -233,7 +235,7 @@ export class ApplicationCallCenterServise {
       throw new HttpException('Bad request', HttpStatus.BAD_REQUEST);
     });
 
-    let findSubCategory = findaplicationCallCenter.sub_category_call_center;
+    let findSubCategory = findaplicationCallCenterDraft.sub_category_call_center_drafts;
 
     if (body.sub_category_id != 'null') {
       findSubCategory = await Sub_Category_Section_Entity.findOne({
@@ -246,7 +248,7 @@ export class ApplicationCallCenterServise {
         throw new HttpException('Bad request', HttpStatus.BAD_REQUEST);
       });
     }
-    let findDistrict = findaplicationCallCenter.districts;
+    let findDistrict = findaplicationCallCenterDraft.districtsDrafts;
     if (body.district_id != 'null') {
       findDistrict = await District_Entity.findOne({
         where: {
@@ -258,32 +260,32 @@ export class ApplicationCallCenterServise {
       });
     }
 
-    const updatedOrganization = await ApplicationCallCenterEntity.update(id, {
+    const updatedOrganization = await ApplicationCallCenterDraftEntity.update(id, {
       
-      applicant: body.applicant || findaplicationCallCenter.applicant,
+      applicant: body.applicant || findaplicationCallCenterDraft.applicant,
       application_type:
-        body.application_type || findaplicationCallCenter.application_type,
-      comment: body.comment || findaplicationCallCenter.comment,
+        body.application_type || findaplicationCallCenterDraft.application_type,
+      comment: body.comment || findaplicationCallCenterDraft.comment,
       // crossfields: body.crossfields || findaplicationCallCenter.crossfields,
-      income_date: body.income_date || findaplicationCallCenter.income_date,
+      income_date: body.income_date || findaplicationCallCenterDraft.income_date,
       // income_number: body.income_number || findaplicationCallCenter.income_number ,
-      phone: body.phone || findaplicationCallCenter.phone,  
+      phone: body.phone || findaplicationCallCenterDraft.phone,  
       incoming_number:
-        body.incoming_number || findaplicationCallCenter.incoming_number,
+        body.incoming_number || findaplicationCallCenterDraft.incoming_number,
       organization_name:
-        body.organization_name || findaplicationCallCenter.organization_name,
+        body.organization_name || findaplicationCallCenterDraft.organization_name,
       organization_type:
-        body.organization_type || findaplicationCallCenter.organization_type,
-      perform_date: body.perform_date || findaplicationCallCenter.perform_date,
-      performer: body.perform_date || findaplicationCallCenter.performer,
+        body.organization_type || findaplicationCallCenterDraft.organization_type,
+      perform_date: body.perform_date || findaplicationCallCenterDraft.perform_date,
+      performer: body.perform_date || findaplicationCallCenterDraft.performer,
       resend_application:
-        body.resend_application || findaplicationCallCenter.resend_application,
-      response: body.response || findaplicationCallCenter.response,
+        body.resend_application || findaplicationCallCenterDraft.resend_application,
+      response: body.response || findaplicationCallCenterDraft.response,
       sended_to_organizations:
         body.sended_to_organizations ||
-        findaplicationCallCenter.sended_to_organizations,
-      sub_category_call_center: findSubCategory,
-      districts :findDistrict ,
+        findaplicationCallCenterDraft.sended_to_organizations,
+      sub_category_call_center_drafts: findSubCategory,
+      districtsDrafts :findDistrict ,
       // user: request.userId
     }).catch((e) => {
       throw new HttpException('Bad request', HttpStatus.BAD_REQUEST);
@@ -293,15 +295,15 @@ export class ApplicationCallCenterServise {
   }
 
   async remove(id: string) {
-    const findaplicationCallCenter =
-      await ApplicationCallCenterEntity.findOneBy({ id }).catch(() => {
+    const findaplicationCallCenterDraft =
+      await ApplicationCallCenterDraftEntity.findOneBy({ id }).catch(() => {
         throw new HttpException('Bad request', HttpStatus.BAD_REQUEST);
       });
 
-    if (!findaplicationCallCenter) {
+    if (!findaplicationCallCenterDraft) {
       throw new HttpException('application not found', HttpStatus.NOT_FOUND);
     }
 
-    await ApplicationCallCenterEntity.delete({ id });
+    await ApplicationCallCenterDraftEntity.delete({ id });
   }
 }

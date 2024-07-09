@@ -12,6 +12,9 @@ export class CreateApplicationCallCenterDto {
   sub_category_id: string;
 
   @IsString()
+  district_id: string;
+
+  @IsString()
   @IsNotEmpty()
   applicant: string;
 
@@ -49,8 +52,7 @@ export class CreateApplicationCallCenterDto {
   @IsString()
   performer: string;
 
-  @IsString()
-  region: string;
+
 
   @IsString()
   resend_application: string;

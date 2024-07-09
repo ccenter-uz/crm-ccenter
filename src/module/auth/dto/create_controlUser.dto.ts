@@ -1,10 +1,6 @@
 import { IsNotEmpty, IsString, MaxLength } from 'class-validator';
 
 export class CreateControlUserDto {
-  @IsString()
-  @IsNotEmpty()
-  @MaxLength(300)
-  full_name: string;
 
   @IsString()
   @IsNotEmpty()
@@ -20,13 +16,13 @@ export class CreateControlUserDto {
   role: string;
 }
 
-export class ControlUserDto {
-  @IsString()
-  @IsNotEmpty()
-  @MaxLength(100)
-  username: string;
+// export class ControlUserDto {
+//   @IsString()
+//   @IsNotEmpty()
+//   @MaxLength(100)
+//   username: string;
 
-  @IsString()
-  @IsNotEmpty()
-  password: string;
-}
+//   @IsString()
+//   @IsNotEmpty()
+//   password: string;
+// }
