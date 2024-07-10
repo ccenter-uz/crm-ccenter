@@ -3,26 +3,48 @@ import { CreateRegionDto } from './dto/create_region_categories.dto';
 import { UpdateRegionDto } from './dto/update_region_categories.dto';
 import { Category_Section_Entity } from 'src/entities/category_org.entity';
 import { Region_Entity } from 'src/entities/region.entity';
+import { ILike } from 'typeorm';
 @Injectable()
 export class RegionCategoriesService {
-  async findAll(    pageNumber = 1,
+  async findAll( title: string,  pageNumber = 1,
     pageSize = 10,) {
       const offset = (pageNumber - 1) * pageSize;
     const [results, total] = await Region_Entity.findAndCount({
+      where : {
+        title : title == 'null' ? null: ILike(`%${title}%`),
+        },
+        relations : {
+          districts : true
+         },
+         order: {
+          create_data: 'desc',
+        },
+        select : {
+          id: true,
+          title :true,
+          create_data :true,
+          update_date :true,
+          districts : {
+            id:true
+          } ,
+        },
       skip: offset,
       take: pageSize,
-      order: {
-        create_data: 'asc',
-      },
+
+
     }).catch(
       (e) => {
         throw new HttpException('Bad request', HttpStatus.BAD_REQUEST);
       },
     );
+    const resultsWithCount = results.map(result => ({
+      ...result,
+      districts: result.districts.length,
+    }));
     const totalPages = Math.ceil(total / pageSize);
    
     return {
-      results,
+      results : resultsWithCount,
       pagination: {
         currentPage: pageNumber,
         totalPages,
@@ -34,6 +56,7 @@ export class RegionCategoriesService {
   }
 
   async findOne(id: string) {
+      // const offset = (pageNumber - 1) * pageSize;
     const findRegion: Region_Entity =
       await Region_Entity.findOne({
         where: {
@@ -42,6 +65,8 @@ export class RegionCategoriesService {
         relations: {
           districts: true,
         },
+ 
+
       });
 
     if (!findRegion) {

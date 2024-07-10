@@ -37,6 +37,14 @@ export class AuthController {
       type: 'object',
       required: [ 'username','role' ,'password'],
       properties: {
+        full_name: {
+          type: 'string',
+          default: `Eshmat Eshmatov Eshmat o'g'li`,
+        },
+        operator_number: {
+          type: 'string',
+          default: `1233`,
+        },
         username: {
           type: 'string',
           default: `Eshmat Eshmatov Eshmat o'g'li`,
@@ -63,6 +71,7 @@ export class AuthController {
       type: 'object',
       required: ['username', 'password'],
       properties: {
+      
         username: {
           type: 'string',
           default: `Eshmat Eshmatov Eshmat o'g'li`,
@@ -83,8 +92,12 @@ export class AuthController {
   @ApiNotFoundResponse()
   @ApiOkResponse()
   @ApiOperation({ summary: 'write role or null' })
-  async findall(@Query('role') role: string) {
-    return await this.service.getAllControlUsers(role);
+  async findall(
+    @Query('search') search: string,
+    @Query('role') role: string,
+    @Query('page') page: string,
+    @Query('pageSize') pageSize: string,) {
+    return await this.service.getAllControlUsers(search, role , +page , +pageSize);
   }
 
   // @Get('addControlUser/search')
@@ -155,6 +168,14 @@ export class AuthController {
     schema: {
       type: 'object',
       properties: {
+        full_name: {
+          type: 'string',
+          default: `Eshmat Eshmatov Eshmat o'g'li`,
+        },
+        operator_number: {
+          type: 'string',
+          default: `1233`,
+        },
         username: {
           type: 'string',
           default: `operator`,

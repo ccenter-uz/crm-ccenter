@@ -39,7 +39,7 @@ export class ApplicationCallCenterController {
     this.#_service = service;
   }
 
-  @Get('/all')
+  @Get('/allNotDrafts')
   @ApiBadRequestResponse()
   @ApiNotFoundResponse()
   @ApiOkResponse()
@@ -47,7 +47,7 @@ export class ApplicationCallCenterController {
     summary:
       "sana formati 01.04.2024 to'ldirilmagan joyga null qiymati jonatiladi sana va page paramlari null qiymat qabul qilmaydi ",
   })
-  async findall(
+  async findallNotDrafts(
     @Query('categoryId') categoryId: string,
     @Query('subCategoryId') subCategoryId: string,
     @Query('region') region: string,
@@ -60,7 +60,44 @@ export class ApplicationCallCenterController {
     @Query('page') page: string,
     @Query('pageSize') pageSize: string,
   ) {
-    return await this.#_service.findAll(
+    return await this.#_service.findAllNotDrafts(
+      categoryId,
+      subCategoryId,
+      region,
+      district,
+      income_number,
+      operator,
+      response,
+      fromDate,
+      untilDate,
+      +page,
+      +pageSize,
+    );
+  }
+
+  
+  @Get('/allDrafts')
+  @ApiBadRequestResponse()
+  @ApiNotFoundResponse()
+  @ApiOkResponse()
+  @ApiOperation({
+    summary:
+      "sana formati 01.04.2024 to'ldirilmagan joyga null qiymati jonatiladi sana va page paramlari null qiymat qabul qilmaydi ",
+  })
+  async findallDrafts(
+    @Query('categoryId') categoryId: string,
+    @Query('subCategoryId') subCategoryId: string,
+    @Query('region') region: string,
+    @Query('district') district: string,
+    @Query('income_number') income_number: string,
+    @Query('operator') operator: string,
+    @Query('response') response: string,
+    @Query('date_from') fromDate: string,
+    @Query('date_to') untilDate: string,
+    @Query('page') page: string,
+    @Query('pageSize') pageSize: string,
+  ) {
+    return await this.#_service.findAllDrafts(
       categoryId,
       subCategoryId,
       region,
@@ -152,6 +189,10 @@ export class ApplicationCallCenterController {
           type: 'string',
           default: '2024-07-02',
         },
+        IsDraf: {
+          type: 'boolean',
+          default: 'false',
+        },
       },
     },
   })
@@ -235,6 +276,10 @@ export class ApplicationCallCenterController {
         sended_to_organizations: {
           type: 'string',
           default: '2024-07-02',
+        },
+        IsDraf: {
+          type: 'boolean',
+          default: 'false',
         },
       },
     },

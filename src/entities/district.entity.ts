@@ -9,7 +9,6 @@ import {
     UpdateDateColumn,
   } from 'typeorm';
   import { Category_Section_Entity } from './category_org.entity';
-  import { ApplicationCallCenterDraftEntity } from './applicationCallCenterDrafts.entity';
   import { ApplicationCallCenterEntity } from './applicationCallCenter.entity';
 import { Region_Entity } from './region.entity';
   
@@ -49,8 +48,7 @@ import { Region_Entity } from './region.entity';
     )
     applicationCallcenterIndistrict: ApplicationCallCenterEntity[];
   
-    @OneToMany(() => ApplicationCallCenterDraftEntity, (org) => org.districtsDrafts)
-    applicationCallcenterDraftsIndistrict: ApplicationCallCenterDraftEntity[];
+
   
     @UpdateDateColumn({ name: 'updated_at' })
     update_date: Date;

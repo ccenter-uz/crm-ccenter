@@ -4,6 +4,7 @@ import {
   MaxLength,
   IsObject,
   IsIn,
+  IsBoolean,
 } from 'class-validator';
 
 export class CreateApplicationCallCenterDto {
@@ -25,8 +26,8 @@ export class CreateApplicationCallCenterDto {
   comment: string;
 
 
-  @IsString()
-  income_number: string;
+  // @IsString()
+  // income_number: string;
 
   @IsString()
   phone: string;
@@ -37,7 +38,7 @@ export class CreateApplicationCallCenterDto {
   income_date: string;
 
   @IsString()
-  @IsNotEmpty()
+  // @IsNotEmpty()
   incoming_number: string;
 
   @IsString()
@@ -52,8 +53,6 @@ export class CreateApplicationCallCenterDto {
   @IsString()
   performer: string;
 
-
-
   @IsString()
   resend_application: string;
 
@@ -62,4 +61,7 @@ export class CreateApplicationCallCenterDto {
 
   @IsString()
   sended_to_organizations: string;
+
+  @IsBoolean()
+  IsDraf: boolean;
 }

@@ -2,25 +2,49 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { CreateSectionCategoryDto } from './dto/create_section_categories.dto';
 import { UpdateSectionCategoryDto } from './dto/update_section_categories.dto';
 import { Category_Section_Entity } from 'src/entities/category_org.entity';
+import { ILike, Like,  } from 'typeorm';
 @Injectable()
 export class SectionCategoriesService {
-  async findAll(    pageNumber = 1,
+  async findAll(  title : string,  pageNumber = 1,
     pageSize = 10,) {
       const offset = (pageNumber - 1) * pageSize;
     const [results, total] = await Category_Section_Entity.findAndCount({
-      skip: offset,
-      take: pageSize,
+where : {
+title : title == 'null' ? null: ILike(`%${title}%`),
+
+},
+
+      relations : {
+       sub_category_orgs : true
+      },
       order: {
         create_data: 'desc',
-      }
+      },
+
+      select : {
+        id: true,
+        title :true,
+        create_data :true,
+        update_date :true,
+        sub_category_orgs : {
+          id:true
+        } ,
+      },
+      skip: offset,
+      take: pageSize,
     }).catch(
       (e) => {
         throw new HttpException('Bad request', HttpStatus.BAD_REQUEST);
       },
     );
+
+    const resultsWithCount = results.map(result => ({
+      ...result,
+      sub_category_orgs: result.sub_category_orgs.length,
+    })); 
     const totalPages = Math.ceil(total / pageSize);
     return {
-      results,
+      results : resultsWithCount,
       pagination: {
         currentPage: pageNumber,
         totalPages,

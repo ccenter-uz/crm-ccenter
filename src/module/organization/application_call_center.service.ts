@@ -11,7 +11,7 @@ import { CustomRequest } from 'src/types';
 
 @Injectable()
 export class ApplicationCallCenterServise {
-  async findAll(
+  async findAllNotDrafts(
     categoryId: string,
     subCategoryId: string,
     region: string,
@@ -29,8 +29,9 @@ export class ApplicationCallCenterServise {
     if (fromDate == 'null' || untilDate == 'null') {
       const [results, total] = await ApplicationCallCenterEntity.findAndCount({
         where: {
-          incoming_number : income_number == 'null' ? null :  ILike(income_number),
+          incoming_number : income_number == 'null' ? null :  ILike(`%${income_number}%`),
           response: response =='null'? null : response,
+          IsDraf: false,
           sub_category_call_center: {
             id: subCategoryId == 'null' ? null : subCategoryId,
             category_org: {
@@ -90,9 +91,9 @@ export class ApplicationCallCenterServise {
 
       const [results, total] = await ApplicationCallCenterEntity.findAndCount({
         where: {
-          // region: region == 'null' ? null : region,
-          incoming_number : income_number == 'null' ? null :   ILike(income_number),
-          // phone: phone == 'null' ? null :  ILike(phone),
+          incoming_number : income_number == 'null' ? null :  ILike(`%${income_number}%`),
+          response: response =='null'? null : response,
+          IsDraf: false,
           sub_category_call_center: {
             id: subCategoryId == 'null' ? null : subCategoryId,
             category_org: {
@@ -137,6 +138,136 @@ export class ApplicationCallCenterServise {
       };
     }
   }
+
+
+  async findAllDrafts(
+    categoryId: string,
+    subCategoryId: string,
+    region: string,
+    district : string,
+    income_number :string,
+    operator :string ,
+    response : string,
+    fromDate: string,
+    untilDate: string,
+    pageNumber = 1,
+    pageSize = 10,
+  ) {
+    const offset = (pageNumber - 1) * pageSize;
+
+    if (fromDate == 'null' || untilDate == 'null') {
+      const [results, total] = await ApplicationCallCenterEntity.findAndCount({
+        where: {
+          incoming_number : income_number == 'null' ? null :  ILike(`%${income_number}%`),
+          response: response =='null'? null : response,
+          IsDraf: true,
+          sub_category_call_center: {
+            id: subCategoryId == 'null' ? null : subCategoryId,
+            category_org: {
+              id: categoryId == 'null' ? null : categoryId,
+            },
+          },
+          districts : {
+            id: district =='null' ? null : district,
+            region : {
+              id: region == 'null' ? null : region,
+             }
+          },
+          user: {
+            id: operator == 'null' ? null : operator
+          }
+        },
+        relations: {
+          sub_category_call_center: {
+            category_org: true,
+          },
+          districts: {
+            region: true
+          },
+          user : true
+        },
+        skip: offset,
+        take: pageSize,
+        order: {
+          create_data: 'desc',
+        },
+      }).catch((e) => {
+        throw new HttpException('Bad request', HttpStatus.BAD_REQUEST);
+      });
+
+      const totalPages = Math.ceil(total / pageSize);
+
+      return {
+        results,
+        pagination: {
+          currentPage: pageNumber,
+          totalPages,
+          pageSize,
+          totalItems: total,
+        },
+      };
+    } else {
+      const fromDateFormatted = new Date(
+        parseInt(fromDate.split('.')[2]),
+        parseInt(fromDate.split('.')[1]) - 1,
+        parseInt(fromDate.split('.')[0]),
+      );
+      const untilDateFormatted = new Date(
+        parseInt(untilDate.split('.')[2]),
+        parseInt(untilDate.split('.')[1]) - 1,
+        parseInt(untilDate.split('.')[0]),
+      );
+
+      const [results, total] = await ApplicationCallCenterEntity.findAndCount({
+        where: {
+          incoming_number : income_number == 'null' ? null :  ILike(`%${income_number}%`),
+          response: response =='null'? null : response,
+          IsDraf: true,
+          sub_category_call_center: {
+            id: subCategoryId == 'null' ? null : subCategoryId,
+            category_org: {
+              id: categoryId == 'null' ? null : categoryId,
+            },
+          },
+          districts : {
+            id: district =='null' ? null : district,
+            region : {
+              id: region == 'null' ? null : region,
+             }
+          },
+          create_data: Between(fromDateFormatted, untilDateFormatted),
+        },
+        relations: {
+          sub_category_call_center: {
+            category_org: true,
+          },
+          districts: {
+            region: true
+          }
+        },
+        skip: offset,
+        take: pageSize,
+        order: {
+          create_data: 'desc',
+        },
+      }).catch((e) => {
+        throw new HttpException('Bad request', HttpStatus.BAD_REQUEST);
+      });
+
+      const totalPages = Math.ceil(total / pageSize);
+
+      return {
+        results,
+        pagination: {
+          currentPage: pageNumber,
+          totalPages,
+          pageSize,
+          totalItems: total,
+        },
+      };
+    }
+  }
+
 
   async findOne(id: string) {
     const findOne = await ApplicationCallCenterEntity.find({
@@ -211,6 +342,7 @@ export class ApplicationCallCenterServise {
         resend_application: body.resend_application,
         response: body.response,
         sended_to_organizations: body.sended_to_organizations,
+        IsDraf: body.IsDraf,
         sub_category_call_center: findSubCategory,
         districts : findDistrict,
         // user: request.userId 
@@ -282,6 +414,7 @@ export class ApplicationCallCenterServise {
       sended_to_organizations:
         body.sended_to_organizations ||
         findaplicationCallCenter.sended_to_organizations,
+        IsDraf: body.IsDraf ||findaplicationCallCenter.IsDraf ,
       sub_category_call_center: findSubCategory,
       districts :findDistrict ,
       // user: request.userId

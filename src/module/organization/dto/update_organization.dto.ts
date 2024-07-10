@@ -1,4 +1,4 @@
-import { IsString } from 'class-validator';
+import { IsBoolean, IsString } from 'class-validator';
 
 export class UpdateApplicationCallCenterDto {
   @IsString()
@@ -18,8 +18,8 @@ export class UpdateApplicationCallCenterDto {
   @IsString()
   comment: string;
 
-  @IsString()
-  income_number: string;
+  // @IsString()
+  // income_number: string;
 
   @IsString()
   phone: string;
@@ -54,4 +54,7 @@ export class UpdateApplicationCallCenterDto {
 
   @IsString()
   sended_to_organizations: string;
+
+  @IsBoolean()
+  IsDraf: boolean;
 }

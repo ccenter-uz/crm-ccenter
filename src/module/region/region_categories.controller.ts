@@ -46,9 +46,11 @@ export class RegionCategoriesController {
   @ApiBadRequestResponse()
   @ApiNotFoundResponse()
   @ApiOkResponse()
-  async findall(  @Query('page') page: string,
+  async findall( 
+    @Query('search') search: string,
+    @Query('page') page: string,
   @Query('pageSize') pageSize: string,) {
-    return await this.#_service.findAll(      +page,
+    return await this.#_service.findAll(   search,   +page,
       +pageSize,);
   }
 

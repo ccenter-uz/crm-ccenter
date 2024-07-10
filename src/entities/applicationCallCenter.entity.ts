@@ -90,11 +90,7 @@ export class ApplicationCallCenterEntity extends BaseEntity {
   })
   performer: string;
 
-  // @Column({
-  //   type: 'character varying',
-  //   nullable: true,
-  // })
-  // region: string;
+
 
   @Column({
     type: 'character varying',
@@ -113,6 +109,13 @@ export class ApplicationCallCenterEntity extends BaseEntity {
     nullable: true,
   })
   sended_to_organizations: string;
+
+    @Column({
+    type: 'character varying',
+    default: false,
+    nullable :true
+  })
+  IsDraf: boolean;
 
   @ManyToOne(
     () => Sub_Category_Section_Entity,

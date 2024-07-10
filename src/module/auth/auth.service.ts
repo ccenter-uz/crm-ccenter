@@ -8,6 +8,7 @@ import { UpdateControlUserDto } from './dto/update-conrolUser.dto';
 import {
   CreateControlUserDto,
 } from './dto/create_controlUser.dto';
+import { ILike } from 'typeorm';
 
 @Injectable()
 export class AuthServise {
@@ -22,16 +23,19 @@ export class AuthServise {
     });
 
     if (findUser) {
-      throw new HttpException('Number already registered', HttpStatus.FOUND);
+      throw new HttpException('username alredy registered', HttpStatus.FOUND);
     }
-    console.log(createUser);
+
 
     const addedUser = await UsersEntity.createQueryBuilder()
       .insert()
       .into(UsersEntity)
       .values({
+        full_name : createUser.full_name  ,
+        operator_number: createUser.operator_number ,
         username: createUser.username,
         password: createUser.password,
+        role: createUser.role,
       })
       .returning(['id', 'role', 'password'])
       .execute()
@@ -88,35 +92,48 @@ export class AuthServise {
   //   };
   // }
 
-  async getSearchControlUsername(username: string) {
+  async findOne(id: string) {
     const finduser = await UsersEntity.findOne({
       where: {
-        username: username.trim().toLowerCase(),
+       id: id
       },
     }).catch(() => {
       throw new HttpException('Bad Request ', HttpStatus.BAD_REQUEST);
     });
-
-    if (finduser) {
-      return true;
-    } else {
-      return false;
+    if (!finduser) {
+      throw new HttpException('user not fount', HttpStatus.NOT_FOUND);
     }
+
+return finduser
   }
 
-  async getAllControlUsers(role: string) {
-    const findControlUser = await UsersEntity.find({
+  async getAllControlUsers( username : string , role: string, pageNumber = 1,
+    pageSize = 10) {
+      const offset = (pageNumber - 1) * pageSize;
+    const [results, total] = await UsersEntity.findAndCount({
       where: {
+        username : username == 'null' ? null: ILike(`%${username}%`),
         role: role == 'null' ? null : role,
       },
       order: {
         create_data: 'asc',
       },
+      skip: offset,
+      take: pageSize,
     }).catch((e) => {
       throw new HttpException('Bad Request ', HttpStatus.BAD_REQUEST);
     });
+    const totalPages = Math.ceil(total / pageSize);
 
-    return findControlUser;
+    return {
+      results ,
+      pagination: {
+        currentPage: pageNumber,
+        totalPages,
+        pageSize,
+        totalItems: total,
+      },
+    };
   }
 
   async createControlUser(body: CreateControlUserDto) {
@@ -157,6 +174,8 @@ export class AuthServise {
     }
 
     const updatedVideo = await UsersEntity.update(id, {
+      full_name : body.full_name || findControlUser.full_name,
+      operator_number: body.operator_number || findControlUser.operator_number,
       username: body.username.trim().toLowerCase() || findControlUser.username,
       password: body.password.trim() || findControlUser.password,
       role: body.role || findControlUser.role,

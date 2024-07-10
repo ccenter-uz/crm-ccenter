@@ -8,12 +8,22 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { ApplicationCallCenterEntity } from './applicationCallCenter.entity';
-import { ApplicationCallCenterDraftEntity } from './applicationCallCenterDrafts.entity';
 
 @Entity()
 export class UsersEntity extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
+
+  @Column({
+    type: 'character varying',
+    nullable: true,
+  })
+  full_name: string;
+  @Column({
+    type: 'character varying',
+    nullable: true,
+  })
+  operator_number: string;
 
   @Column({
     type: 'character varying',
@@ -30,15 +40,14 @@ export class UsersEntity extends BaseEntity {
 
   @Column({
     type: 'character varying',
-    default: 'user',
+    default: 'operator',
   })
   role: string;
 
   @OneToMany(() => ApplicationCallCenterEntity, (applicationCallcenter) => applicationCallcenter.user)
   applicationCallCenter: ApplicationCallCenterEntity[];
   
-  @OneToMany(() => ApplicationCallCenterDraftEntity , (applicationCallcenter) => applicationCallcenter.user)
-  applicationCallCenterDrafts: ApplicationCallCenterDraftEntity[];
+
 
   @CreateDateColumn({ name: 'created_at' })
   create_data: Date;

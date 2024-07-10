@@ -21,7 +21,6 @@ import { RegionCategoriesModule } from './module/region/region_categories.module
 import { DistrictModule } from './module/dictrict/district.module';
 import { AuthModule } from './module/auth/auth.module';
 import { SendedOrganizationModule } from './module/sende_organization/sended_organization.module';
-import { ApplicationCallCenterDraftModule } from './module/application_org/application_call_center.module';
 // import { SectionModule } from './module/section/section.module';
 // import { SavedOrganizationModule } from './module/saved_org/savedorganization.module';
 // import { RolesGuard } from './module/auth/guards/roles.guard';
@@ -42,7 +41,6 @@ import { ApplicationCallCenterDraftModule } from './module/application_org/appli
     SubCategorySectionModule,
     // SectionModule,
     ApplicationCallCenterModule,
-    ApplicationCallCenterDraftModule,
     RegionCategoriesModule,
     DistrictModule,
     SendedOrganizationModule,
