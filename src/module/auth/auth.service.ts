@@ -111,10 +111,15 @@ return finduser
     pageSize = 10) {
       const offset = (pageNumber - 1) * pageSize;
     const [results, total] = await UsersEntity.findAndCount({
-      where: {
+      where: [{
         username : username == 'null' ? null: ILike(`%${username}%`),
         role: role == 'null' ? null : role,
       },
+      {
+        full_name : username == 'null' ? null: ILike(`%${username}%`),
+        role: role == 'null' ? null : role,
+      },
+    ],
       order: {
         create_data: 'asc',
       },

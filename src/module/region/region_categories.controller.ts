@@ -54,12 +54,15 @@ export class RegionCategoriesController {
       +pageSize,);
   }
 
-  @Get('/one/:id')
+  @Get('/one/:id?')
   @ApiBadRequestResponse()
   @ApiNotFoundResponse()
   @ApiOkResponse()
-  async findOne(@Param('id') id: string) {
-    return await this.#_service.findOne(id);
+  async findOne(@Param('id') id: string,
+  @Query('search') search: string,
+  @Query('page') page: string,
+@Query('pageSize') pageSize: string,) {
+    return await this.#_service.findOne(id,search , +page , +pageSize);
   }
 
   // @UseGuards(jwtGuard)

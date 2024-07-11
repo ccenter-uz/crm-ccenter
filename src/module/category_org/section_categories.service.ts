@@ -3,6 +3,7 @@ import { CreateSectionCategoryDto } from './dto/create_section_categories.dto';
 import { UpdateSectionCategoryDto } from './dto/update_section_categories.dto';
 import { Category_Section_Entity } from 'src/entities/category_org.entity';
 import { ILike, Like,  } from 'typeorm';
+import { Sub_Category_Section_Entity } from 'src/entities/sub_category_org.entity';
 @Injectable()
 export class SectionCategoriesService {
   async findAll(  title : string,  pageNumber = 1,
@@ -54,21 +55,39 @@ title : title == 'null' ? null: ILike(`%${title}%`),
     };
   }
 
-  async findOne(id: string) {
-    const findCategory: Category_Section_Entity =
-      await Category_Section_Entity.findOne({
+  async findOne(id: string , title: string , pageNumber = 1,
+    pageSize = 10) {
+      const offset = (pageNumber - 1) * pageSize;
+    const  [results, total]  =
+      await Sub_Category_Section_Entity.findAndCount({
         where: {
-          id: id,
+          title: title == 'null' ? null : ILike(`%${title}%`),
+          category_org : {
+            id :id
+          }
         },
         relations: {
-          sub_category_orgs: true,
+          category_org: true,
         },
-      });
 
-    if (!findCategory) {
-      throw new HttpException('Not found', HttpStatus.NOT_FOUND);
-    }
-    return findCategory;
+        skip: offset,
+        take: pageSize,
+      }).catch(
+        (e) => {
+          throw new HttpException('Bad request', HttpStatus.BAD_REQUEST);
+        },
+      );
+      const totalPages = Math.ceil(total / pageSize);
+
+      return {
+        results ,
+        pagination: {
+          currentPage: pageNumber,
+          totalPages,
+          pageSize,
+          totalItems: total,
+        },
+      };
   }
 
   async create(body: CreateSectionCategoryDto) {
@@ -120,18 +139,26 @@ title : title == 'null' ? null: ILike(`%${title}%`),
   async remove(id: string) {
     const findCategory = await Category_Section_Entity.findOneBy({
       id: id,
-    }).catch(() => {
+    }).catch((e) => {
+      console.log(e);
+      
       throw new HttpException('Not found Category', HttpStatus.BAD_REQUEST);
     });
-
+    console.log(findCategory);
     if (!findCategory) {
       throw new HttpException('Category not found', HttpStatus.NOT_FOUND);
     }
 
-    await Category_Section_Entity.createQueryBuilder()
-      .delete()
-      .from(Category_Section_Entity)
-      .where({ id })
-      .execute();
+    // await Category_Section_Entity.createQueryBuilder()
+    //   .delete()
+    //   .from(Category_Section_Entity)
+    //   .where({ id })
+    //   .execute();
+
+      await Category_Section_Entity.delete({ id }).catch((e) => {
+        console.log(e);
+        
+        throw new HttpException('Not found Category', HttpStatus.BAD_REQUEST);
+      });;
   }
 }

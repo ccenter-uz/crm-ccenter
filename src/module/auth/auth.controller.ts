@@ -100,67 +100,6 @@ export class AuthController {
     return await this.service.getAllControlUsers(search, role , +page , +pageSize);
   }
 
-  // @Get('addControlUser/search')
-  // @ApiBadRequestResponse()
-  // @ApiNotFoundResponse()
-  // @ApiOkResponse()
-  // @ApiOperation({ summary: 'api for search username' })
-  // async findusername(@Query('username') username: string) {
-  //   return await this.service.getSearchControlUsername(username);
-  // }
-
-  // @Post('ControlUser/signIn')
-  // @HttpCode(HttpStatus.OK)
-  // @ApiBody({
-  //   schema: {
-  //     type: 'object',
-  //     required: ['username', 'password'],
-  //     properties: {
-  //       username: {
-  //         type: 'string',
-  //         default: 'Moderator',
-  //       },
-  //       password: {
-  //         type: 'string',
-  //         default: '123',
-  //       },
-  //     },
-  //   },
-  // })
-  // @ApiOperation({ summary: 'login for admin , moderator , operator' })
-  // signInControlUser(@Body() body: ControlUserDto) {
-  //   return this.service.signInControlUser(body);
-  // }
-
-  // @Post('/addControlUser')
-  // @HttpCode(HttpStatus.CREATED)
-  // @ApiBody({
-  //   schema: {
-  //     type: 'object',
-  //     required: ['full_name', 'number', 'password'],
-  //     properties: {
-  //       full_name: {
-  //         type: 'string',
-  //         default: `Eshmat Eshmatov Eshmat o'g'li`,
-  //       },
-  //       role: {
-  //         type: 'string',
-  //         default: 'moderator',
-  //       },
-  //       username: {
-  //         type: 'string',
-  //         default: 'Moderator',
-  //       },
-  //       password: {
-  //         type: 'string',
-  //         default: '123',
-  //       },
-  //     },
-  //   },
-  // })
-  // createControlUser(@Body() createControlUserDto: CreateControlUserDto) {
-  //   return this.service.createControlUser(createControlUserDto);
-  // }
 
   @Patch('/updateUser/:id')
   @HttpCode(HttpStatus.NO_CONTENT)

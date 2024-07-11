@@ -4,6 +4,7 @@ import { UpdateRegionDto } from './dto/update_region_categories.dto';
 import { Category_Section_Entity } from 'src/entities/category_org.entity';
 import { Region_Entity } from 'src/entities/region.entity';
 import { ILike } from 'typeorm';
+import { District_Entity } from 'src/entities/district.entity';
 @Injectable()
 export class RegionCategoriesService {
   async findAll( title: string,  pageNumber = 1,
@@ -55,24 +56,36 @@ export class RegionCategoriesService {
     
   }
 
-  async findOne(id: string) {
-      // const offset = (pageNumber - 1) * pageSize;
-    const findRegion: Region_Entity =
-      await Region_Entity.findOne({
+  async findOne(id: string, title: string , pageNumber = 1,
+    pageSize = 10) {
+      const offset = (pageNumber - 1) * pageSize;
+    const [results, total] =
+      await District_Entity.findAndCount({
         where: {
-          id: id,
+          title: title == 'null' ? null : ILike(`%${title}%`),
+          region : {
+            id :id
+          }
         },
         relations: {
-          districts: true,
+          region: true,
         },
  
 
+        skip: offset,
+        take: pageSize,
       });
+      const totalPages = Math.ceil(total / pageSize);
 
-    if (!findRegion) {
-      throw new HttpException('Not found', HttpStatus.NOT_FOUND);
-    }
-    return findRegion;
+    return {
+      results ,
+      pagination: {
+        currentPage: pageNumber,
+        totalPages,
+        pageSize,
+        totalItems: total,
+      },
+    };
   }
 
   async create(body: CreateRegionDto) {
