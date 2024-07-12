@@ -55,12 +55,16 @@ export class AuthServise {
     };
   }
   async signIn(signInDto: SingInUserDto) {
+    console.log(signInDto);
+    
     const finduser = await UsersEntity.findOne({
       where: {
         username: signInDto.username,
         password: signInDto.password,
       },
     }).catch((e) => {
+      console.log(e);
+      
       throw new HttpException('Bad Request ', HttpStatus.BAD_REQUEST);
     });
 
@@ -69,6 +73,7 @@ export class AuthServise {
     }
     return {
       message: 'successfully sing In',
+      role : finduser.role,
       token: this.sign(finduser.id, finduser.role, finduser.password),
     };
   }
