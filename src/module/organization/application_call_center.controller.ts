@@ -29,7 +29,8 @@ import { ApplicationCallCenterServise } from './application_call_center.service'
 import { AnyFilesInterceptor } from '@nestjs/platform-express';
 import { CreateApplicationCallCenterDto } from './dto/create_organization.dto';
 import { UpdateApplicationCallCenterDto } from './dto/update_organization.dto';
-import { CustomRequest } from 'src/types';
+import { CustomRequest, RolesEnum } from 'src/types';
+import { RequiredRoles } from '../auth/guards/roles.decorator';
 @Controller('organization')
 @ApiTags('Application Call Center')
 @ApiBearerAuth('JWT-auth')
@@ -121,6 +122,7 @@ export class ApplicationCallCenterController {
   }
 
   // @UseGuards(jwtGuard)
+  @RequiredRoles(RolesEnum.OPERATOR,RolesEnum.ADMIN)
   @Post('create')
   @HttpCode(HttpStatus.CREATED)
   @ApiBody({
@@ -190,7 +192,7 @@ export class ApplicationCallCenterController {
           default: '2024-07-02',
         },
         IsDraf: {
-          type: 'boolean',
+          type: 'string',
           default: 'false',
         },
       },
@@ -205,10 +207,13 @@ export class ApplicationCallCenterController {
     @Request() request: CustomRequest,
     @Body() createOrganizationDto: CreateApplicationCallCenterDto,
   ): Promise<void> {
+    console.log(request.userId ,'iiiiii');
+    
     return await this.#_service.create(request ,createOrganizationDto);
   }
 
   // @UseGuards(jwtGuard)
+  @RequiredRoles(RolesEnum.OPERATOR,RolesEnum.ADMIN)
   @Patch('/update/:id')
   @HttpCode(HttpStatus.NO_CONTENT)
   @ApiBody({
@@ -278,7 +283,7 @@ export class ApplicationCallCenterController {
           default: '2024-07-02',
         },
         IsDraf: {
-          type: 'boolean',
+          type: 'string',
           default: 'false',
         },
       },
@@ -296,6 +301,7 @@ export class ApplicationCallCenterController {
   }
 
   // @UseGuards(jwtGuard)
+  @RequiredRoles(RolesEnum.ADMIN)
   @Delete('/delete/:id')
   @HttpCode(HttpStatus.NO_CONTENT)
   @ApiBadRequestResponse()

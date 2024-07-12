@@ -62,6 +62,7 @@ export class CreateApplicationCallCenterDto {
   @IsString()
   sended_to_organizations: string;
 
-  @IsBoolean()
-  IsDraf: boolean;
+
+  @IsString()
+  IsDraf: string;
 }

@@ -66,6 +66,7 @@ export class RegionCategoriesController {
   }
 
   // @UseGuards(jwtGuard)
+  @RequiredRoles(RolesEnum.ADMIN)
   @Post('create')
   @HttpCode(HttpStatus.CREATED)
   @ApiBody({
@@ -90,6 +91,7 @@ export class RegionCategoriesController {
   }
 
   // @UseGuards(jwtGuard)
+  @RequiredRoles(RolesEnum.ADMIN)
   @Patch('/update/:id')
   @HttpCode(HttpStatus.NO_CONTENT)
   @ApiBody({
@@ -113,6 +115,7 @@ export class RegionCategoriesController {
   }
 
   // @UseGuards(jwtGuard)
+  @RequiredRoles(RolesEnum.ADMIN)
   @Delete('/delete/:id')
   @HttpCode(HttpStatus.NO_CONTENT)
   @ApiBadRequestResponse()

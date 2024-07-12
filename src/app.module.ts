@@ -21,6 +21,7 @@ import { RegionCategoriesModule } from './module/region/region_categories.module
 import { DistrictModule } from './module/dictrict/district.module';
 import { AuthModule } from './module/auth/auth.module';
 import { SendedOrganizationModule } from './module/sende_organization/sended_organization.module';
+import { RolesGuard } from './module/auth/guards/roles.guard';
 // import { SectionModule } from './module/section/section.module';
 // import { SavedOrganizationModule } from './module/saved_org/savedorganization.module';
 // import { RolesGuard } from './module/auth/guards/roles.guard';
@@ -56,10 +57,10 @@ import { SendedOrganizationModule } from './module/sende_organization/sended_org
   ],
   controllers: [],
   providers: [
-    // {
-    //   provide: 'APP_GUARD',
-    //   useClass: RolesGuard,
-    // },
+    {
+      provide: 'APP_GUARD',
+      useClass: RolesGuard,
+    },
   ],
 })
 export class AppModule {}

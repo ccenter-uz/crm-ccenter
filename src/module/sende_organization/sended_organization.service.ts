@@ -3,16 +3,20 @@ import { CreateSendedOrganizationDto } from './dto/create_sended_organization.dt
 import { UpdateSendedOrganizationDto } from './dto/update_sended_organization.dto';
 import { Category_Section_Entity } from 'src/entities/category_org.entity';
 import { SendedOrganizationEntity } from 'src/entities/sende_organization.entity';
+import { ILike } from 'typeorm';
 @Injectable()
 export class SendedOrganizationService {
-  async findAll(    pageNumber = 1,
+  async findAll( title :string,    pageNumber = 1,
     pageSize = 10,) {
       const offset = (pageNumber - 1) * pageSize;
     const [results, total] = await SendedOrganizationEntity.findAndCount({
+      where : {
+        title : title == 'null' ? null : ILike(`%${title}%`)
+      },
       skip: offset,
       take: pageSize,
       order: {
-        create_data: 'asc',
+        create_data: 'desc',
     }
   }).catch(
       (e) => {

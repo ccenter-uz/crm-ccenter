@@ -8,6 +8,8 @@ import { ApplicationCallCenterEntity } from 'src/entities/applicationCallCenter.
 import { Between, ILike, Like } from 'typeorm';
 import { District_Entity } from 'src/entities/district.entity';
 import { CustomRequest } from 'src/types';
+import { HistoryAplicationEntity } from 'src/entities/history.entity';
+import { SendedOrganizationEntity } from 'src/entities/sende_organization.entity';
 
 @Injectable()
 export class ApplicationCallCenterServise {
@@ -31,7 +33,7 @@ export class ApplicationCallCenterServise {
         where: {
           incoming_number : income_number == 'null' ? null :  ILike(`%${income_number}%`),
           response: response =='null'? null : response,
-          IsDraf: false,
+          IsDraf: 'false',
           sub_category_call_center: {
             id: subCategoryId == 'null' ? null : subCategoryId,
             category_org: {
@@ -93,7 +95,7 @@ export class ApplicationCallCenterServise {
         where: {
           incoming_number : income_number == 'null' ? null :  ILike(`%${income_number}%`),
           response: response =='null'? null : response,
-          IsDraf: false,
+          IsDraf: 'false',
           sub_category_call_center: {
             id: subCategoryId == 'null' ? null : subCategoryId,
             category_org: {
@@ -160,7 +162,7 @@ export class ApplicationCallCenterServise {
         where: {
           incoming_number : income_number == 'null' ? null :  ILike(`%${income_number}%`),
           response: response =='null'? null : response,
-          IsDraf: true,
+          IsDraf: 'true',
           sub_category_call_center: {
             id: subCategoryId == 'null' ? null : subCategoryId,
             category_org: {
@@ -222,7 +224,7 @@ export class ApplicationCallCenterServise {
         where: {
           incoming_number : income_number == 'null' ? null :  ILike(`%${income_number}%`),
           response: response =='null'? null : response,
-          IsDraf: true,
+          IsDraf: 'true',
           sub_category_call_center: {
             id: subCategoryId == 'null' ? null : subCategoryId,
             category_org: {
@@ -281,10 +283,18 @@ export class ApplicationCallCenterServise {
         },
         districts : {
           region : true
-        }
+        },
+        seded_to_Organization: true,
+        history: {
+          user_history:true
+        },
+        user : true
       },
       order: {
-        create_data: 'asc',
+        create_data: 'desc',
+        history: {
+          create_data: 'desc'
+        }
       },
     }).catch((e) => {
       throw new HttpException('Bad request', HttpStatus.BAD_REQUEST);
@@ -323,6 +333,18 @@ export class ApplicationCallCenterServise {
       });
     }
 
+    let seded_to_Organization = null 
+    if (body.sended_to_organizations != 'null') {
+      seded_to_Organization = await SendedOrganizationEntity.findOne({
+        where: {
+          id: body.sended_to_organizations,
+        },
+      }).catch((e) => {
+        console.log(e);
+        throw new HttpException('Bad request', HttpStatus.BAD_REQUEST);
+      });
+    }
+
     const createdOrg = await ApplicationCallCenterEntity.createQueryBuilder()
       .insert()
       .into(ApplicationCallCenterEntity)
@@ -341,11 +363,13 @@ export class ApplicationCallCenterServise {
         performer: body.perform_date,
         resend_application: body.resend_application,
         response: body.response,
-        sended_to_organizations: body.sended_to_organizations,
         IsDraf: body.IsDraf,
         sub_category_call_center: findSubCategory,
         districts : findDistrict,
-        // user: request.userId 
+        seded_to_Organization: seded_to_Organization,
+        user: {
+          id :request.userId
+        }
       })
       .execute()
       .catch(() => {
@@ -378,6 +402,7 @@ export class ApplicationCallCenterServise {
         throw new HttpException('Bad request', HttpStatus.BAD_REQUEST);
       });
     }
+    
     let findDistrict = findaplicationCallCenter.districts;
     if (body.district_id != 'null') {
       findDistrict = await District_Entity.findOne({
@@ -390,6 +415,19 @@ export class ApplicationCallCenterServise {
       });
     }
 
+    let seded_to_Organization = findaplicationCallCenter.seded_to_Organization
+    if (body.sended_to_organizations != 'null') {
+      seded_to_Organization = await SendedOrganizationEntity.findOne({
+        where: {
+          id: body.sended_to_organizations,
+        },
+      }).catch((e) => {
+        console.log(e);
+        throw new HttpException('Bad request', HttpStatus.BAD_REQUEST);
+      });
+    }
+    console.log(findSubCategory, findDistrict, 'okk');
+    
     const updatedOrganization = await ApplicationCallCenterEntity.update(id, {
       
       applicant: body.applicant || findaplicationCallCenter.applicant,
@@ -411,18 +449,36 @@ export class ApplicationCallCenterServise {
       resend_application:
         body.resend_application || findaplicationCallCenter.resend_application,
       response: body.response || findaplicationCallCenter.response,
-      sended_to_organizations:
-        body.sended_to_organizations ||
-        findaplicationCallCenter.sended_to_organizations,
-        IsDraf: body.IsDraf ||findaplicationCallCenter.IsDraf ,
+      seded_to_Organization : seded_to_Organization ,
+        IsDraf: body.IsDraf || findaplicationCallCenter.IsDraf ,
       sub_category_call_center: findSubCategory,
-      districts :findDistrict ,
-      // user: request.userId
+      districts :findDistrict ,       
     }).catch((e) => {
       throw new HttpException('Bad request', HttpStatus.BAD_REQUEST);
     });
+    
+    
+    if(updatedOrganization){
+      console.log(request.userId,'okkk');
 
-    return;
+      const createdOrg = await HistoryAplicationEntity.createQueryBuilder()
+      .insert()
+      .into(HistoryAplicationEntity)
+      .values({
+        applicationCallCenter : findaplicationCallCenter,
+        action :'update',
+        user_history: {
+          id :request.userId
+        }
+      })
+      .execute()
+      .catch(() => {
+        throw new HttpException('Bad Request ', HttpStatus.BAD_REQUEST);
+      });
+
+      return
+    }
+
   }
 
   async remove(id: string) {

@@ -24,6 +24,8 @@ import {
 import { SendedOrganizationService } from './sended_organization.service';
 import { CreateSendedOrganizationDto } from './dto/create_sended_organization.dto';
 import { UpdateSendedOrganizationDto } from './dto/update_sended_organization.dto';
+import { RolesEnum } from 'src/types';
+import { RequiredRoles } from '../auth/guards/roles.decorator';
 
 
 // @ApiTags('role')
@@ -44,9 +46,10 @@ export class SendedOrganizationController {
   @ApiBadRequestResponse()
   @ApiNotFoundResponse()
   @ApiOkResponse()
-  async findall(    @Query('page') page: string,
+  async findall( 
+    @Query('search') title: string,   @Query('page') page: string,
   @Query('pageSize') pageSize: string,) {
-    return await this.#_service.findAll(      +page,
+    return await this.#_service.findAll(  title ,   +page,
       +pageSize,);
   }
 
@@ -59,6 +62,7 @@ export class SendedOrganizationController {
   }
 
   // @UseGuards(jwtGuard)
+  @RequiredRoles(RolesEnum.ADMIN)
   @Post('create')
   @HttpCode(HttpStatus.CREATED)
   @ApiBody({
@@ -83,6 +87,7 @@ export class SendedOrganizationController {
   }
 
   // @UseGuards(jwtGuard)
+  @RequiredRoles(RolesEnum.ADMIN)
   @Patch('/update/:id')
   @HttpCode(HttpStatus.NO_CONTENT)
   @ApiBody({
@@ -106,6 +111,7 @@ export class SendedOrganizationController {
   }
 
   // @UseGuards(jwtGuard)
+  @RequiredRoles(RolesEnum.ADMIN)
   @Delete('/delete/:id')
   @HttpCode(HttpStatus.NO_CONTENT)
   @ApiBadRequestResponse()

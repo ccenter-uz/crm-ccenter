@@ -3,15 +3,19 @@ import { CreateDistrictDto } from './dto/create_district.dto';
 import { UpdateDistrictDto } from './dto/update_district.dto';
 import { District_Entity } from 'src/entities/district.entity';
 import { Region_Entity } from 'src/entities/region.entity';
+import { ILike } from 'typeorm';
 
 @Injectable()
 export class DistrictServise {
-  async findAll(    pageNumber = 1,
+  async findAll( title :string,   pageNumber = 1,
     pageSize = 10,) {
       const offset = (pageNumber - 1) * pageSize;
     const [results, total] = await District_Entity.findAndCount({
+      where : {
+        title : title == 'null' ? null: ILike(`%${title}%`),
+      },
       order: {
-        create_data: 'asc',
+        create_data: 'desc',
       },
       skip: offset,
       take: pageSize,

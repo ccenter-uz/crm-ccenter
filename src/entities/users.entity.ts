@@ -8,6 +8,7 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { ApplicationCallCenterEntity } from './applicationCallCenter.entity';
+import { HistoryAplicationEntity } from './history.entity';
 
 @Entity()
 export class UsersEntity extends BaseEntity {
@@ -47,7 +48,11 @@ export class UsersEntity extends BaseEntity {
   @OneToMany(() => ApplicationCallCenterEntity, (applicationCallcenter) => applicationCallcenter.user)
   applicationCallCenter: ApplicationCallCenterEntity[];
   
-
+  @OneToMany(
+    () => HistoryAplicationEntity,
+    (history) => history.user_history,
+  )
+  history: HistoryAplicationEntity[];
 
   @CreateDateColumn({ name: 'created_at' })
   create_data: Date;

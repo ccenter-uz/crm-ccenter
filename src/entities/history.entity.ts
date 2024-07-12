@@ -7,6 +7,7 @@ import {
     PrimaryGeneratedColumn,
   } from 'typeorm';
 import { ApplicationCallCenterEntity } from './applicationCallCenter.entity';
+import { UsersEntity } from './users.entity';
   
   @Entity()
   export class HistoryAplicationEntity extends BaseEntity {
@@ -26,6 +27,14 @@ import { ApplicationCallCenterEntity } from './applicationCallCenter.entity';
       )
     applicationCallCenter: ApplicationCallCenterEntity;
 
+
+    
+  @ManyToOne(
+    () => UsersEntity,
+    (user) => user.history,
+    { nullable: true },
+  )
+  user_history: UsersEntity;
   
     @CreateDateColumn({ name: 'created_at' })
     create_data: Date;

@@ -6,7 +6,9 @@ import {
     Entity,
     OneToMany,
     PrimaryGeneratedColumn,
+    UpdateDateColumn,
   } from 'typeorm';
+import { ApplicationCallCenterEntity } from './applicationCallCenter.entity';
 
   @Entity()
   export class SendedOrganizationEntity extends BaseEntity {
@@ -19,6 +21,15 @@ import {
     })
     title: string;
 
+
+    @OneToMany(
+      () => ApplicationCallCenterEntity,
+      (application) => application.seded_to_Organization,
+    )
+    applicationCallcenter: ApplicationCallCenterEntity[];
+  
+    @UpdateDateColumn({ name: 'updated_at' })
+  update_date: Date;
   
     @CreateDateColumn({ name: 'created_at' })
     create_data: Date;

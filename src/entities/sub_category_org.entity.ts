@@ -26,13 +26,14 @@ export class Sub_Category_Section_Entity extends BaseEntity {
   @ManyToOne(
     () => Category_Section_Entity,
     (category_org) => category_org.sub_category_orgs,
-    { nullable: true },
+    {nullable :true , onDelete: 'CASCADE'}
   )
   category_org: Category_Section_Entity;
 
   @OneToMany(
     () => ApplicationCallCenterEntity,
     (org) => org.sub_category_call_center,
+    {nullable :true,onDelete: 'CASCADE'}
   )
   applicationCallcenter: ApplicationCallCenterEntity[];
 

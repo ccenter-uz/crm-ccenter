@@ -24,6 +24,8 @@ import {
 import { SubCategorySectionServise } from './sub_category_section.service';
 import { CreateSubCategorySectionDto } from './dto/create_subcategoryorganization.dto';
 import { UpdateSubCategorySectionDto } from './dto/update_subcategoryorganization.dto';
+import { RequiredRoles } from '../auth/guards/roles.decorator';
+import { RolesEnum } from 'src/types';
 
 @Controller('SubCategorySection')
 @ApiTags('Sub Category Section')
@@ -38,9 +40,10 @@ export class SubCategorySectionController {
   @ApiBadRequestResponse()
   @ApiNotFoundResponse()
   @ApiOkResponse()
-  async findall(    @Query('page') page: string,
+  async findall( 
+    @Query('search') search: string,   @Query('page') page: string,
   @Query('pageSize') pageSize: string,) {
-    return await this.#_service.findAll(      +page,
+    return await this.#_service.findAll(   search,   +page,
       +pageSize,);
   }
 
@@ -54,6 +57,7 @@ export class SubCategorySectionController {
 
   //
   // @UseGuards(jwtGuard)
+  @RequiredRoles(RolesEnum.ADMIN)
   @Post('create')
   @HttpCode(HttpStatus.CREATED)
   @ApiBody({
@@ -84,6 +88,7 @@ export class SubCategorySectionController {
   }
 
   // @UseGuards(jwtGuard)
+  @RequiredRoles(RolesEnum.ADMIN)
   @Patch('/update/:id')
   @HttpCode(HttpStatus.NO_CONTENT)
   @ApiBody({
@@ -112,6 +117,7 @@ export class SubCategorySectionController {
   }
 
   // @UseGuards(jwtGuard)
+  @RequiredRoles(RolesEnum.ADMIN)
   @Delete('/delete/:id')
   @HttpCode(HttpStatus.NO_CONTENT)
   @ApiBadRequestResponse()

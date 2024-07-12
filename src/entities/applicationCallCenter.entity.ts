@@ -1,3 +1,4 @@
+import { SendedOrganizationEntity } from 'src/entities/sende_organization.entity';
 import {
   BaseEntity,
   Column,
@@ -104,23 +105,19 @@ export class ApplicationCallCenterEntity extends BaseEntity {
   })
   response: string;
 
-  @Column({
-    type: 'character varying',
-    nullable: true,
-  })
-  sended_to_organizations: string;
+
 
     @Column({
     type: 'character varying',
-    default: false,
+    default: 'false',
     nullable :true
   })
-  IsDraf: boolean;
+  IsDraf: string;
 
   @ManyToOne(
     () => Sub_Category_Section_Entity,
     (sub_category_org) => sub_category_org.applicationCallcenter,
-    { nullable: true },
+    {nullable :true , onDelete: 'CASCADE'}
   )
   sub_category_call_center: Sub_Category_Section_Entity;
 
@@ -137,6 +134,14 @@ export class ApplicationCallCenterEntity extends BaseEntity {
     { nullable: true },
   )
   user: UsersEntity;
+
+  @ManyToOne(
+    () => SendedOrganizationEntity,
+    (user) => user.applicationCallcenter,
+    { nullable: true },
+  )
+  seded_to_Organization: SendedOrganizationEntity;
+
 
   
   @OneToMany(

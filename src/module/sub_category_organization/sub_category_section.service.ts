@@ -5,17 +5,21 @@ import { UpdateSubCategorySectionDto } from './dto/update_subcategoryorganizatio
 
 import { Sub_Category_Section_Entity } from 'src/entities/sub_category_org.entity';
 import { Category_Section_Entity } from 'src/entities/category_org.entity';
+import { ILike } from 'typeorm';
 
 @Injectable()
 export class SubCategorySectionServise {
-  async findAll(    pageNumber = 1,
+  async findAll(  title:string , pageNumber = 1,
     pageSize = 10,) {
       const offset = (pageNumber - 1) * pageSize;
     const [results, total] = await Sub_Category_Section_Entity.findAndCount({
+      where : {
+        title : title == 'null' ? null: ILike(`%${title}%`),
+        },
       skip: offset,
       take: pageSize,
       order: {
-        create_data: 'asc',
+        create_data: 'desc',
       },
     }).catch((e) => {
       throw new HttpException('Bad request', HttpStatus.BAD_REQUEST);
@@ -59,14 +63,14 @@ export class SubCategorySectionServise {
     });
 
     if (!findCategory) {
-      throw new HttpException(' Category not found', HttpStatus.NOT_FOUND);
+      throw new HttpException('Category not found', HttpStatus.NOT_FOUND);
     }
 
     await Sub_Category_Section_Entity.createQueryBuilder()
       .insert()
       .into(Sub_Category_Section_Entity)
       .values({
-        title: body.title,
+        title: body.title.toLowerCase(),
         category_org: findCategory,
       })
       .execute()

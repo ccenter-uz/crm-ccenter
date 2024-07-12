@@ -40,7 +40,6 @@ export class AuthServise {
       .returning(['id', 'role', 'password'])
       .execute()
       .catch((e) => {
-        console.log(e);
 
         throw new HttpException('Bad Request ', HttpStatus.BAD_REQUEST);
       });
@@ -63,7 +62,6 @@ export class AuthServise {
         password: signInDto.password,
       },
     }).catch((e) => {
-      console.log(e);
       
       throw new HttpException('Bad Request ', HttpStatus.BAD_REQUEST);
     });
@@ -123,7 +121,7 @@ return finduser
             role: role == 'null' ? null : role,
           },
           order: {
-            create_data: 'asc',
+            create_data: 'desc',
           },
           skip: offset,
           take: pageSize,
@@ -155,7 +153,7 @@ return finduser
           },
         ],
           order: {
-            create_data: 'asc',
+            create_data: 'desc',
           },
           skip: offset,
           take: pageSize,

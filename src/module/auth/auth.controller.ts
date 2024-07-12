@@ -23,6 +23,8 @@ import {
 } from '@nestjs/swagger';
 import { SingInUserDto } from './dto/sign_in-user.dto';
 import { UpdateControlUserDto } from './dto/update-conrolUser.dto';
+import { RequiredRoles } from './guards/roles.decorator';
+import { RolesEnum } from 'src/types';
 
 
 @Controller('Auth')
@@ -139,7 +141,7 @@ export class AuthController {
   ) {
     await this.service.updateControlUser(id, updateControlUserDto);
   }
-
+  @RequiredRoles(RolesEnum.ADMIN)
   @Delete('/deleteUser/:id')
   @HttpCode(HttpStatus.NO_CONTENT)
   @ApiBadRequestResponse()

@@ -19,11 +19,14 @@ import {
   ApiNoContentResponse,
   ApiNotFoundResponse,
   ApiOkResponse,
+  ApiQuery,
   ApiTags,
 } from '@nestjs/swagger';
 import { DistrictServise } from './district.service';
 import { CreateDistrictDto } from './dto/create_district.dto';
 import { UpdateDistrictDto } from './dto/update_district.dto';
+import { RolesEnum } from 'src/types';
+import { RequiredRoles } from '../auth/guards/roles.decorator';
 
 @Controller('District')
 @ApiTags('District')
@@ -38,9 +41,14 @@ export class DistrictController {
   @ApiBadRequestResponse()
   @ApiNotFoundResponse()
   @ApiOkResponse()
-  async findall(  @Query('page') page: string,
-  @Query('pageSize') pageSize: string,) {
-    return await this.#_service.findAll(      +page,
+  @ApiQuery({ name: 'saerch', required: false })
+  @ApiQuery({ name: 'page', required: false })
+  @ApiQuery({ name: 'pageSize', required: false })
+  async findall( 
+    @Query('saerch') title: string = 'null' , 
+    @Query('page',) page: string = '1',
+  @Query('pageSize') pageSize: string ='10' ,) {
+    return await this.#_service.findAll(   title,   +page,
       +pageSize,);
   }
 
@@ -54,6 +62,7 @@ export class DistrictController {
 
   //
   // @UseGuards(jwtGuard)
+  @RequiredRoles(RolesEnum.ADMIN)
   @Post('create')
   @HttpCode(HttpStatus.CREATED)
   @ApiBody({
@@ -84,6 +93,7 @@ export class DistrictController {
   }
 
   // @UseGuards(jwtGuard)
+  @RequiredRoles(RolesEnum.ADMIN)
   @Patch('/update/:id')
   @HttpCode(HttpStatus.NO_CONTENT)
   @ApiBody({
@@ -112,6 +122,7 @@ export class DistrictController {
   }
 
   // @UseGuards(jwtGuard)
+  @RequiredRoles(RolesEnum.ADMIN)
   @Delete('/delete/:id')
   @HttpCode(HttpStatus.NO_CONTENT)
   @ApiBadRequestResponse()

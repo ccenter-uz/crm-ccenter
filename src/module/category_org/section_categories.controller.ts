@@ -67,7 +67,7 @@ export class SectionCategoriesController {
     return await this.#_service.findOne(id ,search , +page , +pageSize);
   }
 
-  // @UseGuards(jwtGuard)
+  @RequiredRoles(RolesEnum.ADMIN)
   @Post('create')
   @HttpCode(HttpStatus.CREATED)
   @ApiBody({
@@ -90,8 +90,7 @@ export class SectionCategoriesController {
   ) {
     return await this.#_service.create(createOrganizationCategoryDto);
   }
-
-  // @UseGuards(jwtGuard)
+  @RequiredRoles(RolesEnum.ADMIN)
   @Patch('/update/:id')
   @HttpCode(HttpStatus.NO_CONTENT)
   @ApiBody({
@@ -114,7 +113,7 @@ export class SectionCategoriesController {
     return await this.#_service.update(id, updateOrganizationCategoryDto);
   }
 
-  // @UseGuards(jwtGuard)
+  @RequiredRoles(RolesEnum.ADMIN)
   @Delete('/delete/:id')
   @HttpCode(HttpStatus.NO_CONTENT)
   @ApiBadRequestResponse()
