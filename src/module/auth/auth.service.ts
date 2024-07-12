@@ -109,36 +109,69 @@ return finduser
 
   async getAllControlUsers( username : string , role: string, pageNumber = 1,
     pageSize = 10) {
-      const offset = (pageNumber - 1) * pageSize;
-    const [results, total] = await UsersEntity.findAndCount({
-      where: [{
-        username : username == 'null' ? null: ILike(`%${username}%`),
-        role: role == 'null' ? null : role,
-      },
-      {
-        full_name : username == 'null' ? null: ILike(`%${username}%`),
-        role: role == 'null' ? null : role,
-      },
-    ],
-      order: {
-        create_data: 'asc',
-      },
-      skip: offset,
-      take: pageSize,
-    }).catch((e) => {
-      throw new HttpException('Bad Request ', HttpStatus.BAD_REQUEST);
-    });
-    const totalPages = Math.ceil(total / pageSize);
 
-    return {
-      results ,
-      pagination: {
-        currentPage: pageNumber,
-        totalPages,
-        pageSize,
-        totalItems: total,
-      },
-    };
+      const offset = (pageNumber - 1) * pageSize;
+      if(username == 'null') {
+        const [results, total] = await UsersEntity.findAndCount({
+          where: 
+          {
+            role: role == 'null' ? null : role,
+          },
+          order: {
+            create_data: 'asc',
+          },
+          skip: offset,
+          take: pageSize,
+        }).catch((e) => {
+          console.log(e);
+          
+          throw new HttpException('Bad Request ', HttpStatus.BAD_REQUEST);
+        });
+        const totalPages = Math.ceil(total / pageSize);
+    
+        return {
+          results ,
+          pagination: {
+            currentPage: pageNumber,
+            totalPages,
+            pageSize,
+            totalItems: total,
+          },
+        };
+      } else {
+        const [results, total] = await UsersEntity.findAndCount({
+          where: [{
+            username : username == 'null' ? null: ILike(`%${username}%`),
+            role: role == 'null' ? null : role,
+          },
+          {
+            full_name : username == 'null' ? null: ILike(`%${username}%`),
+            role: role == 'null' ? null : role,
+          },
+        ],
+          order: {
+            create_data: 'asc',
+          },
+          skip: offset,
+          take: pageSize,
+        }).catch((e) => {
+          console.log(e);
+          
+          throw new HttpException('Bad Request ', HttpStatus.BAD_REQUEST);
+        });
+        const totalPages = Math.ceil(total / pageSize);
+    
+        return {
+          results ,
+          pagination: {
+            currentPage: pageNumber,
+            totalPages,
+            pageSize,
+            totalItems: total,
+          },
+        };
+      }
+
   }
 
   async createControlUser(body: CreateControlUserDto) {
