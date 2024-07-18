@@ -21,6 +21,7 @@ export class ApplicationCallCenterServise {
     income_number :string,
     operator :string ,
     response : string,
+    applicant :string,
     fromDate: string,
     untilDate: string,
     pageNumber = 1,
@@ -32,6 +33,7 @@ export class ApplicationCallCenterServise {
       const [results, total] = await ApplicationCallCenterEntity.findAndCount({
         where: {
           incoming_number : income_number == 'null' ? null :  ILike(`%${income_number}%`),
+          applicant : applicant == 'null' ? null :  ILike(`%${applicant}%`),
           response: response =='null'? null : response,
           IsDraf: 'false',
           sub_category_call_center: {
@@ -94,6 +96,7 @@ export class ApplicationCallCenterServise {
       const [results, total] = await ApplicationCallCenterEntity.findAndCount({
         where: {
           incoming_number : income_number == 'null' ? null :  ILike(`%${income_number}%`),
+          applicant : applicant == 'null' ? null :  ILike(`%${applicant}%`),
           response: response =='null'? null : response,
           IsDraf: 'false',
           sub_category_call_center: {
@@ -150,6 +153,7 @@ export class ApplicationCallCenterServise {
     income_number :string,
     operator :string ,
     response : string,
+    applicant :string,
     fromDate: string,
     untilDate: string,
     pageNumber = 1,
@@ -161,6 +165,7 @@ export class ApplicationCallCenterServise {
       const [results, total] = await ApplicationCallCenterEntity.findAndCount({
         where: {
           incoming_number : income_number == 'null' ? null :  ILike(`%${income_number}%`),
+          applicant : applicant == 'null' ? null :  ILike(`%${applicant}%`),
           response: response =='null'? null : response,
           IsDraf: 'true',
           sub_category_call_center: {
@@ -223,6 +228,7 @@ export class ApplicationCallCenterServise {
       const [results, total] = await ApplicationCallCenterEntity.findAndCount({
         where: {
           incoming_number : income_number == 'null' ? null :  ILike(`%${income_number}%`),
+          applicant : applicant == 'null' ? null :  ILike(`%${applicant}%`),
           response: response =='null'? null : response,
           IsDraf: 'true',
           sub_category_call_center: {

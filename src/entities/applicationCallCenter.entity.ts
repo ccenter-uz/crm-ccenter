@@ -91,8 +91,6 @@ export class ApplicationCallCenterEntity extends BaseEntity {
   })
   performer: string;
 
-
-
   @Column({
     type: 'character varying',
     nullable: true,
@@ -105,9 +103,7 @@ export class ApplicationCallCenterEntity extends BaseEntity {
   })
   response: string;
 
-
-
-    @Column({
+  @Column({
     type: 'character varying',
     default: 'false',
     nullable :true

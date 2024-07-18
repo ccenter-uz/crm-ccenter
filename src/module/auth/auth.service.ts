@@ -46,6 +46,7 @@ export class AuthServise {
 
     return {
       message: 'You have successfully registered',
+      role :  addedUser.raw.at(-1).role,
       token: this.sign(
         addedUser.raw.at(-1).id,
         addedUser.raw.at(-1).role,
