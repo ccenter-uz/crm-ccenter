@@ -20,6 +20,7 @@ import {
   ApiNoContentResponse,
   ApiNotFoundResponse,
   ApiOkResponse,
+  ApiQuery,
   ApiTags,
 } from '@nestjs/swagger';
 import { SectionCategoriesService } from './section_categories.service';
@@ -46,14 +47,50 @@ export class SectionCategoriesController {
   @ApiBadRequestResponse()
   @ApiNotFoundResponse()
   @ApiOkResponse()
+  
   async findall(  
     @Query('search') search: string,
-    @Query('page') page: string,
+    @Query('page') page: string,  
   @Query('pageSize') pageSize: string,
 
   ) {
     return await this.#_service.findAll(   search,   +page,
       +pageSize,);
+  }
+
+  @Get('/statistics/filter?')
+  @ApiBadRequestResponse()
+  @ApiNotFoundResponse()
+  @ApiOkResponse()
+  // @ApiOperation({
+  //   summary:
+  //     "sana formati 01.04.2024 to'ldirilmagan joyga null qiymati jonatiladi sana va page paramlari null qiymat qabul qilmaydi ",
+  // })
+  @ApiQuery({ name: 'categoryId', required: false })
+  @ApiQuery({ name: 'subCategoryId', required: false })
+  @ApiQuery({ name: 'region', required: false })
+  @ApiQuery({ name: 'date_from', required: false })
+  @ApiQuery({ name: 'date_to', required: false })
+  @ApiQuery({ name: 'page', required: false })
+  @ApiQuery({ name: 'pageSize', required: false })
+  async findallstatisticsfilter(
+    @Query('categoryId') categoryId: string = 'null',
+    @Query('subCategoryId') subCategoryId: string = 'null',
+    @Query('region') region: string = 'null',
+    @Query('date_from') fromDate: string = 'null',
+    @Query('date_to') untilDate: string = 'null',
+    @Query('page') page: string = '1',
+    @Query('pageSize') pageSize: string = '10',
+  ) {
+    return await this.#_service.findallstatisticsfilter(
+      categoryId,
+      subCategoryId,
+      region,
+      fromDate,
+      untilDate,
+      +page,
+      +pageSize,
+    );
   }
 
   @Get('/one/:id?')

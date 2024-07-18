@@ -5,7 +5,7 @@ import { UpdateApplicationCallCenterDto } from './dto/update_organization.dto';
 import { Sub_Category_Section_Entity } from 'src/entities/sub_category_org.entity';
 
 import { ApplicationCallCenterEntity } from 'src/entities/applicationCallCenter.entity';
-import { Between, ILike, Like } from 'typeorm';
+import { Between, ILike } from 'typeorm';
 import { District_Entity } from 'src/entities/district.entity';
 import { CustomRequest } from 'src/types';
 import { HistoryAplicationEntity } from 'src/entities/history.entity';
@@ -13,6 +13,121 @@ import { SendedOrganizationEntity } from 'src/entities/sende_organization.entity
 
 @Injectable()
 export class ApplicationCallCenterServise {
+async findallstatisticsfilter( 
+  categoryId: string,
+  subCategoryId: string,
+  region: string,
+  fromDate: string,
+  untilDate: string,
+  pageNumber = 1,
+  pageSize = 10){
+    const offset = (pageNumber - 1) * pageSize;
+    if (fromDate == 'null' || untilDate == 'null') {
+      const [results, total] = await ApplicationCallCenterEntity.findAndCount({
+        where: {
+          IsDraf: 'false',
+          sub_category_call_center: {
+            id: subCategoryId == 'null' ? null : subCategoryId,
+            category_org: {
+              id: categoryId == 'null' ? null : categoryId,
+            },
+          },
+          districts : {
+            region : {
+              id: region == 'null' ? null : region,
+             }
+          },
+        },
+        relations: {
+          sub_category_call_center: {
+            category_org: true,
+          },
+          districts: {
+            region: true
+
+        },},
+        skip: offset,
+        take: pageSize,
+        order: {
+          create_data: 'desc',
+        },
+      }).catch((e) => {
+        throw new HttpException('Bad request', HttpStatus.BAD_REQUEST);
+      });
+
+      const totalPages = Math.ceil(total / pageSize);
+
+      return {
+        results,
+        pagination: {
+          currentPage: pageNumber,
+          totalPages,
+          pageSize,
+          totalItems: total,
+        },
+      };
+    } else {
+      const fromDateFormatted = new Date(
+        parseInt(fromDate.split('.')[2]),
+        parseInt(fromDate.split('.')[1]) - 1,
+        parseInt(fromDate.split('.')[0]),
+      );
+      const untilDateFormatted = new Date(
+        parseInt(untilDate.split('.')[2]),
+        parseInt(untilDate.split('.')[1]) - 1,
+        parseInt(untilDate.split('.')[0]),
+      );
+
+      const [results, total] = await ApplicationCallCenterEntity.findAndCount({
+        where: {
+          IsDraf: 'false',
+          sub_category_call_center: {
+            id: subCategoryId == 'null' ? null : subCategoryId,
+            category_org: {
+              id: categoryId == 'null' ? null : categoryId,
+            },
+          },
+          districts : {
+            region : {
+              id: region == 'null' ? null : region,
+             }
+          },
+          create_data: Between(fromDateFormatted, untilDateFormatted),
+        },
+        relations: {
+          sub_category_call_center: {
+            category_org: true,
+          },
+          districts: {
+            region: true
+
+        },
+      seded_to_Organization :true
+    },
+        skip: offset,
+        take: pageSize,
+        order: {
+          create_data: 'desc',
+        },
+      }).catch((e) => {
+        throw new HttpException('Bad request', HttpStatus.BAD_REQUEST);
+      });
+
+      const totalPages = Math.ceil(total / pageSize);
+
+      return {
+        results,
+        pagination: {
+          currentPage: pageNumber,
+          totalPages,
+          pageSize,
+          totalItems: total,
+        },
+      };
+    }
+}
+
+
   async findAllNotDrafts(
     categoryId: string,
     subCategoryId: string,
@@ -53,6 +168,7 @@ export class ApplicationCallCenterServise {
           }
         },
         relations: {
+          seded_to_Organization:true,
           sub_category_call_center: {
             category_org: true,
           },
@@ -60,6 +176,7 @@ export class ApplicationCallCenterServise {
             region: true
           },
           user : true
+    
         },
         skip: offset,
         take: pageSize,
@@ -119,7 +236,8 @@ export class ApplicationCallCenterServise {
           },
           districts: {
             region: true
-          }
+          },
+          seded_to_Organization:true,
         },
         skip: offset,
         take: pageSize,
@@ -191,6 +309,7 @@ export class ApplicationCallCenterServise {
           districts: {
             region: true
           },
+          seded_to_Organization:true,
           user : true
         },
         skip: offset,
@@ -251,7 +370,8 @@ export class ApplicationCallCenterServise {
           },
           districts: {
             region: true
-          }
+          },
+          seded_to_Organization:true,
         },
         skip: offset,
         take: pageSize,
