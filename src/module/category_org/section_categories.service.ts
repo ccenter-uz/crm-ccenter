@@ -4,6 +4,7 @@ import { UpdateSectionCategoryDto } from './dto/update_section_categories.dto';
 import { Category_Section_Entity } from 'src/entities/category_org.entity';
 import { Between, ILike, Like,  } from 'typeorm';
 import { Sub_Category_Section_Entity } from 'src/entities/sub_category_org.entity';
+import { Region_Entity } from 'src/entities/region.entity';
 @Injectable()
 export class SectionCategoriesService {
   async findallstatisticsfilter( 
@@ -15,7 +16,78 @@ export class SectionCategoriesService {
     pageNumber = 1,
     pageSize = 10){
       const offset = (pageNumber - 1) * pageSize;
-      if (fromDate == 'null' || untilDate == 'null') {
+
+      if (fromDate == 'null' && untilDate == 'null' && categoryId == 'null'  && subCategoryId == 'null' && region == 'null') {
+        const findRegions = await Region_Entity.find({
+          order: {
+            create_data: 'desc'
+          }
+        });
+        
+        let arr = [];
+        
+        await Promise.all(
+          findRegions.map(async (e) => {
+            try {
+              const results = await Category_Section_Entity.find({
+                where: {
+                  id: categoryId == 'null' ? null : categoryId,
+                  sub_category_orgs: {
+                    id: subCategoryId == 'null' ? null : subCategoryId,
+                    applicationCallcenter: {
+                      IsDraf: 'false',
+                      districts: {
+                        region: {
+                          id: e.id
+                        }
+                      }
+                    }
+                  }
+                },
+                relations: {
+                  sub_category_orgs: {
+                    applicationCallcenter: {
+                      districts: {
+                        region: true
+                      }
+                    }
+                  }
+                },
+                order: {
+                  create_data: 'desc'
+                }
+              });
+        
+              results.forEach(item => {
+                item.sub_category_orgs.forEach(subCategory => {
+                  arr.push({
+                    ...item,
+                    sub_category_orgs: {
+                      ...subCategory,
+                      count: subCategory.applicationCallcenter.length,
+                      region: e
+                    }
+                  });
+                });
+              });
+            } catch (error) {
+              throw new HttpException('Bad request', HttpStatus.BAD_REQUEST);
+            }
+          })
+        );
+
+       arr.sort((a, b) => b.sub_category_orgs.count - a.sub_category_orgs.count);
+        
+        return {
+          results: arr,
+          pagination: {
+            currentPage: pageNumber,
+            // totalPages,
+            pageSize,
+            // totalItems: total,
+          },
+        };
+      } else if (fromDate == 'null' || untilDate == 'null') {
 
         const [results, total] = await Category_Section_Entity.findAndCount({
           where: {
@@ -53,7 +125,6 @@ export class SectionCategoriesService {
         let arr = [ ]
     results.forEach(item  => {
           item.sub_category_orgs.forEach(subCategory => {
-
             arr.push({
               ...item,
               sub_category_orgs: {...subCategory,
