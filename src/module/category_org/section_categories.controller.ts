@@ -93,6 +93,41 @@ export class SectionCategoriesController {
     );
   }
 
+  @Get('/Allstatistics/filterWithRegion?')
+  @ApiBadRequestResponse()
+  @ApiNotFoundResponse()
+  @ApiOkResponse()
+  @ApiQuery({ name: 'region', required: false })
+  @ApiQuery({ name: 'date_from', required: false })
+  @ApiQuery({ name: 'date_to', required: false })
+  async findallAllstatisticsFilterWithRegion(
+    @Query('region') region: string = 'null',
+    @Query('date_from') fromDate: string = 'null',
+    @Query('date_to') untilDate: string = 'null',
+  ) {
+    return await this.#_service.findallAllstatisticsFilterWithRegion(
+      region,
+      fromDate,
+      untilDate,
+    );
+  }
+
+  @Get('/AllstatisticsWithRegion?')
+  @ApiBadRequestResponse()
+  @ApiNotFoundResponse()
+  @ApiOkResponse()
+  @ApiQuery({ name: 'date_from', required: false })
+  @ApiQuery({ name: 'date_to', required: false })
+  async findallAllstatisticsWithRegion(
+    @Query('date_from') fromDate: string = 'null',
+    @Query('date_to') untilDate: string = 'null',
+  ) {
+    return await this.#_service.findallAllstatisticsWithRegion(
+      fromDate,
+      untilDate,
+    );
+  }
+
   @Get('/one/:id?')
   @ApiBadRequestResponse()
   @ApiNotFoundResponse()
