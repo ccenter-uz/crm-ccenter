@@ -18,8 +18,11 @@ export class SectionCategoriesService {
     pageSize = 10){
       const offset = (pageNumber - 1) * pageSize;
 
-      if (fromDate == 'null' && untilDate == 'null' && categoryId == 'null'  && subCategoryId == 'null' && region == 'null') {
+      if (fromDate == 'null' && untilDate == 'null' ) {
         const findRegions = await Region_Entity.find({
+          where: {
+            id: region == 'null' ? null : region
+          },
           order: {
             create_data: 'desc'
           }
@@ -92,68 +95,74 @@ export class SectionCategoriesService {
             totalItems: totalItems,
           },
         };
-      } else if (fromDate == 'null' || untilDate == 'null') {
+      } 
+      
+    //   else if (fromDate == 'null' || untilDate == 'null') {
 
-        const [results, total] = await Category_Section_Entity.findAndCount({
-          where: {
-            id: categoryId == 'null' ? null : categoryId,
-            sub_category_orgs :{
-              id: subCategoryId == 'null' ? null : subCategoryId,
-              applicationCallcenter :{
-                IsDraf: 'false',
-                districts :{
-                  region : {
-                    id: region == 'null' ? null : region,
-                   }
-                }
-              }
-            }
-          },
-          relations: {
-           sub_category_orgs: {
-            applicationCallcenter: {
-              districts: {
-                region: true
-              },
-            }
-           },
-        },
-          skip: offset,
-          take: pageSize,
-          order: {
-            create_data: 'desc',
-          },
-        }).catch((e) => {
-          throw new HttpException('Bad request', HttpStatus.BAD_REQUEST);
-        });
+    //     const [results, total] = await Category_Section_Entity.findAndCount({
+    //       where: {
+    //         id: categoryId == 'null' ? null : categoryId,
+    //         sub_category_orgs :{
+    //           id: subCategoryId == 'null' ? null : subCategoryId,
+    //           applicationCallcenter :{
+    //             IsDraf: 'false',
+    //             districts :{
+    //               region : {
+    //                 id: region == 'null' ? null : region,
+    //                }
+    //             }
+    //           }
+    //         }
+    //       },
+    //       relations: {
+    //        sub_category_orgs: {
+    //         applicationCallcenter: {
+    //           districts: {
+    //             region: true
+    //           },
+    //         }
+    //        },
+    //     },
+    //       skip: offset,
+    //       take: pageSize,
+    //       order: {
+    //         create_data: 'desc',
+    //       },
+    //     }).catch((e) => {
+    //       throw new HttpException('Bad request', HttpStatus.BAD_REQUEST);
+    //     });
 
-        let arr = [ ]
-    results.forEach(item  => {
-          item.sub_category_orgs.forEach(subCategory => {
-            arr.push({
-              ...item,
-              sub_category_orgs: {...subCategory,
-              count : subCategory.applicationCallcenter.length }
-            })
-          });
-      });
+    //     let arr = [ ]
+    // results.forEach(item  => {
+    //       item.sub_category_orgs.forEach(subCategory => {
+    //         arr.push({
+    //           ...item,
+    //           sub_category_orgs: {...subCategory,
+    //           count : subCategory.applicationCallcenter.length,
+    //            region :   subCategory.applicationCallcenter[0].districts.region
+    //       }
+    //         })
+    //       });
+    //   });
 
-      console.log(arr , 'okkk');
+    //   console.log(arr , 'okkk');
       
   
-        const totalPages = Math.ceil(total / pageSize);
+    //     const totalPages = Math.ceil(total / pageSize);
   
-        return {
+    //     return {
           
-          results : arr,
-          pagination: {
-            currentPage: pageNumber,
-            totalPages,
-            pageSize,
-            totalItems: total,
-          },
-        };
-      } else {
+    //       results : arr,
+    //       pagination: {
+    //         currentPage: pageNumber,
+    //         totalPages,
+    //         pageSize,
+    //         totalItems: total,
+    //       },
+    //     };
+    //   }
+      
+      else {
         const fromDateFormatted = new Date(
           parseInt(fromDate.split('.')[2]),
           parseInt(fromDate.split('.')[1]) - 1,
@@ -401,6 +410,8 @@ export class SectionCategoriesService {
 
 
   }
+
+
   async findallAllstatisticsWithRegion( fromDate: string, untilDate: string) {
     if(fromDate == 'null' || untilDate == 'null'  ) {
       const ApplicationAllcount = await ApplicationCallCenterEntity.count()
