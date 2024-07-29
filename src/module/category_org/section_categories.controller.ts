@@ -138,7 +138,7 @@ export class SectionCategoriesController {
     @Query('date_from') fromDate: string = 'null',
     @Query('date_to') untilDate: string = 'null',
   ) {
-    return await this.#_service.findallAllstatisticsWithRegion(
+    return await this.#_service.statisticsWithRegion(
       fromDate,
       untilDate,
     );
