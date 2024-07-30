@@ -249,7 +249,7 @@ export class ApplicationCallCenterController {
     @Request() request: CustomRequest,
     @Body() createOrganizationDto: CreateApplicationCallCenterDto,
   ): Promise<void> {
-    console.log(request.userId ,'iiiiii');
+    // console.log(request.userId ,'iiiiii');
     
     return await this.#_service.create(request ,createOrganizationDto);
   }
