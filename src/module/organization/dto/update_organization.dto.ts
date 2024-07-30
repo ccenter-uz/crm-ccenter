@@ -18,8 +18,8 @@ export class UpdateApplicationCallCenterDto {
   @IsString()
   comment: string;
 
-  // @IsString()
-  // income_number: string;
+  @IsString()
+  income_number: string;
 
   @IsString()
   phone: string;
@@ -29,9 +29,9 @@ export class UpdateApplicationCallCenterDto {
   @IsString()
   income_date: string;
 
-  // @IsString()
-  // // @IsNotEmpty()
-  // incoming_number: string;
+  @IsString()
+  // @IsNotEmpty()
+  incoming_number: string;
 
   @IsString()
   organization_name: string;

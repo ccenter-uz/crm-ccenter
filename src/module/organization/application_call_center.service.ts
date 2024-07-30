@@ -564,7 +564,7 @@ async findallstatisticsfilter(
       comment: body.comment || findaplicationCallCenter.comment,
       // crossfields: body.crossfields || findaplicationCallCenter.crossfields,
       income_date: body.income_date || findaplicationCallCenter.income_date,
-      // income_number: body.income_number || findaplicationCallCenter.income_number ,
+      incoming_number: body.incoming_number|| findaplicationCallCenter.incoming_number,
       phone: body.phone || findaplicationCallCenter.phone, 
       organization_name:
         body.organization_name || findaplicationCallCenter.organization_name,
