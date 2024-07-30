@@ -471,7 +471,7 @@ async findallstatisticsfilter(
       });
     }
 
-    const ApplicationCount =  await ApplicationCallCenterEntity.count() 
+    // const ApplicationCount =  await ApplicationCallCenterEntity.count() 
 
     const createdOrg = await ApplicationCallCenterEntity.createQueryBuilder()
       .insert()
@@ -484,7 +484,7 @@ async findallstatisticsfilter(
         phone: body.phone,                                       
         // crossfields: body.crossfields,
         income_date: body.income_date,
-        incoming_number: `MU/${ApplicationCount}`,
+        incoming_number: body.incoming_number,
         organization_name: body.organization_name,
         organization_type: body.organization_type,
         perform_date: body.perform_date,
@@ -554,7 +554,7 @@ async findallstatisticsfilter(
         throw new HttpException('Bad request', HttpStatus.BAD_REQUEST);
       });
     }
-    console.log(findSubCategory, findDistrict, 'okk');
+    // console.log(findSubCategory, findDistrict, 'okk');
     
     const updatedOrganization = await ApplicationCallCenterEntity.update(id, {
       
