@@ -471,6 +471,8 @@ async findallstatisticsfilter(
       });
     }
 
+    const ApplicationCount =  await ApplicationCallCenterEntity.count() 
+
     const createdOrg = await ApplicationCallCenterEntity.createQueryBuilder()
       .insert()
       .into(ApplicationCallCenterEntity)
@@ -482,7 +484,7 @@ async findallstatisticsfilter(
         phone: body.phone,                                       
         // crossfields: body.crossfields,
         income_date: body.income_date,
-        incoming_number: body.incoming_number,
+        incoming_number: `MU/${ApplicationCount}`,
         organization_name: body.organization_name,
         organization_type: body.organization_type,
         perform_date: body.perform_date,
@@ -563,9 +565,7 @@ async findallstatisticsfilter(
       // crossfields: body.crossfields || findaplicationCallCenter.crossfields,
       income_date: body.income_date || findaplicationCallCenter.income_date,
       // income_number: body.income_number || findaplicationCallCenter.income_number ,
-      phone: body.phone || findaplicationCallCenter.phone,  
-      incoming_number:
-        body.incoming_number || findaplicationCallCenter.incoming_number,
+      phone: body.phone || findaplicationCallCenter.phone, 
       organization_name:
         body.organization_name || findaplicationCallCenter.organization_name,
       organization_type:
