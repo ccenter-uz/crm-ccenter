@@ -144,6 +144,23 @@ export class SectionCategoriesController {
     );
   }
 
+  
+  @Get('/statisticsWithCategory?')
+  @ApiBadRequestResponse()
+  @ApiNotFoundResponse()
+  @ApiOkResponse()
+  @ApiQuery({ name: 'date_from', required: false })
+  @ApiQuery({ name: 'date_to', required: false })
+  async statisticsWithCategory(
+    @Query('date_from') fromDate: string = 'null',
+    @Query('date_to') untilDate: string = 'null',
+  ) {
+    return await this.#_service.statisticsWithCategory(
+      fromDate,
+      untilDate,
+    );
+  }
+
   @Get('/one/:id?')
   @ApiBadRequestResponse()
   @ApiNotFoundResponse()
