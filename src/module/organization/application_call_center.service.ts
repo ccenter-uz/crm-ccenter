@@ -488,7 +488,7 @@ async findallstatisticsfilter(
         organization_name: body.organization_name,
         organization_type: body.organization_type,
         perform_date: body.perform_date,
-        performer: body.perform_date,
+        performer: body.performer,
         resend_application: body.resend_application,
         response: body.response,
         IsDraf: body.IsDraf,
@@ -571,7 +571,7 @@ async findallstatisticsfilter(
       organization_type:
         body.organization_type || findaplicationCallCenter.organization_type,
       perform_date: body.perform_date || findaplicationCallCenter.perform_date,
-      performer: body.perform_date || findaplicationCallCenter.performer,
+      performer: body.performer|| findaplicationCallCenter.performer,
       resend_application:
         body.resend_application || findaplicationCallCenter.resend_application,
       response: body.response || findaplicationCallCenter.response,
