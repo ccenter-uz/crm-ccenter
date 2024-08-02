@@ -309,7 +309,12 @@ export class SectionCategoriesService {
 
       const ApplicationSendedToOrganization = await ApplicationCallCenterEntity.count({
         where : {
-          seded_to_Organization:  Not(IsNull())
+          seded_to_Organization:  Not(IsNull()),
+          districts : {
+            region :{
+              id: regionId == 'null' ? null : regionId
+            }
+          }
         }
       })
 
@@ -408,6 +413,11 @@ export class SectionCategoriesService {
       const ApplicationSendedToOrganization = await ApplicationCallCenterEntity.count({
         where : {
           seded_to_Organization:  Not(IsNull()),
+          districts : {
+            region :{
+              id: regionId == 'null' ? null : regionId
+            }
+          },
 
           create_data: Between(fromDateFormatted, untilDateFormatted),
         }
