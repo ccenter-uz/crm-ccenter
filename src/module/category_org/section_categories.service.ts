@@ -2,7 +2,7 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { CreateSectionCategoryDto } from './dto/create_section_categories.dto';
 import { UpdateSectionCategoryDto } from './dto/update_section_categories.dto';
 import { Category_Section_Entity } from 'src/entities/category_org.entity';
-import { Between, ILike, Like,  } from 'typeorm';
+import { Between, ILike, IsNull, Like, Not,  } from 'typeorm';
 import { Sub_Category_Section_Entity } from 'src/entities/sub_category_org.entity';
 import { Region_Entity } from 'src/entities/region.entity';
 import { ApplicationCallCenterEntity } from 'src/entities/applicationCallCenter.entity';
@@ -307,12 +307,19 @@ export class SectionCategoriesService {
         }
       })
 
+      const ApplicationSendedToOrganization = await ApplicationCallCenterEntity.count({
+        where : {
+          seded_to_Organization:  Not(IsNull())
+        }
+      })
+
       return  {
         findRegions,
         Applicationcount,
         ApplicationExplainedcount,
         ApplicationSatisfiedcount,
         ApplicationLeftunseencount,
+        ApplicationSendedToOrganization,
         ApplicationAnonymouscount
       }
     
@@ -396,6 +403,15 @@ export class SectionCategoriesService {
             create_data: Between(fromDateFormatted, untilDateFormatted),
           }
         })
+
+        
+      const ApplicationSendedToOrganization = await ApplicationCallCenterEntity.count({
+        where : {
+          seded_to_Organization:  Not(IsNull()),
+
+          create_data: Between(fromDateFormatted, untilDateFormatted),
+        }
+      })
   
         return  {
           findRegions,
@@ -403,6 +419,7 @@ export class SectionCategoriesService {
           ApplicationExplainedcount,
           ApplicationSatisfiedcount,
           ApplicationLeftunseencount,
+          ApplicationSendedToOrganization,
           ApplicationAnonymouscount
         }
     } 
@@ -632,7 +649,7 @@ export class SectionCategoriesService {
     arr.sort((a, b) => b.findApplicationCount - a.findApplicationCount);
     return arr
   }
-  
+
 }
 
   async findAll(  title : string,  pageNumber = 1,
