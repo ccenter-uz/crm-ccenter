@@ -245,7 +245,8 @@ return finduser
     const user = await UsersEntity.findOne({
       where: { id },
     }).catch(() => {
-      throw new HttpException('Bad request', HttpStatus.BAD_REQUEST);
+      throw new HttpException('Forbidden', HttpStatus.FORBIDDEN);
+    
     });
     if (user && user.password === pass) {
       const { password, ...result } = user;
@@ -263,8 +264,7 @@ return finduser
       const verifytoken = await this.jwtServise
         .verifyAsync(token)
         .catch((e) => {
-          // throw new UnauthorizedException(e);
-          throw new HttpException(e.message, HttpStatus.BAD_REQUEST);
+          throw new HttpException(e.message, HttpStatus.FORBIDDEN);
         });
       return verifytoken;
     } catch (error) {
