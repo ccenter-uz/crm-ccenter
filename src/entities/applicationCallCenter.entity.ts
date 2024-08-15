@@ -112,6 +112,12 @@ export class ApplicationCallCenterEntity extends BaseEntity {
   })
   IsDraf: string;
 
+  @Column({
+    type: 'character varying',
+    nullable: true,
+  })
+  inProcces : string;
+
   @ManyToOne(
     () => Sub_Category_Section_Entity,
     (sub_category_org) => sub_category_org.applicationCallcenter,

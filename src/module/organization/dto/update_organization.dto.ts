@@ -57,4 +57,6 @@ export class UpdateApplicationCallCenterDto {
 
   @IsString()
   IsDraf: string;
+
+  inProcces: string
 }

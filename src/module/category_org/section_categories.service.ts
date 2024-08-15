@@ -318,6 +318,18 @@ export class SectionCategoriesService {
         }
       })
 
+      const ApplicationInProcces = await ApplicationCallCenterEntity.count({
+        where : {
+          inProcces: 'Кўриб чиқиш жараёнида',
+          districts : {
+            region :{
+              id: regionId == 'null' ? null : regionId
+            }
+          },
+
+        }
+      })
+
       return  {
         findRegions,
         Applicationcount,
@@ -325,7 +337,8 @@ export class SectionCategoriesService {
         ApplicationSatisfiedcount,
         ApplicationLeftunseencount,
         ApplicationSendedToOrganization,
-        ApplicationAnonymouscount
+        ApplicationAnonymouscount,
+        ApplicationInProcces
       }
     
     }else {
@@ -422,6 +435,19 @@ export class SectionCategoriesService {
           create_data: Between(fromDateFormatted, untilDateFormatted),
         }
       })
+
+      const ApplicationInProcces = await ApplicationCallCenterEntity.count({
+        where : {
+          inProcces: 'Кўриб чиқиш жараёнида',
+          districts : {
+            region :{
+              id: regionId == 'null' ? null : regionId
+            }
+          },
+
+          create_data: Between(fromDateFormatted, untilDateFormatted),
+        }
+      })
   
         return  {
           findRegions,
@@ -430,7 +456,8 @@ export class SectionCategoriesService {
           ApplicationSatisfiedcount,
           ApplicationLeftunseencount,
           ApplicationSendedToOrganization,
-          ApplicationAnonymouscount
+          ApplicationAnonymouscount,
+          ApplicationInProcces
         }
     } 
 

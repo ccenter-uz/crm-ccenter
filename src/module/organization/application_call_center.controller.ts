@@ -237,6 +237,10 @@ export class ApplicationCallCenterController {
           type: 'string',
           default: 'false',
         },
+        inProcces: {
+          type: 'string',
+          default: 'false',
+        },
       },
     },
   })
@@ -325,6 +329,10 @@ export class ApplicationCallCenterController {
           default: '2024-07-02',
         },
         IsDraf: {
+          type: 'string',
+          default: 'false',
+        },
+        inProcces: {
           type: 'string',
           default: 'false',
         },

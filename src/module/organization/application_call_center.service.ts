@@ -494,6 +494,7 @@ async findallstatisticsfilter(
         sub_category_call_center: findSubCategory,
         districts : findDistrict,
         seded_to_Organization: seded_to_Organization,
+        inProcces: body.inProcces,
         user: {
           id :request.userId
         }
@@ -576,6 +577,8 @@ async findallstatisticsfilter(
       seded_to_Organization : seded_to_Organization ,
         IsDraf: body.IsDraf || findaplicationCallCenter.IsDraf ,
       sub_category_call_center: findSubCategory,
+      inProcces: body.inProcces || findaplicationCallCenter.inProcces,
+
       districts :findDistrict ,       
     }).catch((e) => {
       throw new HttpException('Bad request', HttpStatus.BAD_REQUEST);

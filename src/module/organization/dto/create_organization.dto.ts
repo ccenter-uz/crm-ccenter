@@ -65,4 +65,6 @@ export class CreateApplicationCallCenterDto {
 
   @IsString()
   IsDraf: string;
+
+  inProcces: string
 }
