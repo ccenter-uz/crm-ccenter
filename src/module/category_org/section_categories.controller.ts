@@ -102,11 +102,13 @@ export class SectionCategoriesController {
   @ApiQuery({ name: 'date_to', required: false })
   async findallAllstatisticsFilterWithRegion(
     @Query('region') region: string = 'null',
+    @Query('type') type: string = 'null',
     @Query('date_from') fromDate: string = 'null',
     @Query('date_to') untilDate: string = 'null',
   ) {
     return await this.#_service.findallAllstatisticsFilterWithRegion(
       region,
+      type,
       fromDate,
       untilDate,
     );

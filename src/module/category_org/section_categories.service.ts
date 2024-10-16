@@ -239,7 +239,7 @@ export class SectionCategoriesService {
       }
   }
 
-  async findallAllstatisticsFilterWithRegion(regionId :string , fromDate: string, untilDate: string,){
+  async findallAllstatisticsFilterWithRegion(regionId :string , type :string, fromDate: string, untilDate: string,){
 
     if(fromDate == 'null' || untilDate == 'null'  ) {
       let findRegions = null
@@ -254,6 +254,7 @@ export class SectionCategoriesService {
       
       const Applicationcount = await ApplicationCallCenterEntity.count({
         where : {
+          IsDraf : type == '0'  ?'false' : 'true',
           districts : {
             region :{
               id: regionId == 'null' ? null : regionId
@@ -263,6 +264,8 @@ export class SectionCategoriesService {
       })
       const ApplicationExplainedcount = await ApplicationCallCenterEntity.count({
         where : {
+          IsDraf : type == '0'  ? 'false' : 'true',
+
           response : 'Тушунтирилган',
           districts : {
             region :{
@@ -275,6 +278,7 @@ export class SectionCategoriesService {
 
       const ApplicationSatisfiedcount = await ApplicationCallCenterEntity.count({
         where : {
+          IsDraf : type == '0'  ?'false' : 'true',
           response : 'Қаноатлантирилган',
           districts : {
             region :{
@@ -287,6 +291,7 @@ export class SectionCategoriesService {
 
       const ApplicationLeftunseencount = await ApplicationCallCenterEntity.count({
         where : {
+          IsDraf : type == '0'  ?'false' : 'true',
           response : 'Кўрмасдан қолдирилган',
           districts : {
             region :{
@@ -298,6 +303,7 @@ export class SectionCategoriesService {
 
       const ApplicationAnonymouscount = await ApplicationCallCenterEntity.count({
         where : {
+          IsDraf : type == '0'  ?'false' : 'true',
           response : 'Аноним',
           districts : {
             region :{
@@ -309,6 +315,7 @@ export class SectionCategoriesService {
 
       const ApplicationSendedToOrganization = await ApplicationCallCenterEntity.count({
         where : {
+          IsDraf : type == '0'  ?'false' : 'true',
           seded_to_Organization:  Not(IsNull()),
           districts : {
             region :{
@@ -320,6 +327,7 @@ export class SectionCategoriesService {
 
       const ApplicationInProcces = await ApplicationCallCenterEntity.count({
         where : {
+          IsDraf : type == '0'  ?'false' : 'true',
           inProcces: 'Кўриб чиқиш жараёнида',
           districts : {
             region :{
@@ -364,6 +372,7 @@ export class SectionCategoriesService {
         
         const Applicationcount = await ApplicationCallCenterEntity.count({
           where : {
+          IsDraf : type == '0'  ?'false' : 'true',
             districts : {
               region :{
                 id: regionId == 'null' ? null : regionId
@@ -374,6 +383,7 @@ export class SectionCategoriesService {
         })
         const ApplicationExplainedcount = await ApplicationCallCenterEntity.count({
           where : {
+          IsDraf : type == '0'  ?'false' : 'true',
             response : 'Тушунтирилган',
             districts : {
               region :{
@@ -387,6 +397,7 @@ export class SectionCategoriesService {
   
         const ApplicationSatisfiedcount = await ApplicationCallCenterEntity.count({
           where : {
+          IsDraf : type == '0'  ?'false' : 'true',
             response : 'Қаноатлантирилган',
             districts : {
               region :{
@@ -400,6 +411,7 @@ export class SectionCategoriesService {
   
         const ApplicationLeftunseencount = await ApplicationCallCenterEntity.count({
           where : {
+          IsDraf : type == '0'  ?'false' : 'true',
             response : 'Кўрмасдан қолдирилган',
             districts : {
               region :{
@@ -412,6 +424,7 @@ export class SectionCategoriesService {
   
         const ApplicationAnonymouscount = await ApplicationCallCenterEntity.count({
           where : {
+          IsDraf : type == '0'  ?'false' : 'true',
             response : 'Аноним',
             districts : {
               region :{
@@ -425,6 +438,7 @@ export class SectionCategoriesService {
         
       const ApplicationSendedToOrganization = await ApplicationCallCenterEntity.count({
         where : {
+          IsDraf : type == '0'  ?'false' : 'true',
           seded_to_Organization:  Not(IsNull()),
           districts : {
             region :{
@@ -438,6 +452,7 @@ export class SectionCategoriesService {
 
       const ApplicationInProcces = await ApplicationCallCenterEntity.count({
         where : {
+          IsDraf : type == '0'  ?'false' : 'true',
           inProcces: 'Кўриб чиқиш жараёнида',
           districts : {
             region :{
