@@ -3,12 +3,13 @@ import {
   HttpStatus,
   UnauthorizedException,
 } from '@nestjs/common';
+import * as dotenv from 'dotenv';
 import { PassportStrategy } from '@nestjs/passport';
 import { ExtractJwt, Strategy } from 'passport-jwt';
 // import { ControlUsersEntity } from 'src/entities/control_users.entity';
 import { UsersEntity } from 'src/entities/users.entity';
 import { CustomRequest } from 'src/types';
-
+dotenv.config();
 export class jwtStrategy extends PassportStrategy(Strategy) {
   constructor() {
     super({
@@ -17,6 +18,8 @@ export class jwtStrategy extends PassportStrategy(Strategy) {
       secretOrKey: process.env.SECRET_KEY,
       PassReqToCallback: true,
       pass: true,
+      
+      
     });
   }
 
