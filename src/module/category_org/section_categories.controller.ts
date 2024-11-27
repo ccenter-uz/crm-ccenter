@@ -47,15 +47,12 @@ export class SectionCategoriesController {
   @ApiBadRequestResponse()
   @ApiNotFoundResponse()
   @ApiOkResponse()
-  
-  async findall(  
+  async findall(
     @Query('search') search: string,
-    @Query('page') page: string,  
-  @Query('pageSize') pageSize: string,
-
+    @Query('page') page: string,
+    @Query('pageSize') pageSize: string,
   ) {
-    return await this.#_service.findAll(   search,   +page,
-      +pageSize,);
+    return await this.#_service.findAll(search, +page, +pageSize);
   }
 
   @Get('/statistics/filter?')
@@ -69,6 +66,7 @@ export class SectionCategoriesController {
   @ApiQuery({ name: 'categoryId', required: false })
   @ApiQuery({ name: 'subCategoryId', required: false })
   @ApiQuery({ name: 'region', required: false })
+  @ApiQuery({ name: 'type', required: false })
   @ApiQuery({ name: 'date_from', required: false })
   @ApiQuery({ name: 'date_to', required: false })
   @ApiQuery({ name: 'page', required: false })
@@ -77,6 +75,7 @@ export class SectionCategoriesController {
     @Query('categoryId') categoryId: string = 'null',
     @Query('subCategoryId') subCategoryId: string = 'null',
     @Query('region') region: string = 'null',
+    @Query('type') type: string = '0',
     @Query('date_from') fromDate: string = 'null',
     @Query('date_to') untilDate: string = 'null',
     @Query('page') page: string = '1',
@@ -86,6 +85,7 @@ export class SectionCategoriesController {
       categoryId,
       subCategoryId,
       region,
+      type,
       fromDate,
       untilDate,
       +page,
@@ -118,13 +118,16 @@ export class SectionCategoriesController {
   @ApiBadRequestResponse()
   @ApiNotFoundResponse()
   @ApiOkResponse()
+  @ApiQuery({ name: 'type', required: false })
   @ApiQuery({ name: 'date_from', required: false })
   @ApiQuery({ name: 'date_to', required: false })
   async findallAllstatisticsWithRegion(
+    @Query('type') type: string = '0',
     @Query('date_from') fromDate: string = 'null',
     @Query('date_to') untilDate: string = 'null',
   ) {
     return await this.#_service.findallAllstatisticsWithRegion(
+      type,
       fromDate,
       untilDate,
     );
@@ -134,30 +137,31 @@ export class SectionCategoriesController {
   @ApiBadRequestResponse()
   @ApiNotFoundResponse()
   @ApiOkResponse()
+  @ApiQuery({ name: 'type', required: false })
   @ApiQuery({ name: 'date_from', required: false })
   @ApiQuery({ name: 'date_to', required: false })
   async statisticsWithRegion(
+    @Query('type') type: string = '0',
     @Query('date_from') fromDate: string = 'null',
     @Query('date_to') untilDate: string = 'null',
   ) {
-    return await this.#_service.statisticsWithRegion(
-      fromDate,
-      untilDate,
-    );
+    return await this.#_service.statisticsWithRegion(type, fromDate, untilDate);
   }
 
-  
   @Get('/statisticsWithCategory?')
   @ApiBadRequestResponse()
   @ApiNotFoundResponse()
   @ApiOkResponse()
+  @ApiQuery({ name: 'type', required: false })
   @ApiQuery({ name: 'date_from', required: false })
   @ApiQuery({ name: 'date_to', required: false })
   async statisticsWithCategory(
+    @Query('type') type: string = '0',
     @Query('date_from') fromDate: string = 'null',
     @Query('date_to') untilDate: string = 'null',
   ) {
     return await this.#_service.statisticsWithCategory(
+      type,
       fromDate,
       untilDate,
     );
@@ -167,11 +171,13 @@ export class SectionCategoriesController {
   @ApiBadRequestResponse()
   @ApiNotFoundResponse()
   @ApiOkResponse()
-  async findOne(@Param('id') id: string,
-  @Query('search') search: string,
-  @Query('page') page: string,
-@Query('pageSize') pageSize: string,) {
-    return await this.#_service.findOne(id ,search , +page , +pageSize);
+  async findOne(
+    @Param('id') id: string,
+    @Query('search') search: string,
+    @Query('page') page: string,
+    @Query('pageSize') pageSize: string,
+  ) {
+    return await this.#_service.findOne(id, search, +page, +pageSize);
   }
 
   @RequiredRoles(RolesEnum.ADMIN)

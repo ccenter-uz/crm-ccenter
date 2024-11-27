@@ -55,7 +55,6 @@ export class AuthServise {
     };
   }
   async signIn(signInDto: SingInUserDto) {
-    console.log(signInDto);
     
     const finduser = await UsersEntity.findOne({
       where: {
@@ -127,7 +126,6 @@ return finduser
           skip: offset,
           take: pageSize,
         }).catch((e) => {
-          console.log(e);
           
           throw new HttpException('Bad Request ', HttpStatus.BAD_REQUEST);
         });
@@ -159,7 +157,6 @@ return finduser
           skip: offset,
           take: pageSize,
         }).catch((e) => {
-          console.log(e);
           
           throw new HttpException('Bad Request ', HttpStatus.BAD_REQUEST);
         });
@@ -201,7 +198,6 @@ return finduser
       })
       .execute()
       .catch((e) => {
-        console.log(e);
         throw new HttpException('Bad Request ', HttpStatus.BAD_REQUEST);
       });
   }

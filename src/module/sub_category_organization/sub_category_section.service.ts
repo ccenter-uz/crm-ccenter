@@ -88,7 +88,6 @@ export class SubCategorySectionServise {
     }
     let findCategory: Category_Section_Entity | null = null;
     if (body.category_id) {
-      console.log('okkkk,' , body.category_id);
       
       findCategory = await Category_Section_Entity.findOne({ 
         where :{
@@ -96,7 +95,6 @@ export class SubCategorySectionServise {
         }
       }).catch(
         (e) => {
-          console.log(e);
           
           throw new HttpException('Not found Category', HttpStatus.NOT_FOUND);
         },

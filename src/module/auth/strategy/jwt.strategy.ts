@@ -6,8 +6,6 @@ import {
 import * as dotenv from 'dotenv';
 import { PassportStrategy } from '@nestjs/passport';
 import { ExtractJwt, Strategy } from 'passport-jwt';
-// import { ControlUsersEntity } from 'src/entities/control_users.entity';
-import { UsersEntity } from 'src/entities/users.entity';
 import { CustomRequest } from 'src/types';
 dotenv.config();
 export class jwtStrategy extends PassportStrategy(Strategy) {
@@ -18,13 +16,10 @@ export class jwtStrategy extends PassportStrategy(Strategy) {
       secretOrKey: process.env.SECRET_KEY,
       PassReqToCallback: true,
       pass: true,
-      
-      
     });
   }
 
   async validate(req: CustomRequest, payload: any) {
-    console.log(payload);
 
     return { id: payload.id, roles: payload.role, password: payload.password };
     // const findUser = await UsersEntity.findOne({

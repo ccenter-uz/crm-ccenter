@@ -443,7 +443,6 @@ async findallstatisticsfilter(
           id: body.sub_category_id,
         },
       }).catch((e) => {
-        console.log(e);
         throw new HttpException('Bad request', HttpStatus.BAD_REQUEST);
       });
     }
@@ -465,12 +464,23 @@ async findallstatisticsfilter(
           id: body.sended_to_organizations,
         },
       }).catch((e) => {
-        console.log(e);
         throw new HttpException('Bad request', HttpStatus.BAD_REQUEST);
       });
     }
 
-    const ApplicationCount =  await ApplicationCallCenterEntity.count() 
+    let ApplicationCount = await ApplicationCallCenterEntity.count({
+      where: {
+        IsDraf: 'false'
+      }
+    }); 
+    
+    if (body.IsDraf) {
+      ApplicationCount = await ApplicationCallCenterEntity.count({
+        where: {
+          IsDraf: 'true',
+        },
+      });
+    }
 
     const createdOrg = await ApplicationCallCenterEntity.createQueryBuilder()
       .insert()
@@ -525,7 +535,6 @@ async findallstatisticsfilter(
           id: body.sub_category_id,
         },
       }).catch((e) => {
-        console.log(e);
 
         throw new HttpException('Bad request', HttpStatus.BAD_REQUEST);
       });
@@ -538,7 +547,6 @@ async findallstatisticsfilter(
           id: body.district_id,
         },
       }).catch((e) => {
-        console.log(e);
         throw new HttpException('Bad request', HttpStatus.BAD_REQUEST);
       });
     }
@@ -550,11 +558,9 @@ async findallstatisticsfilter(
           id: body.sended_to_organizations,
         },
       }).catch((e) => {
-        console.log(e);
         throw new HttpException('Bad request', HttpStatus.BAD_REQUEST);
       });
     }
-    // console.log(findSubCategory, findDistrict, 'okk');
     
     const updatedOrganization = await ApplicationCallCenterEntity.update(id, {
       
@@ -586,7 +592,6 @@ async findallstatisticsfilter(
     
     
     if(updatedOrganization){
-      console.log(request.userId,'okkk');
 
       const createdOrg = await HistoryAplicationEntity.createQueryBuilder()
       .insert()

@@ -14,14 +14,12 @@ export class RolesGuard implements CanActivate {
   constructor(private reflector: Reflector, private jwtService: JwtService) {}
 
   canActivate(context: ExecutionContext): boolean {
-    console.log('111');
 
     const requiredRoles = this.reflector.getAllAndOverride<RolesEnum[]>(
       ROLES_KEY,
       [context.getHandler(), context.getClass()],
     );
 
-    console.log(requiredRoles);
 
     if (!requiredRoles) {
       return true;
@@ -29,7 +27,6 @@ export class RolesGuard implements CanActivate {
     const request = context.switchToHttp().getRequest();
     const token = request.headers.authorization?.split(' ')[1];
 
-    // console.log(token,'okk111');
 
     try {
       const user = this.jwtService.verify(token);
