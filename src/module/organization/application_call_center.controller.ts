@@ -164,7 +164,7 @@ export class ApplicationCallCenterController {
   }
 
   // @UseGuards(jwtGuard)
-  @RequiredRoles(RolesEnum.OPERATOR,RolesEnum.ADMIN)
+  // @RequiredRoles(RolesEnum.OPERATOR,RolesEnum.ADMIN)
   @Post('create')
   @HttpCode(HttpStatus.CREATED)
   @ApiBody({

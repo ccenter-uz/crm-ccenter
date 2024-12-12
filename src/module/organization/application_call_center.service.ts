@@ -474,13 +474,17 @@ async findallstatisticsfilter(
       }
     }); 
     
-    if (body.IsDraf) {
-      ApplicationCount = await ApplicationCallCenterEntity.count({
+    if (body.IsDraf == 'true') {
+      // console.log('okkk');
+      ApplicationCount =
+        await ApplicationCallCenterEntity.count({
         where: {
           IsDraf: 'true',
         },
       });
     }
+    // console.log(ApplicationCount);
+    
 
     const createdOrg = await ApplicationCallCenterEntity.createQueryBuilder()
       .insert()
