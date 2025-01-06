@@ -483,7 +483,7 @@ export class ApplicationCallCenterServise {
         },
       });
     }
-    console.log(ApplicationCount);
+    // console.log(ApplicationCount);
 
     const createdOrg = await ApplicationCallCenterEntity.createQueryBuilder()
       .insert()
