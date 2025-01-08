@@ -465,7 +465,7 @@ export class ApplicationCallCenterServise {
         throw new HttpException('Bad request', HttpStatus.BAD_REQUEST);
       });
     }
-    const currentYear = new Date().getFullYear()+1;
+    const currentYear = new Date().getFullYear();
 
     let ApplicationCount = await ApplicationCallCenterEntity.count({
       where: {
