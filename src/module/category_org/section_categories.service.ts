@@ -15,12 +15,13 @@ export class SectionCategoriesService {
     type: string,
     fromDate: string,
     untilDate: string,
+    year: number,
     pageNumber = 1,
     pageSize = 10,
   ) {
     const offset = (pageNumber - 1) * pageSize;
 
-    if (fromDate == 'null' && untilDate == 'null') {
+    if (fromDate == 'null' && untilDate == 'null' && year == 0) {
       const findRegions = await Region_Entity.find({
         where: {
           id: region == 'null' ? null : region,
@@ -98,16 +99,21 @@ export class SectionCategoriesService {
         },
       };
     } else {
-      const fromDateFormatted = new Date(
-        parseInt(fromDate.split('.')[2]),
-        parseInt(fromDate.split('.')[1]) - 1,
-        parseInt(fromDate.split('.')[0]),
-      );
-      const untilDateFormatted = new Date(
-        parseInt(untilDate.split('.')[2]),
-        parseInt(untilDate.split('.')[1]) - 1,
-        parseInt(untilDate.split('.')[0]),
-      );
+      const fromDateFormatted = year
+        ? new Date(year, 0, 1)
+        : new Date(
+            parseInt(fromDate.split('.')[2]),
+            parseInt(fromDate.split('.')[1]) - 1,
+            parseInt(fromDate.split('.')[0]),
+          );
+
+      const untilDateFormatted = year
+        ? new Date(year, 11, 31, 23, 59, 59)
+        : new Date(
+            parseInt(untilDate.split('.')[2]),
+            parseInt(untilDate.split('.')[1]) - 1,
+            parseInt(untilDate.split('.')[0]),
+          );
 
       const [results, total] = await Category_Section_Entity.findAndCount({
         where: {
@@ -154,7 +160,6 @@ export class SectionCategoriesService {
         });
       });
 
-
       const totalPages = Math.ceil(total / pageSize);
 
       return {
@@ -175,8 +180,9 @@ export class SectionCategoriesService {
     type: string,
     fromDate: string,
     untilDate: string,
+    year: number,
   ) {
-    if (fromDate == 'null' || untilDate == 'null') {
+    if (fromDate == 'null' && untilDate == 'null' && year == 0) {
       let findRegions = null;
       if (regionId != 'null') {
         findRegions = await Region_Entity.findOne({
@@ -288,16 +294,21 @@ export class SectionCategoriesService {
         ApplicationInProcces,
       };
     } else {
-      const fromDateFormatted = new Date(
-        parseInt(fromDate.split('.')[2]),
-        parseInt(fromDate.split('.')[1]) - 1,
-        parseInt(fromDate.split('.')[0]),
-      );
-      const untilDateFormatted = new Date(
-        parseInt(untilDate.split('.')[2]),
-        parseInt(untilDate.split('.')[1]) - 1,
-        parseInt(untilDate.split('.')[0]),
-      );
+      const fromDateFormatted = year
+        ? new Date(year, 0, 1)
+        : new Date(
+            parseInt(fromDate.split('.')[2]),
+            parseInt(fromDate.split('.')[1]) - 1,
+            parseInt(fromDate.split('.')[0]),
+          );
+
+      const untilDateFormatted = year
+        ? new Date(year, 11, 31, 23, 59, 59)
+        : new Date(
+            parseInt(untilDate.split('.')[2]),
+            parseInt(untilDate.split('.')[1]) - 1,
+            parseInt(untilDate.split('.')[0]),
+          );
 
       let findRegions = null;
       if (regionId != 'null') {
@@ -424,8 +435,9 @@ export class SectionCategoriesService {
     type: string,
     fromDate: string,
     untilDate: string,
+    year: number,
   ) {
-    if (fromDate == 'null' || untilDate == 'null') {
+    if (fromDate == 'null' && untilDate == 'null' && year == 0) {
       const ApplicationAllcount = await ApplicationCallCenterEntity.count();
       const findRegions = await Region_Entity.find({
         order: {
@@ -456,16 +468,21 @@ export class SectionCategoriesService {
       }
       return allResultat;
     } else {
-      const fromDateFormatted = new Date(
-        parseInt(fromDate.split('.')[2]),
-        parseInt(fromDate.split('.')[1]) - 1,
-        parseInt(fromDate.split('.')[0]),
-      );
-      const untilDateFormatted = new Date(
-        parseInt(untilDate.split('.')[2]),
-        parseInt(untilDate.split('.')[1]) - 1,
-        parseInt(untilDate.split('.')[0]),
-      );
+      const fromDateFormatted = year
+        ? new Date(year, 0, 1)
+        : new Date(
+            parseInt(fromDate.split('.')[2]),
+            parseInt(fromDate.split('.')[1]) - 1,
+            parseInt(fromDate.split('.')[0]),
+          );
+
+      const untilDateFormatted = year
+        ? new Date(year, 11, 31, 23, 59, 59)
+        : new Date(
+            parseInt(untilDate.split('.')[2]),
+            parseInt(untilDate.split('.')[1]) - 1,
+            parseInt(untilDate.split('.')[0]),
+          );
 
       const ApplicationAllcount = await ApplicationCallCenterEntity.count({
         where: {
@@ -508,8 +525,9 @@ export class SectionCategoriesService {
     type: string,
     fromDate: string,
     untilDate: string,
+    year: number,
   ) {
-    if (fromDate == 'null' || untilDate == 'null') {
+    if (fromDate == 'null' && untilDate == 'null' && year == 0) {
       const ApplicationAllcount = await ApplicationCallCenterEntity.count();
       const findRegions = await Region_Entity.find({
         order: {
@@ -540,16 +558,21 @@ export class SectionCategoriesService {
       }
       return allResultat;
     } else {
-      const fromDateFormatted = new Date(
-        parseInt(fromDate.split('.')[2]),
-        parseInt(fromDate.split('.')[1]) - 1,
-        parseInt(fromDate.split('.')[0]),
-      );
-      const untilDateFormatted = new Date(
-        parseInt(untilDate.split('.')[2]),
-        parseInt(untilDate.split('.')[1]) - 1,
-        parseInt(untilDate.split('.')[0]),
-      );
+      const fromDateFormatted = year
+        ? new Date(year, 0, 1)
+        : new Date(
+            parseInt(fromDate.split('.')[2]),
+            parseInt(fromDate.split('.')[1]) - 1,
+            parseInt(fromDate.split('.')[0]),
+          );
+
+      const untilDateFormatted = year
+        ? new Date(year, 11, 31, 23, 59, 59)
+        : new Date(
+            parseInt(untilDate.split('.')[2]),
+            parseInt(untilDate.split('.')[1]) - 1,
+            parseInt(untilDate.split('.')[0]),
+          );
 
       // const ApplicationAllcount = await ApplicationCallCenterEntity.count({
       //   where: {
@@ -590,8 +613,13 @@ export class SectionCategoriesService {
     }
   }
 
-  async statisticsWithCategory(type : string, fromDate: string, untilDate: string) {
-    if (fromDate == 'null' || untilDate == 'null') {
+  async statisticsWithCategory(
+    type: string,
+    fromDate: string,
+    untilDate: string,
+    year: number,
+  ) {
+    if (fromDate == 'null' && untilDate == 'null' && year == 0) {
       const findCategory = await Category_Section_Entity.find({});
       let arr = [];
       for (let e of findCategory) {
@@ -615,16 +643,21 @@ export class SectionCategoriesService {
       arr.sort((a, b) => b.findApplicationCount - a.findApplicationCount);
       return arr;
     } else {
-      const fromDateFormatted = new Date(
-        parseInt(fromDate.split('.')[2]),
-        parseInt(fromDate.split('.')[1]) - 1,
-        parseInt(fromDate.split('.')[0]),
-      );
-      const untilDateFormatted = new Date(
-        parseInt(untilDate.split('.')[2]),
-        parseInt(untilDate.split('.')[1]) - 1,
-        parseInt(untilDate.split('.')[0]),
-      );
+      const fromDateFormatted = year
+        ? new Date(year, 0, 1)
+        : new Date(
+            parseInt(fromDate.split('.')[2]),
+            parseInt(fromDate.split('.')[1]) - 1,
+            parseInt(fromDate.split('.')[0]),
+          );
+
+      const untilDateFormatted = year
+        ? new Date(year, 11, 31, 23, 59, 59)
+        : new Date(
+            parseInt(untilDate.split('.')[2]),
+            parseInt(untilDate.split('.')[1]) - 1,
+            parseInt(untilDate.split('.')[0]),
+          );
 
       const findCategory = await Category_Section_Entity.find({});
       let arr = [];
@@ -778,7 +811,6 @@ export class SectionCategoriesService {
     const findCategory = await Category_Section_Entity.findOneBy({
       id: id,
     }).catch((e) => {
-
       throw new HttpException('Not found Category', HttpStatus.BAD_REQUEST);
     });
     if (!findCategory) {
@@ -792,7 +824,6 @@ export class SectionCategoriesService {
     //   .execute();
 
     await Category_Section_Entity.delete({ id }).catch((e) => {
-
       throw new HttpException('Not found Category', HttpStatus.BAD_REQUEST);
     });
   }

@@ -69,6 +69,7 @@ export class SectionCategoriesController {
   @ApiQuery({ name: 'type', required: false })
   @ApiQuery({ name: 'date_from', required: false })
   @ApiQuery({ name: 'date_to', required: false })
+  @ApiQuery({ name: 'yearDashboard', required: false })
   @ApiQuery({ name: 'page', required: false })
   @ApiQuery({ name: 'pageSize', required: false })
   async findallstatisticsfilter(
@@ -78,6 +79,7 @@ export class SectionCategoriesController {
     @Query('type') type: string = '0',
     @Query('date_from') fromDate: string = 'null',
     @Query('date_to') untilDate: string = 'null',
+    @Query('yearDashboard') year: number = 0,
     @Query('page') page: string = '1',
     @Query('pageSize') pageSize: string = '10',
   ) {
@@ -88,6 +90,7 @@ export class SectionCategoriesController {
       type,
       fromDate,
       untilDate,
+      year,
       +page,
       +pageSize,
     );
@@ -100,17 +103,20 @@ export class SectionCategoriesController {
   @ApiQuery({ name: 'region', required: false })
   @ApiQuery({ name: 'date_from', required: false })
   @ApiQuery({ name: 'date_to', required: false })
+  @ApiQuery({ name: 'yearDashboard', required: false })
   async findallAllstatisticsFilterWithRegion(
     @Query('region') region: string = 'null',
     @Query('type') type: string = 'null',
     @Query('date_from') fromDate: string = 'null',
     @Query('date_to') untilDate: string = 'null',
+    @Query('yearDashboard') year: number = 0,
   ) {
     return await this.#_service.findallAllstatisticsFilterWithRegion(
       region,
       type,
       fromDate,
       untilDate,
+      year,
     );
   }
 
@@ -121,15 +127,18 @@ export class SectionCategoriesController {
   @ApiQuery({ name: 'type', required: false })
   @ApiQuery({ name: 'date_from', required: false })
   @ApiQuery({ name: 'date_to', required: false })
+  @ApiQuery({ name: 'yearDashboard', required: false })
   async findallAllstatisticsWithRegion(
     @Query('type') type: string = '0',
     @Query('date_from') fromDate: string = 'null',
     @Query('date_to') untilDate: string = 'null',
+    @Query('yearDashboard') year: number = 0,
   ) {
     return await this.#_service.findallAllstatisticsWithRegion(
       type,
       fromDate,
       untilDate,
+      year,
     );
   }
 
@@ -140,12 +149,19 @@ export class SectionCategoriesController {
   @ApiQuery({ name: 'type', required: false })
   @ApiQuery({ name: 'date_from', required: false })
   @ApiQuery({ name: 'date_to', required: false })
+  @ApiQuery({ name: 'yearDashboard', required: false })
   async statisticsWithRegion(
     @Query('type') type: string = '0',
     @Query('date_from') fromDate: string = 'null',
     @Query('date_to') untilDate: string = 'null',
+    @Query('yearDashboard') year: number = 0,
   ) {
-    return await this.#_service.statisticsWithRegion(type, fromDate, untilDate);
+    return await this.#_service.statisticsWithRegion(
+      type,
+      fromDate,
+      untilDate,
+      year,
+    );
   }
 
   @Get('/statisticsWithCategory?')
@@ -155,15 +171,18 @@ export class SectionCategoriesController {
   @ApiQuery({ name: 'type', required: false })
   @ApiQuery({ name: 'date_from', required: false })
   @ApiQuery({ name: 'date_to', required: false })
+  @ApiQuery({ name: 'yearDashboard', required: false })
   async statisticsWithCategory(
     @Query('type') type: string = '0',
     @Query('date_from') fromDate: string = 'null',
     @Query('date_to') untilDate: string = 'null',
+    @Query('yearDashboard') year: number = 0,
   ) {
     return await this.#_service.statisticsWithCategory(
       type,
       fromDate,
       untilDate,
+      year,
     );
   }
 
